@@ -1,0 +1,12 @@
+# page title
+title: Webifier
+
+# navbar
+nav:
+  patch: nav.yml
+
+# meta tags
+meta:
+  - name: keywords
+    content: Webifer, Jekyll, Deployment, Github
+
