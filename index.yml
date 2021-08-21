@@ -1,12 +1,22 @@
 # page title
 title: Webifier
 
-# navbar
-nav:
-  patch: nav.yml
+# page header (is an object with title, description, background)
+header:
+  title: Webifier
+  background: https://picsum.photos/1000
+  description: |
+    Turn any repository into a website!
 
 # meta tags
 meta:
-  - name: keywords
-    content: Webifer, Jekyll, Deployment, Github
+  patch: index/meta.yml
+
+# navbar management
+nav:
+  patch: index/nav.yml
+
+# website configuration
+config:
+  patch: index/config.yml
 
