@@ -5,3 +5,5 @@ brand:
 content:
   - index: index
     text: Home
+  - index: pages/collaborate
+    text: Collaboration
