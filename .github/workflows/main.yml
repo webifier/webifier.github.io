@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Webify
-        uses: webifier/build@main
+        uses: webifier/build@v0.0.8
         with:
           baseurl: ''
 
