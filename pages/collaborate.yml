@@ -1,8 +1,15 @@
 # page title
 title: Webifier | Collaborate
 
+# page header
+header:
+  title: Collaboration
+  background: https://picsum.photos/1000
+  description: |
+    `Webify` is already great; let's make it perfect together!
 description:
   label: false
+  background: https://picsum.photos/1000
   content: >
     Our team is hardly a team, barely passing the minimum requirement for being considered as one! We genuinely welcome
     any support and appreciate any help growing Webify and its community.
@@ -24,3 +31,4 @@ description:
 comments:
   label: false
   kind: comments
+  background: https://picsum.photos/1000
