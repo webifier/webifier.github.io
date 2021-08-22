@@ -7,6 +7,10 @@ header:
   background: https://picsum.photos/1000
   description: |
     Webifier is already great; let's make it perfect together!
+
+footer:
+  background: https://picsum.photos/1000
+
 description:
   label: false
   background: https://picsum.photos/1000
