@@ -3,3 +3,5 @@
   content: Webifier, Deployment, Github Pages, Documentation
 - name: author
   content: Webifier
+- name: viewport
+  content: 'width=device-width, initial-scale=1.0'
