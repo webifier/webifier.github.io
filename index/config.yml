@@ -1,0 +1,10 @@
+# utterances comments configuration
+comments:
+  repo: webifier/comments
+  issue_term: pathname
+  issue_label: comments
+  theme: github-light
+  crossorigin: anonymous
+
+# google analytics configuration
+google_analytics_id: G-TYRMXHZ5YH

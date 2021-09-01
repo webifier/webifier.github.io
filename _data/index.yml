@@ -1,0 +1,36 @@
+title: Webifier
+header:
+  title: <p>Webifier</p>
+  background: https://picsum.photos/1000
+  description: <p>Turn any repository into a website!</p>
+meta:
+- name: keywords
+  content: Webifier, Deployment, Github Pages, Documentation
+- name: author
+  content: Webifier
+- name: viewport
+  content: width=device-width, initial-scale=1.0
+nav:
+  brand:
+    text: Webifier
+    icon: fas fa-cloud
+    link: https://webifier.github.io/
+  content:
+  - index: index
+    text: Home
+    description: 'Turn any repository into a website!
+
+      '
+    link: /
+  - index: pages/collaborate
+    text: Collaboration
+    description: <p>Webifier is already great; let's make it perfect together!</p>
+    link: /pages/collaborate.html
+config:
+  comments:
+    repo: webifier/comments
+    issue_term: pathname
+    issue_label: comments
+    theme: github-light
+    crossorigin: anonymous
+  google_analytics_id: G-TYRMXHZ5YH

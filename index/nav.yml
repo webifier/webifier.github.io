@@ -1,0 +1,9 @@
+brand:
+  text: Webifier
+  icon: fas fa-cloud
+  link: https://webifier.github.io/
+content:
+  - index: index
+    text: Home
+  - index: pages/collaborate
+    text: Collaboration

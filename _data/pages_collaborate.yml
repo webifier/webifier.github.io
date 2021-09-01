@@ -1,0 +1,35 @@
+title: Webifier | Collaborate
+header:
+  title: <p>Collaboration</p>
+  background: https://picsum.photos/1000
+  description: <p>Webifier is already great; let's make it perfect together!</p>
+footer:
+  background: https://picsum.photos/1000
+description:
+  label: false
+  background: https://picsum.photos/1000
+  content: <p>Our team is hardly a team, barely passing the minimum requirement for
+    being considered as one! We genuinely welcome any support and appreciate any help
+    growing Webify and its community.</p>
+  people:
+    label: false
+    kind: people
+    content:
+    - name: Vahid Zehtab
+      role: co-creator
+      contact:
+      - link: https://github.com/vahidzee
+        icon: fab fa-github
+      kind: person
+      image: https://github.com/vahidzee.png
+    - name: Ahmad Salimi
+      role: co-creator
+      contact:
+      - link: https://github.com/ahmadsalimi
+        icon: fab fa-github
+      kind: person
+      image: https://github.com/ahmadsalimi.png
+comments:
+  label: false
+  kind: comments
+  background: https://picsum.photos/1000
