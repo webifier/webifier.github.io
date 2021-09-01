@@ -30,4 +30,4 @@ jobs:
           allow_empty_commit: true
           force_orphan: true
           publish_dir: .
-          exclude_assets: ''
+          exclude_assets: '.github'
