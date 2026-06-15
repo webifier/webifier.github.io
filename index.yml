@@ -4,7 +4,6 @@ title: Webifier
 # page header (is an object with title, description, background)
 header:
   title: Webifier
-  background: https://picsum.photos/seed/webifier/1600/900
   description: |
     Turn project content into a complete static website.
 
