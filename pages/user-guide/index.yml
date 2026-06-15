@@ -17,47 +17,58 @@ overview:
 start:
   label: Start here
   content: |
-    - [Installation and GitHub Actions](index=pages/user-guide/tutorials/00-installation-and-github-actions.yml)
-      - Install the packages, run locally, and add a GitHub Actions workflow.
-    - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml)
-      - Learn the top-to-bottom page model with rendered examples.
-    - [Section Controls](index=pages/user-guide/tutorials/02-section-controls.yml)
-      - Add labels, templates, defaults, and renderer dispatch.
-    - [Links and Page Discovery](index=pages/user-guide/tutorials/03-links-and-page-discovery.yml)
-      - Link Markdown, notebooks, YAML pages, and static assets.
+    These pages are the shortest path from an empty repository to a working
+    Webifier site. Read them in order if you are setting up a project for the
+    first time.
+
+    - [Installation and GitHub Actions](index=pages/user-guide/tutorials/00-installation-and-github-actions.yml): install the packages, render locally, and add a GitHub Actions workflow.
+    - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml): learn the top-to-bottom page model with rendered examples.
+    - [Section Controls](index=pages/user-guide/tutorials/02-section-controls.yml): add labels, templates, defaults, and renderer dispatch.
+    - [Links and Page Discovery](index=pages/user-guide/tutorials/03-links-and-page-discovery.yml): link Markdown, notebooks, YAML pages, and static assets.
 
 default_workflow:
   label: Default workflow
   content: |
-    - [Using the Default Site](md=pages/user-guide/01-default-site.md)
-    - [Render and Automate](md=pages/user-guide/02-render-and-automate.md)
-    - [Navigation and Pages](md=pages/user-guide/03-navigation-and-pages.md)
-    - [Publishing Content Files](md=pages/user-guide/04-content-files.md)
-    - [Configuration Basics](md=pages/user-guide/05-configuration.md)
+    The default workflow covers the pieces most projects use immediately:
+    choosing an entry point, publishing from source files, and letting automation
+    do the repeat work.
+
+    - [Using the Default Site](md=pages/user-guide/01-default-site.md): start from the bundled layout and understand what Webifier renders for you.
+    - [Render and Automate](md=pages/user-guide/02-render-and-automate.md): run the build locally and wire it into repository publishing.
+    - [Navigation and Pages](md=pages/user-guide/03-navigation-and-pages.md): configure site navigation and decide which pages belong in the guide.
+    - [Publishing Content Files](md=pages/user-guide/04-content-files.md): publish Markdown, notebooks, HTML, PDFs, and assets from your repository.
+    - [Configuration Basics](md=pages/user-guide/05-configuration.md): keep site-level defaults, page settings, and extension options in one place.
 
 renderers:
   label: Renderers and Extensions
   content: |
-    - [Renderer Catalog](index=pages/user-guide/renderers/index.yml)
-      - [Page and Section Renderers](index=pages/user-guide/renderers/01-page-and-section-renderers.yml)
-      - [Content and Link Renderers](index=pages/user-guide/renderers/02-content-and-link-renderers.yml)
-      - [Extension Renderers](index=pages/user-guide/renderers/03-extension-renderers.yml)
-    - [Bundled Extensions](index=pages/user-guide/extensions/bundled.yml)
-    - [Themes and Styles](md=pages/user-guide/06-themes.md)
-    - [Template Overrides](md=pages/user-guide/07-template-overrides.md)
-    - [Template-Only Renderers](md=pages/user-guide/08-template-renderers.md)
-    - [Python Renderers and Resolvers](md=pages/user-guide/09-python-renderers-and-resolvers.md)
-    - [Reusable Website Formats](md=pages/user-guide/10-reusable-formats.md)
+    Renderers and extensions are where Webifier becomes reusable. Start with the
+    built-ins, then move toward your own templates, Python renderers, and
+    packaged website formats.
+
+    - [Renderer Catalog](index=pages/user-guide/renderers/index.yml): compare the bundled renderer categories and where each one fits.
+    - [Page and Section Renderers](index=pages/user-guide/renderers/01-page-and-section-renderers.yml): define complete pages and structured sections.
+    - [Content and Link Renderers](index=pages/user-guide/renderers/02-content-and-link-renderers.yml): render files and links into discoverable website pages.
+    - [Extension Renderers](index=pages/user-guide/renderers/03-extension-renderers.yml): understand how extensions register renderers, assets, hooks, and templates.
+    - [Bundled Extensions](index=pages/user-guide/extensions/bundled.yml): see what ships with Webifier and how to enable it.
+    - [Themes and Styles](md=pages/user-guide/06-themes.md): set defaults, switch themes, and prepare for custom visual systems.
+    - [Template Overrides](md=pages/user-guide/07-template-overrides.md): replace specific templates without rewriting the whole site.
+    - [Template-Only Renderers](md=pages/user-guide/08-template-renderers.md): add new rendering kinds from templates alone.
+    - [Python Renderers and Resolvers](md=pages/user-guide/09-python-renderers-and-resolvers.md): plug in Python code when templates are not enough.
+    - [Reusable Website Formats](md=pages/user-guide/10-reusable-formats.md): package repeatable formats for resumes, labs, academic sites, and project pages.
 
 reference:
   label: Reference
   content: |
-    - [Architecture Overview](md=pages/user-guide/reference/00-overview.md)
-    - [YAML Syntax Specification](md=pages/user-guide/reference/01-yaml-syntax.md)
-    - [Resolver System](md=pages/user-guide/reference/02-resolvers.md)
-    - [Renderer / Kind System](md=pages/user-guide/reference/03-renderers.md)
-    - [Extension and Customization Guide](md=pages/user-guide/reference/04-extension-guide.md)
-    - [Processing Pipeline](md=pages/user-guide/reference/05-processing-pipeline.md)
+    Use the reference pages when you need exact syntax, lifecycle details, or a
+    deeper mental model for extending Webifier.
+
+    - [Architecture Overview](md=pages/user-guide/reference/00-overview.md): see the core pieces and how extensions fit around them.
+    - [YAML Syntax Specification](md=pages/user-guide/reference/01-yaml-syntax.md): check the supported YAML shapes and reserved keys.
+    - [Resolver System](md=pages/user-guide/reference/02-resolvers.md): understand how links, files, and generated pages are discovered.
+    - [Renderer / Kind System](md=pages/user-guide/reference/03-renderers.md): map `kind`, templates, and renderer dispatch.
+    - [Extension and Customization Guide](md=pages/user-guide/reference/04-extension-guide.md): write extensions that register renderers, hooks, templates, and assets.
+    - [Processing Pipeline](md=pages/user-guide/reference/05-processing-pipeline.md): follow the build lifecycle from config loading to output files.
 
 shape:
   label: Workflow
