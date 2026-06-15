@@ -1,0 +1,236 @@
+title: Extensions
+header:
+  title: Extensions
+  description: How Webifier extensions are discovered, configured, ordered, and used during rendering.
+
+lifecycle:
+  label: Extension Lifecycle
+  content: |
+    Extensions are the way Webifier turns a small static-site core into a reusable
+    publishing system. The core loads configuration, walks pages, resolves links,
+    dispatches renderers, and writes files. Extensions register the parts that
+    make those steps useful: renderers, content handlers, templates, assets,
+    themes, hooks, resolvers, and defaults.
+
+    A build starts at one index page. That page can link to other YAML pages,
+    Markdown files, notebooks, PDFs, HTML files, and static assets. Webifier
+    renders the index, follows discovered links, renders reachable content pages,
+    and copies assets into the output site.
+
+    <div class="mermaid">
+    flowchart TD
+      A["Read root index YAML"] --> B["Preload config.webifier.extensions"]
+      B --> C["Discover installed extension entry points"]
+      C --> D["Enable named extension instances in YAML order"]
+      D --> E["Register renderers, templates, assets, hooks, defaults"]
+      E --> F["Load and resolve page data"]
+      F --> G["Process sections and links"]
+      G --> H["Render page template"]
+      H --> I["Run page/head hooks and copy extension assets"]
+      I --> J["Follow discovered pages and content files"]
+      J --> K["Run after_build hooks"]
+    </div>
+
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "default" });
+    </script>
+
+how_rendering_works:
+  label: How a Page Is Rendered
+  content: |
+    The page model is deliberately boring: a page is content from top to bottom.
+    YAML keys become sections in the order you write them, except reserved keys
+    such as `title`, `config`, `nav`, `header`, `footer`, `meta`, `metadata`, and
+    `style` control page behavior instead of becoming content.
+
+    Extensions participate at three main moments:
+
+    - **Runup:** Webifier reads extension config before full page interpolation,
+      discovers installed extension ids, and lets each enabled instance register
+      capabilities.
+    - **Render:** section `kind`, content-file extensions, templates, resolvers,
+      and head injections are used while pages are rendered.
+    - **Finish:** side-effect hooks can write build artifacts such as `search.json`.
+
+    In rough pseudocode, the build looks like this:
+
+    ```python
+    root_config = preload_config(index_yml)
+    extension_manager.configure(root_config)
+
+    config = extension_manager.apply_config(root_config)
+    root_page = load_and_resolve(index_yml, config)
+
+    for page in reachable_pages(root_page):
+        processed = process_sections(page)
+        html = render_page_template(processed)
+        write_output(page.url, html)
+
+    copy_extension_assets()
+    extension_manager.run_hooks("after_build")
+    ```
+
+hooks:
+  label: Hooks and Page-Aware Injection
+  content: |
+    Hooks let extensions affect places outside a single section renderer.
+    Current first-party extensions use two hook moments:
+
+    - `head`: returns HTML inserted into the page `<head>`. The callback receives
+      the page data, merged config, base URL, node context, instance name, and
+      instance config. This is how themes, analytics, and resume page assets are
+      injected.
+    - `after_build`: runs after pages and assets are written. This is how search
+      writes `search.json`.
+
+    A hook can be page-aware. For example, `webifier.resume` inspects the current
+    page and injects its CSS/JS only when that page uses `kind: resume.experience`
+    or `kind: resume.publications`.
+
+    ```python
+    class ResumeExtension(Extension):
+        id = "webifier.resume"
+        renderers = {
+            "resume.experience": "...ResumeExperienceRenderer",
+            "resume.publications": "...ResumePublicationsRenderer",
+        }
+
+        def register(self, ctx):
+            super().register(ctx)
+            ctx.add_hook("head", self.render_head)
+
+        def render_head(self, builder, *, page=None, baseurl="", **kwargs):
+            if not page_uses_resume(page):
+                return ""
+            return f'<link rel="stylesheet" href="{baseurl}/assets/webifier/resume/css/resume.css">'
+    ```
+
+using_extensions:
+  label: Using an Extension
+  content: |
+    An extension must be importable in Python. In normal use that means you
+    install a package with `pip`, and the package exposes an entry point in the
+    `webifier.extensions` group.
+
+    Webifier only enables extensions listed under named entries in
+    `config.webifier.extensions`:
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          markdown:
+            uses: webifier.markdown
+          theme:
+            uses: webifier.theme
+            default: system
+            switcher: true
+          search:
+            uses: webifier.search
+            content: true
+            links: true
+          docs_people:
+            uses: webifier.people
+    ```
+
+    The key such as `site`, `markdown`, or `docs_people` is a local instance
+    name. It can be whatever makes sense in your project. The `uses` value is the
+    installed extension id.
+
+order_and_override:
+  label: Order and Override Rules
+  content: |
+    YAML order matters. Webifier enables extension instances from top to bottom.
+    That order affects dependency checks, template search paths, hooks, and
+    duplicate registrations.
+
+    - Dependencies must be enabled first. For example, `webifier.chapters`,
+      `webifier.people`, `webifier.notebook`, and `webifier.resume` depend on
+      `webifier.standard`.
+    - If two instances register the same content renderer, the later one must
+      set `override: true`.
+    - `override: true` is intentional friction. Use it when you really want a
+      later extension to replace an earlier behavior.
+    - Any key besides `uses`, `enabled`, and `override` becomes instance config.
+    - If an extension declares a config key, its instance config is merged into
+      the site config under that key. For example, `webifier.theme` exports to
+      `config.theme`, and `webifier.comments` exports to `config.comments`.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          markdown:
+            uses: webifier.markdown
+          custom_markdown:
+            uses: my_lab.markdown
+            override: true
+            fenced_alerts: true
+    ```
+
+writing_extensions:
+  label: Writing an Extension
+  content: |
+    Extension packages expose subclasses of `webifier.core.extensions.Extension`.
+    Simple extensions can be almost entirely declarative.
+
+    ```python
+    from webifier.core.extensions import AssetMount, Extension
+
+    class LabReportExtension(Extension):
+        id = "my_lab.report"
+        dependencies = ("webifier.standard",)
+        template_dirs = ["/path/to/templates"]
+        assets = [AssetMount("/path/to/assets", "assets/my-lab")]
+        renderers = {
+            "lab.report": "my_lab.renderers.ReportRenderer",
+        }
+        config_defaults = {
+            "defaults": {"section": "section"},
+        }
+    ```
+
+    More involved extensions override `register()` when they need callbacks,
+    conditional hooks, content renderers, resolvers, or build-time behavior.
+
+    ```python
+    class LabNotebookExtension(Extension):
+        id = "my_lab.notebook"
+        dependencies = ("webifier.standard",)
+
+        def register(self, ctx):
+            super().register(ctx)
+            ctx.register_content_renderer(".lab.ipynb", self.render_lab_notebook)
+            ctx.add_hook("head", self.render_head)
+            ctx.add_hook("after_build", self.write_manifest)
+    ```
+
+first_party:
+  label: First-Party Extensions
+  content: |
+    Installing `webifier` also installs `webifier-extensions`. These are the
+    bundled extension ids and their focused reference pages:
+
+    - Foundation and content
+        - [Standard](index=pages/user-guide/extensions/01-standard.yml): page shell, sections, links, templates, shared CSS/JS, and base assets.
+        - [Markdown](index=pages/user-guide/extensions/02-markdown.yml): Markdown sections and `.md` content pages.
+        - [Notebook](index=pages/user-guide/extensions/03-notebook.yml): `.ipynb` content pages with YAML preface metadata.
+    - Section renderers
+        - [Chapters](index=pages/user-guide/extensions/04-chapters.yml): accordion-style nested chapter sections.
+        - [People](index=pages/user-guide/extensions/05-people.yml): profile and team cards.
+        - [Resume](index=pages/user-guide/extensions/06-resume.yml): experience, education, activity, and publication renderers.
+        - [Comments](index=pages/user-guide/extensions/08-comments.yml): Utterances-backed discussion sections.
+    - Site features
+        - [Theme](index=pages/user-guide/extensions/07-theme.yml): light/dark/system theme plumbing and custom theme CSS.
+        - [Search](index=pages/user-guide/extensions/09-search.yml): search index generation from rendered content and links.
+        - [Google Analytics](index=pages/user-guide/extensions/10-analytics-google.yml): Google tag injection through a page head hook.
+
+next:
+  label: Next
+  content: |
+    - [Renderer / Kind System](md=pages/user-guide/reference/03-renderers.md)
+    - [Extension and Customization Guide](md=pages/user-guide/reference/04-extension-guide.md)
+    - [Processing Pipeline](md=pages/user-guide/reference/05-processing-pipeline.md)

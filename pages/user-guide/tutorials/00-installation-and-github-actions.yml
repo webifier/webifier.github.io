@@ -181,4 +181,4 @@ next:
   content: |
     - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml)
     - [Configuration Basics](md=pages/user-guide/05-configuration.md)
-    - [Renderer Catalog](index=pages/user-guide/renderers/index.yml)
+    - [First-party Extensions](index=pages/user-guide/extensions/index.yml)

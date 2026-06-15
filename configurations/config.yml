@@ -29,6 +29,8 @@ webifier:
       uses: webifier.people
     chapters:
       uses: webifier.chapters
+    resume:
+      uses: webifier.resume
 favicon:
   href: /assets/images/webifier-logo.png
   type: image/png
@@ -63,18 +65,30 @@ page_navigation:
           href: /pages/user-guide/04-content-files.html
         - title: Configuration Basics
           href: /pages/user-guide/05-configuration.html
-    - title: Renderers and Extensions
+    - title: Extensions and Customization
       items:
-        - title: Renderer Catalog
-          href: /pages/user-guide/renderers/
-        - title: Page and Section Renderers
-          href: /pages/user-guide/renderers/01-page-and-section-renderers.html
-        - title: Content and Link Renderers
-          href: /pages/user-guide/renderers/02-content-and-link-renderers.html
-        - title: Extension Renderers
-          href: /pages/user-guide/renderers/03-extension-renderers.html
-        - title: Bundled Extensions
-          href: /pages/user-guide/extensions/bundled.html
+        - title: Extensions
+          href: /pages/user-guide/extensions/
+        - title: Standard Extension
+          href: /pages/user-guide/extensions/01-standard.html
+        - title: Markdown Extension
+          href: /pages/user-guide/extensions/02-markdown.html
+        - title: Notebook Extension
+          href: /pages/user-guide/extensions/03-notebook.html
+        - title: Chapters Extension
+          href: /pages/user-guide/extensions/04-chapters.html
+        - title: People Extension
+          href: /pages/user-guide/extensions/05-people.html
+        - title: Resume Extension
+          href: /pages/user-guide/extensions/06-resume.html
+        - title: Theme Extension
+          href: /pages/user-guide/extensions/07-theme.html
+        - title: Comments Extension
+          href: /pages/user-guide/extensions/08-comments.html
+        - title: Search Extension
+          href: /pages/user-guide/extensions/09-search.html
+        - title: Google Analytics Extension
+          href: /pages/user-guide/extensions/10-analytics-google.html
         - title: Themes and Styles
           href: /pages/user-guide/06-themes.html
         - title: Template Overrides

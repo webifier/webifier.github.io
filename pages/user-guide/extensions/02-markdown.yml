@@ -1,0 +1,119 @@
+title: Markdown Extension
+header:
+  title: Markdown Extension
+  description: Markdown sections, Markdown content pages, links, front matter, highlighting, tables, footnotes, and HTML passthrough.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.markdown` registers content renderers for `.md`, `.markdown`,
+    `md=...`, and `markdown=...` links. It also powers the default behavior for
+    string content inside YAML sections, so you usually do not need
+    `kind: markdown`; just write Markdown in a section's `content`.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          markdown:
+            uses: webifier.markdown
+    ```
+
+features:
+  label: Markdown Features
+  content: |
+    Markdown rendering currently uses these extensions:
+
+    - fenced code blocks with syntax highlighting.
+    - tables.
+    - footnotes.
+    - definition lists.
+    - attributes with `attr_list`.
+    - Markdown inside HTML blocks.
+    - local HTML/image/file link post-processing.
+
+    Markdown pages can include YAML front matter. Front matter is treated as
+    page metadata/config and the rest of the file becomes the page body.
+
+    ```text
+    ---
+    title: Experiment Notes
+    nav: false
+    metadata:
+      description: Rendered from Markdown.
+    ---
+
+    # Experiment Notes
+
+    This file becomes `experiment-notes.html`.
+    ```
+
+section_yaml:
+  label: Markdown Section YAML
+  content: |
+    ````yaml
+    notes:
+      label: Notes
+      content: |
+        # A Markdown Fragment
+
+        | thing | status |
+        | --- | --- |
+        | tables | work |
+        | code | highlighted |
+
+        ```python
+        print("hello from a fenced block")
+        ```
+    ````
+
+section_rendered:
+  label: Rendered Markdown
+  content: |
+    # A Markdown Fragment
+
+    | thing | status |
+    | --- | --- |
+    | tables | work |
+    | code | highlighted |
+
+    ```python
+    print("hello from a fenced block")
+    ```
+
+content_links:
+  label: Markdown Content Pages
+  content: |
+    Link a Markdown file with `md=...` to make Webifier render it as another
+    reachable HTML page.
+
+    ```yaml
+    examples:
+      kind: links
+      label: Examples
+      content:
+        - text: Tiny Markdown page
+          link: md=pages/user-guide/extensions/examples/tiny-markdown.md
+    ```
+
+    - [Tiny Markdown page](md=pages/user-guide/extensions/examples/tiny-markdown.md)
+
+extending:
+  label: Extending Markdown
+  content: |
+    For project-specific Markdown behavior, register a later content renderer
+    for `.md` or `md` with `override: true`. Use that when you need custom
+    parsing, preprocessing, or page wrapping.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          markdown:
+            uses: webifier.markdown
+          lab_markdown:
+            uses: my_lab.markdown
+            override: true
+    ```

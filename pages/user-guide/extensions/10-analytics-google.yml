@@ -1,0 +1,56 @@
+title: Google Analytics Extension
+header:
+  title: Google Analytics Extension
+  description: Google tag injection through a page head hook.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.analytics.google` uses a `head` hook to inject the Google tag when
+    `measurement_id` is configured. It does not render a visible section.
+
+configuration:
+  label: Configuration YAML
+  content: |
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          analytics:
+            uses: webifier.analytics.google
+            measurement_id: G-XXXXXXX
+    ```
+
+    The extension also accepts `id` as an alias for `measurement_id`.
+
+page_behavior:
+  label: Page Behavior
+  content: |
+    Analytics is global by default because its hook runs in the head of every
+    page. If you need page-specific analytics behavior, write a custom extension
+    hook that inspects the `page` argument passed to the hook and returns nothing
+    for pages where analytics should be disabled.
+
+pseudocode:
+  label: Hook Shape
+  content: |
+    ```python
+    class GoogleAnalyticsExtension(Extension):
+        id = "webifier.analytics.google"
+        config_key = "google_analytics"
+
+        def register(self, ctx):
+            super().register(ctx)
+            ctx.add_hook("head", self.render_head)
+
+        def render_head(self, builder, *, config=None, **kwargs):
+            measurement_id = config["google_analytics"]["measurement_id"]
+            return google_tag_html(measurement_id)
+    ```
+
+extending:
+  label: Extending Analytics
+  content: |
+    Analytics-like extensions usually use `head` because they inject scripts or
+    metadata into each page. A package can expose multiple provider-specific ids,
+    such as `my_org.analytics.plausible` and `my_org.analytics.google`.

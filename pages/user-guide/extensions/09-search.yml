@@ -1,0 +1,64 @@
+title: Search Extension
+header:
+  title: Search Extension
+  description: Build-time search index generation from rendered pages and discovered links.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.search` does not render a visible section by itself. It registers
+    an `after_build` hook that writes `search.json` from pages and links gathered
+    during rendering.
+
+    Search is intentionally documented separately from the current site navbar
+    because the search UI is still evolving. The extension-level idea is stable:
+    collect searchable content at build time, then let a frontend UI consume the
+    generated index.
+
+config_yaml:
+  label: Configuration YAML
+  content: |
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          search:
+            uses: webifier.search
+            content: true
+            links: true
+            ui: true
+    ```
+
+options:
+  label: Options
+  content: |
+    Instance options:
+
+    - `content`: include page body text in the search index.
+    - `links`: include rendered/discovered links in the search index.
+    - `ui`: reserved for search UI integration.
+
+lifecycle:
+  label: Lifecycle
+  content: |
+    Search-like extensions usually use `after_build` because they need the final
+    graph of rendered pages.
+
+    ```python
+    class SearchExtension(Extension):
+        id = "webifier.search"
+        config_key = "search"
+
+        def register(self, ctx):
+            super().register(ctx)
+            ctx.add_hook("after_build", self.save_search_index)
+    ```
+
+extending:
+  label: Extending Search
+  content: |
+    Custom search extensions can write alternate indexes, enrich entries with
+    embeddings, or export a format expected by a hosted search provider. Register
+    an `after_build` hook when you need the completed page graph.

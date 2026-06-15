@@ -1,0 +1,77 @@
+title: Comments Extension
+header:
+  title: Comments Extension
+  description: Utterances-backed discussion blocks configured globally or per page.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.comments` registers `kind: comments`. It renders an Utterances
+    script block when a GitHub repository is configured. You can configure it
+    globally through the extension instance, or locally on a comments section.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          comments:
+            uses: webifier.comments
+            repo: owner/repo
+            issue_term: pathname
+            issue_label: comments
+            theme: preferred-color-scheme
+    ```
+
+section_yaml:
+  label: Section YAML
+  content: |
+    ```yaml
+    discussion:
+      kind: comments
+      label: Comments
+      repo: owner/repo
+      issue_term: pathname
+      issue_label: comments
+      theme: preferred-color-scheme
+    ```
+
+syntax:
+  label: Syntax
+  content: |
+    Keys:
+
+    - `kind: comments`
+    - `repo`: GitHub repository used by Utterances.
+    - `issue_term`: Utterances issue mapping, commonly `pathname`.
+    - `issue_label`: label for created issues.
+    - `theme`: Utterances theme, commonly `preferred-color-scheme`.
+    - `crossorigin`: defaults to `anonymous`.
+
+rendering:
+  label: What It Renders
+  content: |
+    When `repo` is configured, the section emits the Utterances client script.
+    The actual comments UI is loaded by Utterances in the browser. For pages that
+    should not load third-party comments, omit the section or set a page-specific
+    configuration without `repo`.
+
+    The block directly below is the live rendered comments renderer. The renderer
+    emits the widget itself, so this explanatory section is where the surrounding
+    label and context live.
+
+rendered_comments:
+  kind: comments
+  label: Rendered Comments Block
+  repo: webifier/comments
+  issue_term: pathname
+  issue_label: comments
+  theme: preferred-color-scheme
+
+extending:
+  label: Extending Comments
+  content: |
+    For another comment provider, create a new extension with a renderer such as
+    `kind: comments.giscus` or override `comments` with `override: true` if you
+    intentionally want to replace the built-in meaning.

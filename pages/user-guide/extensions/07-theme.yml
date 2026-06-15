@@ -1,0 +1,82 @@
+title: Theme Extension
+header:
+  title: Theme Extension
+  description: Light, dark, system default, custom theme CSS, and page head theme bootstrapping.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.theme` injects early theme bootstrapping into the page head,
+    includes `assets/css/theme.css`, and optionally includes the theme switcher
+    JavaScript. It sets Bootstrap's `data-bs-theme` so Bootstrap components and
+    Webifier styles resolve consistently.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          theme:
+            uses: webifier.theme
+            default: system
+            switcher: true
+    ```
+
+options:
+  label: Options
+  content: |
+    Instance options:
+
+    - `default`: `system`, `light`, `dark`, or a custom theme name.
+    - `switcher`: whether the navbar theme switcher is active.
+    - `themes`: custom theme descriptors. Each item can include `name`, `label`,
+      and `css`.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          theme:
+            uses: webifier.theme
+            default: lab
+            switcher: true
+            themes:
+              - name: lab
+                label: Lab
+                css: assets/css/themes/lab.css
+    ```
+
+custom_theme:
+  label: Custom Theme CSS
+  content: |
+    Custom theme CSS can override Webifier variables. Keep custom themes small
+    and variable-driven when possible.
+
+    ```css
+    :root[data-wf-resolved-theme="light"] {
+        --wf-bg: #f6f8fa;
+        --wf-surface: #ffffff;
+        --wf-text: #24292f;
+    }
+
+    :root[data-wf-resolved-theme="dark"] {
+        --wf-bg: #0d1117;
+        --wf-surface: #161b22;
+        --wf-text: #e6edf3;
+    }
+    ```
+
+head_lifecycle:
+  label: Head Lifecycle
+  content: |
+    The theme extension uses a `head` hook. It writes a small inline script before
+    the stylesheet so the correct theme is set before the page paints, then it
+    loads the theme CSS and optional switcher JavaScript.
+
+extending:
+  label: Extending Themes
+  content: |
+    Use custom CSS for visual changes. Write a new extension only when the theme
+    needs extra assets, controls, page-aware head injection, or additional build
+    behavior.

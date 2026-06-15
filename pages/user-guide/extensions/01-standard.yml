@@ -1,0 +1,118 @@
+title: Standard Extension
+header:
+  title: Standard Extension
+  description: The default page shell, section renderer, link renderer, shared templates, CSS, JS, and base assets.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.standard` is the foundation extension most sites enable first. It
+    provides the page template, section template, content-page template, links
+    renderer, freeform renderer, shared navigation/header/footer macros, syntax
+    highlighting CSS, base layout CSS, and code-block copy behavior.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+    ```
+
+registrations:
+  label: Registrations
+  content: |
+    The extension registers these renderer ids:
+
+    - `page`: complete HTML page shell.
+    - `section`: default section renderer for ordinary YAML sections.
+    - `content-page`: shell used for rendered Markdown and notebook pages.
+    - `links`: list/card-style links renderer.
+    - `freeform`: direct content renderer for sections that should not use the
+      standard section chrome.
+
+    It also contributes templates and assets mounted under `assets/`.
+
+section_yaml:
+  label: Default Section YAML
+  content: |
+    Any non-reserved top-level key becomes a section. If you do not set `kind`,
+    the default section renderer is used.
+
+    ```yaml
+    introduction:
+      label: Introduction
+      content: |
+        This is a normal section. Markdown is allowed here.
+
+        - Lists work.
+        - Inline `code` works.
+        - Fenced blocks get highlighting and copy buttons.
+    ```
+
+section_rendered:
+  label: Rendered Example
+  content: |
+    This is a normal section. Markdown is allowed here.
+
+    - Lists work.
+    - Inline `code` works.
+    - Fenced blocks get highlighting and copy buttons.
+
+    ```yaml
+    hello: world
+    nested:
+      value: 42
+    ```
+
+links_yaml:
+  label: Links Renderer YAML
+  content: |
+    The standard links renderer is useful for navigation-like groups of related
+    pages and assets.
+
+    ```yaml
+    resources:
+      kind: links
+      label: Resources
+      content:
+        - text: User guide
+          link: index=pages/user-guide/index.yml
+        - text: Markdown example
+          link: md=pages/user-guide/extensions/examples/tiny-markdown.md
+        - text: Tiny PDF
+          link: pdf=pages/user-guide/extensions/examples/tiny.pdf
+    ```
+
+links_rendered:
+  kind: links
+  label: Rendered Links
+  content:
+    - text: User guide
+      link: index=pages/user-guide/index.yml
+    - text: Markdown example
+      link: md=pages/user-guide/extensions/examples/tiny-markdown.md
+    - text: Tiny PDF
+      link: pdf=pages/user-guide/extensions/examples/tiny.pdf
+
+override:
+  label: Extending or Overriding
+  content: |
+    Override standard behavior by adding a later extension instance with
+    `override: true`, or by using page-level `template` values to replace a
+    specific template without replacing the whole renderer.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          lab_site:
+            uses: my_lab.standard
+            override: true
+    ```
+
+    Template-only changes are usually cleaner when you only want presentation
+    changes. A custom extension is better when you need new renderer logic,
+    assets, hooks, or defaults.

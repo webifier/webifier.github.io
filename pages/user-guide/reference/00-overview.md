@@ -84,7 +84,7 @@ extensions/
 
 | I want to… | What I do | Python? |
 |---|---|---|
-| Change how people cards look | Drop `templates/renderers/people.html` in my repo | No |
+| Change how people cards look | Drop `templates/people.html` in my repo | No |
 | Create a "gallery" section type | Create `templates/renderers/gallery.html`, use `kind: gallery` | No |
 | Give one page its own layout | Write a template, use `template: templates/landing.html` | No |
 | Override the page layout | Drop `templates/page.html` in my repo | No |

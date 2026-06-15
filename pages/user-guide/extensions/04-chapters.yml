@@ -1,0 +1,107 @@
+title: Chapters Extension
+header:
+  title: Chapters Extension
+  description: Accordion-style chapter lists with recursively rendered nested content.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.chapters` registers `kind: chapters`. It renders a list of chapter
+    objects as a Bootstrap accordion. Each item needs a `title`; any other keys
+    are processed recursively as child content and placed inside the accordion
+    body.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          chapters:
+            uses: webifier.chapters
+    ```
+
+simple_yaml:
+  label: Simple Chapters YAML
+  content: |
+    ```yaml
+    walkthrough:
+      kind: chapters
+      label: Walkthrough
+      content:
+        - title: Start
+          body: |
+            Describe the page in YAML.
+        - title: Publish
+          body: |
+            Commit and let the action rebuild.
+    ```
+
+simple_rendered:
+  kind: chapters
+  label: Rendered Chapters
+  content:
+    - title: Start
+      body: |
+        Describe the page in YAML.
+    - title: Publish
+      body: |
+        Commit and let the action rebuild.
+
+nested_yaml:
+  label: Nested Chapters YAML
+  content: |
+    Nested child content can itself use another renderer.
+
+    ```yaml
+    nested_walkthrough:
+      kind: chapters
+      label: Nested Walkthrough
+      content:
+        - title: Author
+          summary: |
+            Write content in the repository.
+          details:
+            kind: chapters
+            content:
+              - title: Markdown
+                body: Use `.md` files for prose.
+              - title: Notebooks
+                body: Use `.ipynb` files for runnable results.
+    ```
+
+nested_rendered:
+  kind: chapters
+  label: Rendered Nested Chapters
+  content:
+    - title: Author
+      summary: |
+        Write content in the repository.
+      details:
+        kind: chapters
+        content:
+          - title: Markdown
+            body: Use `.md` files for prose.
+          - title: Notebooks
+            body: Use `.ipynb` files for runnable results.
+
+syntax:
+  label: Syntax
+  content: |
+    Section keys:
+
+    - `kind: chapters`
+    - `label`: optional section label.
+    - `content`: list of chapter objects.
+
+    Chapter item keys:
+
+    - `title`: accordion heading.
+    - any other key: processed as nested Webifier content.
+
+extending:
+  label: Extending Chapters
+  content: |
+    To change the accordion markup, override the `macros/chapters.html` template.
+    To change how child nodes are processed, register a custom renderer for
+    `chapters` with `override: true`.

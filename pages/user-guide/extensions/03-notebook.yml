@@ -1,0 +1,65 @@
+title: Notebook Extension
+header:
+  title: Notebook Extension
+  description: Render Jupyter notebooks as linked HTML pages while preserving metadata and assets.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.notebook` registers content renderers for `.ipynb` and
+    `notebook=...` links. When Webifier discovers a notebook link, it converts
+    the notebook with `nbconvert`, extracts the notebook body, post-processes
+    links/assets, and writes a sibling HTML page.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          notebook:
+            uses: webifier.notebook
+    ```
+
+yaml_preface:
+  label: Notebook YAML Preface
+  content: |
+    A notebook can define page metadata in the first Markdown cell. If the cell
+    contains only YAML front matter, Webifier removes that cell from the rendered
+    notebook.
+
+    ```markdown
+    ---
+    title: Tiny Notebook Example
+    nav: false
+    metadata:
+      description: Rendered from a notebook.
+    ---
+    ```
+
+linking:
+  label: Link a Notebook
+  content: |
+    ```yaml
+    notebook_example:
+      label: Notebook
+      content: |
+        Open the [tiny notebook](notebook=pages/user-guide/extensions/examples/tiny-notebook.ipynb).
+    ```
+
+    Open the [tiny notebook](notebook=pages/user-guide/extensions/examples/tiny-notebook.ipynb).
+
+colab:
+  label: Colab Links
+  content: |
+    If Webifier is run with a repository name, notebook pages can include a
+    Google Colab URL pointing to the source notebook in the repository. The
+    standard bundled assets include a small Colab badge image for this workflow.
+
+extending:
+  label: Extending Notebook Rendering
+  content: |
+    Replace notebook behavior by registering a later content renderer for
+    `.ipynb` or `notebook` with `override: true`. That is the right place to add
+    project-specific execution, cell filtering, alternate exporters, or custom
+    notebook templates.

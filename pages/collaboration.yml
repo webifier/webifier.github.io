@@ -1,0 +1,114 @@
+title: Collaboration
+header:
+  title: Collaboration
+  description: Help make Webifier easier to use, easier to extend, and easier to trust.
+
+origin:
+  label: Origin
+  content: |
+    We originally developed Webifier for a very practical teaching problem:
+    GitHub already had excellent collaborative tooling, and GitHub Pages already
+    had a publication pipeline, but there was too much glue work between “a
+    repository full of student notebooks and notes” and “a useful course
+    website.”
+
+    The first public Webifier repository on GitHub,
+    [webifier/build](https://github.com/webifier/build), dates to August 18,
+    2021, during the Covid-era scramble to make course material easier to share
+    online. Around the same course-publishing push, we used it for Sharif
+    University of Technology AI course material repositories such as
+    [sut-ai/notes](https://github.com/sut-ai/notes) and
+    [sut-ai/supplementary](https://github.com/sut-ai/supplementary), where
+    hundreds of students could open pull requests to one repository, share
+    notebooks and educational content with one another, and have the shared
+    website update automatically.
+
+    The original version was essentially a Jekyll data generator: it bridged
+    Git's collaboration model with GitHub Pages so many people could contribute
+    content to one repository without hand-maintaining a website.
+
+today:
+  label: Today
+  content: |
+    I later picked Webifier back up and made it more general. Thankfully, the
+    last few years of LLM-assisted coding made the refactor much less ridiculous
+    than it would have been the first time around: the Jekyll dependency is gone,
+    the renderer and extension system is cleaner, and the project is now
+    documented as something people can actually reuse, extend, and improve.
+
+    The goal is still the same: keep the publishing overhead low. Put useful
+    content in a repository, organize it clearly, let Git track the changes, and
+    let Webifier turn the reachable content into a static website.
+
+people:
+  kind: people
+  label: People
+  layout:
+    min_width: 15rem
+    max_width: 19rem
+    gap: 1rem
+    align: center
+    density: comfortable
+  card:
+    align: center
+  avatar:
+    size: 4.75rem
+  people:
+    - name: Vahid Zehtab
+      github: vahidzee
+      title: Main contributor and maintainer
+      affiliation: Webifier
+      tags: [Maintainer, Extensions, Documentation]
+      bio: |
+        Co-created the original course-publishing workflow and later revived
+        Webifier as a general static-site renderer for Markdown, notebooks,
+        YAML pages, templates, and extensions.
+      links:
+        - text: Website
+          link: https://vahidz.com
+        - text: GitHub
+          link: https://github.com/vahidzee
+    - name: Ahmad Salimi
+      github: ahmadsalimi
+      title: Original co-creator and contributor
+      affiliation: Sharif AI course tooling
+      tags: [Co-creator, Course tooling]
+      bio: |
+        Helped create the original Webifier workflow for turning collaborative
+        Git repositories into course websites during the Sharif AI material
+        publishing work.
+      links:
+        - text: Website
+          link: https://ahmadsalimi.github.io/
+        - text: GitHub
+          link: https://github.com/ahmadsalimi
+
+help:
+  label: Help
+  content: |
+    Webifier is useful when it disappears into the workflow: add content,
+    organize it, push to Git, and let the website update itself. Contributions
+    that make that experience smoother are especially welcome.
+
+    Good places to help:
+
+    - Improve templates for documentation, notebooks, galleries, reports, and
+      personal websites.
+    - Add real examples that show how repositories can be organized.
+    - Tighten the GitHub Action and local CLI experience.
+    - Improve notebook rendering, asset handling, and content discovery.
+    - Build extensions for reusable formats like course pages, academic sites,
+      resumes, collections, and project galleries.
+    - Test Webifier on existing repositories and report the rough edges.
+
+    Feel free to reach out, open an issue, start a discussion, or send a pull
+    request. Questions, rough notes, examples of what did or did not work, and
+    early feedback are all welcome.
+
+    Start with the [build repository](https://github.com/webifier/build), the
+    [extensions repository](https://github.com/webifier/extensions), or the
+    [website repository](https://github.com/webifier/webifier.github.io).
+
+comments:
+  kind: comments
+  label: Comments

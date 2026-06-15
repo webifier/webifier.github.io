@@ -1,0 +1,310 @@
+title: Resume Extension
+header:
+  title: Resume Extension
+  description: Experience and publication renderers for resumes, academic pages, portfolios, and CV-like sections.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.resume` registers `resume.experience`, `resume-experience`, and
+    `resume.publications`. It also injects its CSS and JavaScript only on pages
+    that use resume renderers.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          markdown:
+            uses: webifier.markdown
+          resume:
+            uses: webifier.resume
+    ```
+
+experience_yaml:
+  label: Experience YAML With Separators
+  content: |
+    ```yaml
+    experience:
+      kind: resume.experience
+      label: Experience
+      compact: true
+      inline:
+        heading: true
+        tags: false
+      separators: true
+
+      foundation_lab:
+        heading:
+          institution: Example Foundation Lab
+          role: Senior Machine Learning Scientist
+          details: Applied ML
+          date: 2025 - Present
+          location: Toronto, ON, Canada
+        description: Compact summaries stay visible before expansion.
+        content: |
+          - Lead model training experiments across data, infrastructure, and evaluation.
+          - Build reusable tooling so research ideas can survive contact with production.
+
+      product_team:
+        heading:
+          institution: Example Product Team
+          role: Machine Learning Engineer
+          details: Imaging Systems
+          date: 2023 - 2025
+          location: Remote
+        description: Entries can expose short summaries and hide longer notes.
+        content: |
+          - Designed model-serving workflows and evaluation dashboards.
+          - Turned research prototypes into tools other people could actually run.
+
+      graduate_program:
+        heading:
+          institution: Example University
+          role: MSc. in Useful Things
+          details: Thesis on practical automation
+          date: 2021 - 2023
+          location: Somewhere
+        compact: false
+        content: |
+          - Non-compact entries render their content immediately.
+          - This is useful for education, awards, and short permanent details.
+    ```
+
+experience_rendered:
+  kind: resume.experience
+  label: Rendered With Separators
+  compact: true
+  inline:
+    heading: true
+    tags: false
+  separators: true
+  foundation_lab:
+    heading:
+      institution: Example Foundation Lab
+      role: Senior Machine Learning Scientist
+      details: Applied ML
+      date: 2025 - Present
+      location: Toronto, ON, Canada
+    description: Compact summaries stay visible before expansion.
+    content: |
+      - Lead model training experiments across data, infrastructure, and evaluation.
+      - Build reusable tooling so research ideas can survive contact with production.
+  product_team:
+    heading:
+      institution: Example Product Team
+      role: Machine Learning Engineer
+      details: Imaging Systems
+      date: 2023 - 2025
+      location: Remote
+    description: Entries can expose short summaries and hide longer notes.
+    content: |
+      - Designed model-serving workflows and evaluation dashboards.
+      - Turned research prototypes into tools other people could actually run.
+  graduate_program:
+    heading:
+      institution: Example University
+      role: MSc. in Useful Things
+      details: Thesis on practical automation
+      date: 2021 - 2023
+      location: Somewhere
+    compact: false
+    content: |
+      - Non-compact entries render their content immediately.
+      - This is useful for education, awards, and short permanent details.
+
+experience_yaml_no_separators:
+  label: Experience YAML Without Separators
+  content: |
+    ```yaml
+    compact_experience:
+      kind: resume.experience
+      label: Compact List
+      compact: true
+      inline:
+        heading: false
+        tags: true
+      separators: false
+
+      teaching:
+        heading:
+          institution: Example Course Staff
+          role: Teaching Assistant
+          details: Graduate ML course
+          date: Fall 2022
+          location: Campus
+        description: A compact card with inline date and location tags.
+        content: |
+          - Held tutorials, reviewed notebooks, and helped students debug ideas.
+          - This entry expands without separator lines between neighbors.
+
+      community:
+        heading:
+          institution: Example Open Source Group
+          role: Contributor
+          details: Documentation and examples
+          date: 2021 - 2024
+          location: Online
+        description: Separator-free sections feel more like a compact stack.
+        content: |
+          - Added examples, cleaned docs, and turned rough workflows into recipes.
+    ```
+
+experience_rendered_no_separators:
+  kind: resume.experience
+  label: Rendered Without Separators
+  compact: true
+  inline:
+    heading: false
+    tags: true
+  separators: false
+  teaching:
+    heading:
+      institution: Example Course Staff
+      role: Teaching Assistant
+      details: Graduate ML course
+      date: Fall 2022
+      location: Campus
+    description: A compact card with inline date and location tags.
+    content: |
+      - Held tutorials, reviewed notebooks, and helped students debug ideas.
+      - This entry expands without separator lines between neighbors.
+  community:
+    heading:
+      institution: Example Open Source Group
+      role: Contributor
+      details: Documentation and examples
+      date: 2021 - 2024
+      location: Online
+    description: Separator-free sections feel more like a compact stack.
+    content: |
+      - Added examples, cleaned docs, and turned rough workflows into recipes.
+
+experience_syntax:
+  label: Experience Syntax
+  content: |
+    Section-level keys:
+
+    - `kind: resume.experience`
+    - `compact`: default compact/expandable behavior for entries.
+    - `defaults.compact`: another way to set the default compact behavior.
+    - `inline.heading`: display role and institution on one line in desktop mode.
+    - `inline.tags`: display date and location on one line.
+    - `horizontal`: render cards horizontally with scroll when needed.
+    - `separators`: show/hide lines between entries.
+
+    Entry keys:
+
+    - `heading.institution`
+    - `heading.role`
+    - `heading.details`
+    - `heading.date`
+    - `heading.location`
+    - `expanded_heading`: optional full heading for expanded mode.
+    - `description`: short compact summary.
+    - `content`: Markdown details. If omitted, no details toggle is shown.
+    - `compact`: per-entry override.
+    - `inline.heading`, `inline.tags`: per-entry layout override.
+    - `no_line`: hide the separator after this entry.
+
+publications_yaml:
+  label: Publications YAML
+  content: |
+    ```yaml
+    publications:
+      kind: resume.publications
+      label: Publications
+      neural_widgets:
+        title: Useful Neural Widgets for Static-Site Automation
+        authors:
+          - me: Your Name
+          - name: Collaborator
+            link: https://example.com
+        authors_notes: Equal contribution
+        tags: |
+          [Paper](https://example.com/paper)
+          [Code](https://github.com/example/widgets)
+          [Demo](https://example.com/demo)
+        content: |
+          A short abstract or project note can go here. Tags are Markdown, so
+          each item can be a normal link.
+
+      notebook_systems:
+        title: Notebook Publishing Systems That Do Not Hate You
+        authors:
+          - name: First Author
+            link: https://example.com/first
+          - me: Your Name
+          - name: Another Collaborator
+        tags: |
+          [arXiv](https://arxiv.org)
+          [Dataset](https://example.com/dataset)
+          [Slides](https://example.com/slides)
+          Reproducible
+        content: |
+          Mix links and plain labels when some outputs have URLs and some are
+          just status or context tags.
+
+      template_notes:
+        title: Template Notes for Reusable Project Websites
+        authors:
+          - me: Your Name
+        tags: |
+          [PDF](https://example.com/template-notes.pdf)
+          [BibTeX](https://example.com/template-notes.bib)
+        content: |
+          Entries can also be short notes, reports, preprints, internal docs, or
+          anything else that belongs in a publication-like list.
+    ```
+
+publications_rendered:
+  kind: resume.publications
+  label: Rendered Publications
+  neural_widgets:
+    title: Useful Neural Widgets for Static-Site Automation
+    authors:
+      - me: Your Name
+      - name: Collaborator
+        link: https://example.com
+    authors_notes: Equal contribution
+    tags: |
+      [Paper](https://example.com/paper)
+      [Code](https://github.com/example/widgets)
+      [Demo](https://example.com/demo)
+    content: |
+      A short abstract or project note can go here. Tags are Markdown, so
+      each item can be a normal link.
+  notebook_systems:
+    title: Notebook Publishing Systems That Do Not Hate You
+    authors:
+      - name: First Author
+        link: https://example.com/first
+      - me: Your Name
+      - name: Another Collaborator
+    tags: |
+      [arXiv](https://arxiv.org)
+      [Dataset](https://example.com/dataset)
+      [Slides](https://example.com/slides)
+      Reproducible
+    content: |
+      Mix links and plain labels when some outputs have URLs and some are
+      just status or context tags.
+  template_notes:
+    title: Template Notes for Reusable Project Websites
+    authors:
+      - me: Your Name
+    tags: |
+      [PDF](https://example.com/template-notes.pdf)
+      [BibTeX](https://example.com/template-notes.bib)
+    content: |
+      Entries can also be short notes, reports, preprints, internal docs, or
+      anything else that belongs in a publication-like list.
+
+extending:
+  label: Extending Resume
+  content: |
+    Override `experience.html` or `publications.html` for markup changes. For a
+    new domain-specific CV format, package your own extension that registers a
+    new renderer id such as `academic.experience` or `resume.timeline`, and ship
+    its templates/assets in that package.

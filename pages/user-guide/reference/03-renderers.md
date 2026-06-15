@@ -272,7 +272,7 @@ No Python required.
 | `section` | `SectionRenderer` | `renderers/section.html` | Default dict container with label + children |
 | `freeform` | `FreeformRenderer` | `renderers/freeform.html` | Raw content passthrough (no wrapper) |
 | `chapters` | `ChaptersRenderer` | `renderers/chapters.html` | Bootstrap accordion |
-| `people` | `PeopleRenderer` | `renderers/people.html` | Person card grid |
+| `people` | `PeopleRenderer` | `people.html` | Configurable people card grid |
 | `comments` | — | `renderers/comments.html` | Comment system embed (template-only) |
 | `experience` | — | `renderers/experience.html` | CV timeline entries (template-only) |
 | `publications` | — | `renderers/publications.html` | Publication list (template-only) |
@@ -284,8 +284,6 @@ No Python required.
 |------|-------|----------|---------|
 | `markdown` | `MarkdownRenderer` | — | Render string as markdown (code-only, no template) |
 | `links` | `LinksRenderer` | `renderers/links.html` | Render list of link items |
-| `person` | `PersonRenderer` | `renderers/person.html` | Single person card |
-
 ### Template-only Renderers (No Python Class)
 
 Renderers marked with — under Class are pure templates. They have no Python
@@ -338,12 +336,12 @@ in their `templates/` directory. The Jinja2 loader finds it first.
 
 First-party extension template at:
 ```
-webifier_extensions/standard/templates/macros/people.html
+webifier_extensions/people/templates/people.html
 ```
 
 User creates:
 ```
-my-site/templates/renderers/people.html
+my-site/templates/people.html
 ```
 
 The user's version is found first in the search path. The Python processing
@@ -381,48 +379,35 @@ recursively processed. This replaces the old hardcoded
 ### Registering a Renderer
 
 ```python
-from webifier.core.registry import register
+from webifier.core.base import NodeContext
+from webifier_extensions.standard.section import SectionRenderer
 
-@register("gallery")
-class GalleryRenderer(RendererModule):
+class GalleryRenderer(SectionRenderer):
     name = "gallery"
-    template = "renderers/gallery.html"
-    META_KEYS = frozenset({"label", "columns"})
+    template = "section.html"
 
-    def process(self, data, ctx):
-        # Custom processing: generate thumbnails, resolve image paths, etc.
+    def process(self, data: dict, ctx: NodeContext, builder) -> dict:
+        data = dict(data)
+        data.setdefault("template", "gallery.html")
         for item in data.get("items", []):
-            item["thumb"] = self.builder.resolve_asset(item["src"], ctx)
-        return data
+            if "src" in item:
+                item["src"] = builder._process_link({"link": item["src"]}, ctx)["href"]
+        return super().process(data, ctx, builder)
 ```
 
-### Multiple Names
+The extension class maps one or more renderer names to that class:
 
 ```python
-@register("people", "team")           # both names resolve to this class
-class PeopleRenderer(RendererModule):
-    name = "people"
-    ...
+class GalleryExtension(Extension):
+    id = "my.gallery"
+    renderers = {
+        "gallery": "my_gallery.renderer.GalleryRenderer",
+        "portfolio": "my_gallery.renderer.GalleryRenderer",
+    }
 ```
 
-### Resolving a Renderer
-
-```python
-from webifier.core.registry import resolve
-
-renderer_cls = resolve("gallery")      # → GalleryRenderer
-renderer_cls = resolve("experience")   # → GenericTemplateRenderer (template-only)
-renderer_cls = resolve("mypackage.renderers.Custom")  # → imported class
-```
-
-### Listing Registered Renderers
-
-```python
-from webifier.core.registry import list_registered
-
-for name, cls in list_registered():
-    print(f"{name}: {cls.__name__}")
-```
+Template-only renderers are still possible: register a renderer name to a
+template path when no Python preprocessing is needed.
 
 ---
 
@@ -438,8 +423,7 @@ my_people_extension/
   assets/
     people.css
   templates/
-    renderers/
-      people.html
+    people.html
 ```
 
 The package exposes an entry point:

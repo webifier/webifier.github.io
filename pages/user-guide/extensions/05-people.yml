@@ -1,0 +1,160 @@
+title: People Extension
+header:
+  title: People Extension
+  description: Profile cards for teams, collaborators, authors, labs, and project contributors.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.people` registers `kind: people`. It renders a grid of profile
+    cards with names, titles, affiliations, optional images, Markdown bios, tags,
+    and links. Cards use local or remote images when provided, and fall back to
+    initials so the layout still looks intentional without headshots.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          people:
+            uses: webifier.people
+    ```
+
+yaml_example:
+  label: People YAML
+  content: |
+    ```yaml
+    team:
+      kind: people
+      label: People
+      layout:
+        min_width: 13rem
+        max_width: 17rem
+        gap: 0.9rem
+        align: center
+        density: comfortable
+      card:
+        align: center
+      avatar:
+        size: 4.5rem
+      people:
+        - name: Project Maintainer
+          github: octocat
+          title: Maintainer
+          affiliation: Example Research Group
+          tags: [Core, Releases]
+          bio: |
+            Keeps the extension stable, documented, and pleasant to reuse.
+          links:
+            - text: Website
+              link: https://example.com
+            - text: GitHub
+              link: https://github.com/octocat
+            - text: Notes
+              link: https://example.com/notes
+            - text: Email
+              link: mailto:hello@example.com
+        - name: Ada Lovelace
+          initials: AL
+          title: Mathematical collaborator
+          affiliation: Analytical Engine Notes
+          tags: [Computation, Notes]
+          bio: Wrote about computation before computers were fashionable.
+        - name: Grace Hopper
+          title: Computer scientist
+          affiliation: Compiler systems
+          tags: [Compilers, Tooling]
+          bio: No `initials` field here; Webifier derives `GH` from the name.
+        - name: Design Partner
+          github: github
+          title: Interface reviewer
+          affiliation: Example Design Circle
+          tags: [Docs, Polish]
+          bio: Uses a second GitHub avatar fallback, this time without extra links.
+    ```
+
+rendered:
+  kind: people
+  label: Rendered People
+  layout:
+    min_width: 13rem
+    max_width: 17rem
+    gap: 0.9rem
+    align: center
+    density: comfortable
+  card:
+    align: center
+  avatar:
+    size: 4.5rem
+  people:
+    - name: Project Maintainer
+      github: octocat
+      title: Maintainer
+      affiliation: Example Research Group
+      tags: [Core, Releases]
+      bio: |
+        Keeps the extension stable, documented, and pleasant to reuse.
+      links:
+        - text: Website
+          link: https://example.com
+        - text: GitHub
+          link: https://github.com/octocat
+        - text: Notes
+          link: https://example.com/notes
+        - text: Email
+          link: mailto:hello@example.com
+    - name: Ada Lovelace
+      initials: AL
+      title: Mathematical collaborator
+      affiliation: Analytical Engine Notes
+      tags: [Computation, Notes]
+      bio: Wrote about computation before computers were fashionable.
+    - name: Grace Hopper
+      title: Computer scientist
+      affiliation: Compiler systems
+      tags: [Compilers, Tooling]
+      bio: No `initials` field here; Webifier derives `GH` from the name.
+    - name: Design Partner
+      github: github
+      title: Interface reviewer
+      affiliation: Example Design Circle
+      tags: [Docs, Polish]
+      bio: Uses a second GitHub avatar fallback, this time without extra links.
+
+syntax:
+  label: Syntax
+  content: |
+    Section keys:
+
+    - `kind: people`
+    - `people`: list of people to render. `content` is also accepted.
+    - `layout.min_width`: minimum card width.
+    - `layout.max_width`: maximum card width.
+    - `layout.gap`: grid gap.
+    - `layout.align`: `center`, `start`, or `stretch`.
+    - `layout.density`: `comfortable` or `compact`.
+    - `card.align`: `center` or `start`.
+    - `avatar.size`: avatar size.
+
+    Person keys:
+
+    - `name`: displayed card title.
+    - `title`: role or position line.
+    - `affiliation`: organization, lab, project, or group line.
+    - `image`: local or remote image. Local images are copied into the output.
+    - `avatar`: alias for `image`.
+    - `github`: used for avatar fallback when no `image` or `avatar` is set.
+    - `initials`: fallback avatar text. If omitted, Webifier derives initials
+      from `name`.
+    - `bio`: Markdown-rendered bio text.
+    - `tags`: small labels on the card.
+    - `links`: list of normal Webifier link objects.
+
+extending:
+  label: Extending People
+  content: |
+    Override `people.html` for card markup changes, or register your own
+    `people` renderer with `override: true` for different data processing. For a
+    reusable people format, ship the renderer, template, and CSS together in an
+    extension package.

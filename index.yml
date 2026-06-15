@@ -74,7 +74,7 @@ docs:
 
     - [Start with the User Guide](index=pages/user-guide/index.yml)
     - [Install and automate with GitHub Actions](index=pages/user-guide/tutorials/00-installation-and-github-actions.yml)
-    - [Browse renderers and extensions](index=pages/user-guide/renderers/index.yml)
+    - [Browse first-party extensions](index=pages/user-guide/extensions/index.yml)
 
 collaboration:
   label: Collaboration
@@ -83,7 +83,7 @@ collaboration:
     website by hand. Contributions are welcome around templates, examples,
     notebook rendering, documentation patterns, and repository workflows.
 
-    See the [collaboration page](md=pages/collaboration.md) for concrete ways
+    See the [collaboration page](index=pages/collaboration.yml) for concrete ways
     to help the project, share feedback, or shape useful extension examples.
 
     The website itself is intentionally small and source-driven, so it can be
