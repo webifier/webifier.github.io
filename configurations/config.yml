@@ -6,6 +6,8 @@ webifier:
       uses: webifier.markdown
     notebook:
       uses: webifier.notebook
+    pdf:
+      uses: webifier.pdf
     theme:
       uses: webifier.theme
       switcher: true
@@ -75,6 +77,8 @@ page_navigation:
           href: /pages/user-guide/extensions/02-markdown.html
         - title: Notebook Extension
           href: /pages/user-guide/extensions/03-notebook.html
+        - title: PDF Extension
+          href: /pages/user-guide/extensions/11-pdf.html
         - title: Chapters Extension
           href: /pages/user-guide/extensions/04-chapters.html
         - title: People Extension

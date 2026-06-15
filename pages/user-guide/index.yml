@@ -50,6 +50,7 @@ renderers:
         - [Standard Extension](index=pages/user-guide/extensions/01-standard.yml): page shell, sections, links, shared templates, and base assets.
         - [Markdown Extension](index=pages/user-guide/extensions/02-markdown.yml): Markdown sections and standalone Markdown content pages.
         - [Notebook Extension](index=pages/user-guide/extensions/03-notebook.yml): linked `.ipynb` pages with YAML preface metadata.
+        - [PDF Extension](index=pages/user-guide/extensions/11-pdf.yml): embedded PDF content pages with site chrome and download/open controls.
         - [Chapters Extension](index=pages/user-guide/extensions/04-chapters.yml): accordion-style chapters and nested content.
         - [People Extension](index=pages/user-guide/extensions/05-people.yml): profile cards for teams, collaborators, and contributors.
         - [Resume Extension](index=pages/user-guide/extensions/06-resume.yml): experience, education, activity, and publication renderers.

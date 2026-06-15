@@ -1,0 +1,156 @@
+title: PDF Extension
+header:
+  title: PDF Extension
+  description: Embed PDFs as Webifier content pages with normal site navigation, metadata, comments, and download/open controls.
+
+overview:
+  label: What It Provides
+  content: |
+    `webifier.pdf` registers content renderers for `.pdf` files and `pdf=...`
+    links. When enabled, a PDF link creates a real Webifier content page instead
+    of only copying the PDF as a static asset.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          pdf:
+            uses: webifier.pdf
+    ```
+
+    The generated page keeps the Webifier header, navigation, footer, optional
+    comments, and page navigation. The PDF itself is embedded below the page
+    chrome, with optional `Open PDF` and `Download` links.
+
+linking:
+  label: Link a PDF
+  content: |
+    Use `pdf=...` when you want Webifier to create a PDF content page:
+
+    ```yaml
+    pdf_example:
+      label: PDF Example
+      content: |
+        Open the [tiny PDF](pdf=pages/user-guide/extensions/examples/tiny.pdf).
+    ```
+
+    Open the [tiny PDF](pdf=pages/user-guide/extensions/examples/tiny.pdf).
+
+    If `webifier.pdf` is not enabled, `pdf=...` falls back to the older behavior:
+    Webifier copies the PDF file and links directly to it.
+
+metadata:
+  label: PDF Metadata
+  content: |
+    Put a `metadata.yml` beside the PDF to control the generated page title and
+    page metadata.
+
+    ```text
+    papers/
+      index.pdf
+      metadata.yml
+    ```
+
+    ```yaml
+    title: Efficient Neural Network Encoding
+    metadata:
+      description: A paper rendered as an embedded PDF page.
+    comments:
+      enabled: true
+    ```
+
+    If no title is provided, Webifier uses the PDF filename and turns dashes into
+    readable words.
+
+configuration:
+  label: Configuration
+  content: |
+    PDF options live under the `pdf` config key. The first-party extension
+    contributes these defaults:
+
+    ```yaml
+    config:
+      pdf:
+        height: min(82vh, 1100px)
+        toolbar: true
+        download: true
+        view: FitH
+    ```
+
+    Options:
+
+    - `height`: CSS height for the embedded PDF frame.
+    - `toolbar`: show or hide the `Open PDF` link.
+    - `download`: show or hide the `Download` link.
+    - `view`: PDF fragment view mode appended to the embedded URL, such as
+      `FitH`; set it to an empty value to skip the fragment.
+
+rendered_behavior:
+  label: Rendered Behavior
+  content: |
+    A PDF content page is still a normal Webifier page. That means other
+    extensions can participate:
+
+    - `webifier.theme` controls the surrounding page colors.
+    - `webifier.comments` can add a discussion block below the document.
+    - `webifier.standard` can include back/home/next navigation.
+    - Search can index the link/title metadata, though it does not extract text
+      from the PDF body.
+
+    Browser PDF viewers vary slightly between Chrome, Safari, Firefox, and
+    mobile browsers. Webifier embeds the PDF with a plain `<iframe>` and keeps
+    direct open/download links available for readers whose browser handles
+    embedded PDFs differently.
+
+syntax:
+  label: Syntax
+  content: |
+    Enable the extension:
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          pdf:
+            uses: webifier.pdf
+    ```
+
+    Link from Markdown:
+
+    ```markdown
+    [Read the paper](pdf=papers/index.pdf)
+    ```
+
+    Link from a links section:
+
+    ```yaml
+    papers:
+      kind: links
+      label: Papers
+      content:
+        - text: Read the paper
+          link: pdf=papers/index.pdf
+          description: Rendered as a PDF content page.
+    ```
+
+extending:
+  label: Extending PDF Rendering
+  content: |
+    Override the `.pdf` or `pdf` content renderer when you need a different PDF
+    experience, such as PDF.js, extracted text, thumbnails, annotations, or a
+    custom document shell.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          pdf:
+            uses: webifier.pdf
+          lab_pdf:
+            uses: my_lab.pdf
+            override: true
+    ```

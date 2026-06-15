@@ -58,6 +58,7 @@ from an earlier one only when the instance says `override: true`.
 | `webifier.standard` | Default page, section, content page, links, freeform renderers, templates, and base assets |
 | `webifier.markdown` | Markdown renderer and `.md` / `.markdown` content pages |
 | `webifier.notebook` | `.ipynb` content pages |
+| `webifier.pdf` | Embedded `.pdf` content pages with page chrome and PDF controls |
 | `webifier.search` | Search config and `search.json` generation |
 | `webifier.theme` | Light/dark/system theme plumbing and theme assets |
 | `webifier.analytics.google` | Google tag head injection |

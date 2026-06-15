@@ -1,0 +1,11 @@
+<div class="border-start border-4 border-primary-subtle ps-3 py-2">
+  {% if data.eyebrow %}
+    <p class="text-uppercase small text-muted fw-semibold mb-1">{{ data.eyebrow }}</p>
+  {% endif %}
+  {% if data.title %}
+    <h3 class="h5 mb-2">{{ data.title }}</h3>
+  {% endif %}
+  {% if data.body %}
+    <div class="mb-0">{{ markdown(data.body) }}</div>
+  {% endif %}
+</div>

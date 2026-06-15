@@ -1,7 +1,7 @@
 title: Notebook Extension
 header:
   title: Notebook Extension
-  description: Render Jupyter notebooks as linked HTML pages while preserving metadata and assets.
+  description: Render Jupyter notebooks as linked content pages with metadata, assets, code cells, outputs, math, Colab links, comments, and site navigation.
 
 overview:
   label: What It Provides
@@ -21,6 +21,27 @@ overview:
             uses: webifier.notebook
     ```
 
+    The notebook source stays in your repository. Webifier renders a static HTML
+    page around it, preserving the site header/footer, page navigation, optional
+    comments, shared code styling, and local assets.
+
+rendering:
+  label: Rendering Pipeline
+  content: |
+    Notebook rendering is intentionally close to the normal content-page flow:
+
+    1. Webifier reads the `.ipynb`.
+    2. It extracts optional metadata from a first-cell YAML preface and from a
+       sibling `metadata.yml`.
+    3. It converts the notebook with `nbconvert`.
+    4. It extracts the notebook body from the exported HTML.
+    5. It post-processes local images, videos, iframes, scripts, and links.
+    6. It writes a content page that uses the same Webifier chrome as Markdown
+       pages.
+
+    This means notebooks can sit beside Markdown pages and YAML pages without
+    needing a separate publishing path.
+
 yaml_preface:
   label: Notebook YAML Preface
   content: |
@@ -37,6 +58,19 @@ yaml_preface:
     ---
     ```
 
+    If the preface cell has only front matter, it is removed from the rendered
+    notebook so readers do not see configuration. If the cell has front matter
+    followed by Markdown, the front matter is removed and the remaining Markdown
+    still renders.
+
+    Common keys:
+
+    - `title`: page title and header text.
+    - `metadata`: metadata passed into the content page template.
+    - `nav`: override or disable inherited navigation.
+    - `footer`: override or disable inherited footer.
+    - `comments`: page-level comments settings when comments are enabled.
+
 linking:
   label: Link a Notebook
   content: |
@@ -49,12 +83,84 @@ linking:
 
     Open the [tiny notebook](notebook=pages/user-guide/extensions/examples/tiny-notebook.ipynb).
 
+rendered_example:
+  label: Rendered Notebook
+  content: |
+    The tiny notebook linked above renders as a normal Webifier content page.
+    It keeps the output of the notebook, gets the same code styling as Markdown
+    pages, and can participate in page navigation and comments.
+
 colab:
   label: Colab Links
   content: |
     If Webifier is run with a repository name, notebook pages can include a
     Google Colab URL pointing to the source notebook in the repository. The
     standard bundled assets include a small Colab badge image for this workflow.
+
+    ```bash
+    webify --repo-full-name owner/repo --baseurl /repo
+    ```
+
+assets_and_outputs:
+  label: Assets and Outputs
+  content: |
+    Notebook outputs are rendered from the saved notebook state. Webifier does
+    not execute notebooks during the build by default. Commit the notebook with
+    the outputs you want to publish.
+
+    Local output assets and local paths inside rendered HTML are copied into the
+    generated site. Remote URLs are left remote. Rich HTML output is preserved,
+    including tables and `iframe` output, but remote iframe embeds depend on the
+    remote site allowing third-party embedding. For long-term reliability, prefer
+    checked-in local assets or local HTML snapshots over fragile third-party
+    iframe URLs.
+
+toc_and_polish:
+  label: Table of Contents and Page Polish
+  content: |
+    The standard content page can build a collapsible table of contents from
+    headings in notebook Markdown cells. That works best when notebooks use
+    normal heading levels and do not also contain a hand-written table of
+    contents cell.
+
+    Recommended notebook cleanup before publishing:
+
+    - Put metadata in the first Markdown cell as YAML front matter.
+    - Remove duplicate manual title cells when the Webifier page title already
+      names the page.
+    - Remove hand-written table-of-contents cells and let Webifier generate one.
+    - Keep headings separated from previous prose with a blank line in the
+      notebook source.
+    - Commit outputs intentionally; Webifier publishes what is saved.
+
+syntax:
+  label: Syntax
+  content: |
+    Enable the extension:
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          notebook:
+            uses: webifier.notebook
+    ```
+
+    Link notebooks from Markdown or YAML content:
+
+    ```markdown
+    [Rendered notebook](notebook=notebooks/example.ipynb)
+    ```
+
+    Optional sibling metadata:
+
+    ```text
+    notebooks/example/
+      index.ipynb
+      metadata.yml
+    ```
 
 extending:
   label: Extending Notebook Rendering
@@ -63,3 +169,14 @@ extending:
     `.ipynb` or `notebook` with `override: true`. That is the right place to add
     project-specific execution, cell filtering, alternate exporters, or custom
     notebook templates.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          notebook:
+            uses: webifier.notebook
+          lab_notebook:
+            uses: my_lab.notebook
+            override: true
+    ```

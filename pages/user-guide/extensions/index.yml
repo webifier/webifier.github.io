@@ -218,6 +218,7 @@ first_party:
         - [Standard](index=pages/user-guide/extensions/01-standard.yml): page shell, sections, links, templates, shared CSS/JS, and base assets.
         - [Markdown](index=pages/user-guide/extensions/02-markdown.yml): Markdown sections and `.md` content pages.
         - [Notebook](index=pages/user-guide/extensions/03-notebook.yml): `.ipynb` content pages with YAML preface metadata.
+        - [PDF](index=pages/user-guide/extensions/11-pdf.yml): embedded `.pdf` content pages with site chrome, metadata, comments, and navigation.
     - Section renderers
         - [Chapters](index=pages/user-guide/extensions/04-chapters.yml): accordion-style nested chapter sections.
         - [People](index=pages/user-guide/extensions/05-people.yml): profile and team cards.

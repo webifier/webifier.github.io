@@ -1,7 +1,7 @@
 title: Markdown Extension
 header:
   title: Markdown Extension
-  description: Markdown sections, Markdown content pages, links, front matter, highlighting, tables, footnotes, and HTML passthrough.
+  description: Markdown sections, Markdown content pages, links, front matter, math, code highlighting, tables, footnotes, and HTML passthrough.
 
 overview:
   label: What It Provides
@@ -24,18 +24,33 @@ overview:
 features:
   label: Markdown Features
   content: |
-    Markdown rendering currently uses these extensions:
+    Markdown rendering uses Python-Markdown with the bundled Webifier
+    post-processing pass. In practice, that gives you:
 
     - fenced code blocks with syntax highlighting.
+    - copy buttons on highlighted code blocks through `webifier.standard`.
     - tables.
     - footnotes.
     - definition lists.
     - attributes with `attr_list`.
     - Markdown inside HTML blocks.
-    - local HTML/image/file link post-processing.
+    - inline and display math preserved for MathJax-style rendering.
+    - GitHub math image links converted back to readable math notation.
+    - local HTML/image/file link post-processing for `img`, `audio`, `video`,
+      `iframe`, `script`, `source`, `track`, and `embed`.
+    - typed links such as `md=...`, `notebook=...`, `pdf=...`, and `index=...`.
 
+    Markdown is the default text renderer for normal YAML section content, so
+    plain strings, block scalars, tables, lists, code fences, and links can live
+    directly inside page YAML.
+
+frontmatter:
+  label: Markdown Front Matter
+  content: |
     Markdown pages can include YAML front matter. Front matter is treated as
-    page metadata/config and the rest of the file becomes the page body.
+    page metadata/config and the rest of the file becomes the page body. A
+    sibling `metadata.yml` file is also supported; front matter wins when the
+    same key appears in both places.
 
     ```text
     ---
@@ -43,12 +58,43 @@ features:
     nav: false
     metadata:
       description: Rendered from Markdown.
+    comments:
+      enabled: true
     ---
 
     # Experiment Notes
 
     This file becomes `experiment-notes.html`.
     ```
+
+    Common front matter keys:
+
+    - `title`: page title and header text.
+    - `metadata`: metadata passed into the content page template.
+    - `nav`: override or disable the inherited navigation.
+    - `footer`: override or disable the inherited footer.
+    - `comments`: page-level comments configuration when `webifier.comments` is enabled.
+
+linking:
+  label: Typed Links
+  content: |
+    Webifier understands typed link prefixes inside Markdown. These links trigger
+    rendering or copying while the current page is being processed.
+
+    ```text
+    Read the [project notes](md=notes/project.md).
+    Open the [notebook result](notebook=notebooks/result.ipynb).
+    Browse the [appendix](index=pages/appendix.yml).
+    View the [paper](pdf=assets/paper.pdf).
+    ```
+
+    Link behavior:
+
+    - `md=...` and `markdown=...`: render a Markdown content page.
+    - `notebook=...`: render a notebook content page when `webifier.notebook` is enabled.
+    - `pdf=...`: render a PDF content page when `webifier.pdf` is enabled; otherwise copy the PDF as a file asset.
+    - `index=...`: render a YAML page.
+    - ordinary `https://...`, `#anchor`, and untyped links are left alone.
 
 section_yaml:
   label: Markdown Section YAML
@@ -67,6 +113,12 @@ section_yaml:
         ```python
         print("hello from a fenced block")
         ```
+
+        Inline math like \(x^2\) and display math:
+
+        $$
+        \nabla_\theta \mathcal{L}(\theta)
+        $$
     ````
 
 section_rendered:
@@ -82,6 +134,12 @@ section_rendered:
     ```python
     print("hello from a fenced block")
     ```
+
+    Inline math like \(x^2\) and display math:
+
+    $$
+    \nabla_\theta \mathcal{L}(\theta)
+    $$
 
 content_links:
   label: Markdown Content Pages
@@ -99,6 +157,44 @@ content_links:
     ```
 
     - [Tiny Markdown page](md=pages/user-guide/extensions/examples/tiny-markdown.md)
+
+syntax:
+  label: Syntax
+  content: |
+    Enable the extension:
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          markdown:
+            uses: webifier.markdown
+    ```
+
+    Use Markdown in YAML sections:
+
+    ```yaml
+    any_section_name:
+      label: Optional visible label
+      content: |
+        Markdown goes here.
+    ```
+
+    Link Markdown files:
+
+    ```markdown
+    [Rendered Markdown page](md=path/to/page.md)
+    ```
+
+    Optional sibling metadata:
+
+    ```text
+    path/to/
+      page.md
+      metadata.yml
+    ```
 
 extending:
   label: Extending Markdown

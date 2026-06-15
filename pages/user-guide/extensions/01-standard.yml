@@ -7,9 +7,9 @@ overview:
   label: What It Provides
   content: |
     `webifier.standard` is the foundation extension most sites enable first. It
-    provides the page template, section template, content-page template, links
-    renderer, freeform renderer, shared navigation/header/footer macros, syntax
-    highlighting CSS, base layout CSS, and code-block copy behavior.
+    supplies the default page shell, section renderer, content-page shell, link
+    renderer, freeform renderer, shared navigation/header/footer macros, base
+    CSS, syntax highlighting, and code-block copy behavior.
 
     ```yaml
     config:
@@ -19,27 +19,78 @@ overview:
             uses: webifier.standard
     ```
 
-registrations:
-  label: Registrations
+mental_model:
+  label: The Page Model
   content: |
-    The extension registers these renderer ids:
+    A Webifier page starts as an ordered YAML mapping. Webifier walks it from
+    top to bottom and renders each non-reserved key.
 
-    - `page`: complete HTML page shell.
-    - `section`: default section renderer for ordinary YAML sections.
-    - `content-page`: shell used for rendered Markdown and notebook pages.
-    - `links`: list/card-style links renderer.
-    - `freeform`: direct content renderer for sections that should not use the
-      standard section chrome.
+    - A string becomes Markdown.
+    - A list becomes a rendered link list.
+    - A dictionary becomes a page at the root, and a section below the root.
+    - `kind` switches a dictionary to another renderer.
+    - `template` switches the template used for a page or section.
 
-    It also contributes templates and assets mounted under `assets/`.
+    That means a page is mostly a readable outline: write the content in the
+    order you want people to read it, then add renderer hints only where the
+    default behavior is not enough.
 
-section_yaml:
-  label: Default Section YAML
+reserved_page_keys:
+  label: Page-Level Keys
   content: |
-    Any non-reserved top-level key becomes a section. If you do not set `kind`,
-    the default section renderer is used.
+    These top-level keys configure the page instead of rendering as ordinary
+    sections:
+
+    - `title`: browser title and fallback page title.
+    - `header`: page hero/header data.
+    - `nav`: navigation links.
+    - `footer`: footer data.
+    - `meta`: metadata for the page template.
+    - `config`: page or site configuration.
+    - `search`: search behavior for the page.
+    - `style`: page-level style data for templates.
+    - `kind`: page renderer id.
+    - `template`: page template override.
+
+    Every other top-level key renders as content in YAML order.
+
+section_contract:
+  label: Section Shape
+  content: |
+    A normal section is also just a dictionary. The standard section renderer
+    consumes a few reserved keys and treats everything else as children.
 
     ```yaml
+    section_name:
+      label: Optional visible label
+      background: optional/path/to/image.png
+      template: optional-inner-template.html
+      kind: section
+
+      first_child: |
+        Markdown content.
+
+      second_child:
+        label: Nested section
+        content: |
+          A nested child section.
+    ```
+
+    Section-level reserved keys are:
+
+    - `label`: string, `false`, or `{text, position}`.
+    - `background`: image path copied into the built site and used behind the section.
+    - `template`: inner template for this section, while keeping section chrome.
+    - `kind`: renderer id for this block.
+    - `style`, `freeform`, `defaults`: reserved for renderer/template use.
+
+default_yaml:
+  label: Default Section YAML
+  content: |
+    Any non-reserved key inside a section becomes a child. Here, `content` is
+    not magic; it is simply a child key whose value is Markdown.
+
+    ````yaml
     introduction:
       label: Introduction
       content: |
@@ -47,17 +98,51 @@ section_yaml:
 
         - Lists work.
         - Inline `code` works.
+        - Inline math like \(E = mc^2\) and display math work.
         - Fenced blocks get highlighting and copy buttons.
-    ```
 
-section_rendered:
-  label: Rendered Example
+        \[
+        \nabla_\theta \mathcal{L}(\theta)
+        =
+        \frac{1}{N}\sum_{i=1}^{N}\nabla_\theta \ell_i(\theta)
+        \]
+
+        ```mermaid
+        flowchart LR
+          A["Markdown"] --> B["MathJax"]
+          A --> C["Mermaid"]
+          A --> D["Highlighted code"]
+        ```
+
+        ```yaml
+        hello: world
+        nested:
+          value: 42
+        ```
+    ````
+
+default_rendered:
+  label: Rendered Default Section
   content: |
     This is a normal section. Markdown is allowed here.
 
     - Lists work.
     - Inline `code` works.
+    - Inline math like \(E = mc^2\) and display math work.
     - Fenced blocks get highlighting and copy buttons.
+
+    \[
+    \nabla_\theta \mathcal{L}(\theta)
+    =
+    \frac{1}{N}\sum_{i=1}^{N}\nabla_\theta \ell_i(\theta)
+    \]
+
+    ```mermaid
+    flowchart LR
+      A["Markdown"] --> B["MathJax"]
+      A --> C["Mermaid"]
+      A --> D["Highlighted code"]
+    ```
 
     ```yaml
     hello: world
@@ -65,42 +150,266 @@ section_rendered:
       value: 42
     ```
 
-links_yaml:
-  label: Links Renderer YAML
+labels_yaml:
+  label: Label Controls YAML
   content: |
-    The standard links renderer is useful for navigation-like groups of related
-    pages and assets.
+    Labels can be shown on the left, top, or bottom. They can also be disabled
+    when a section should behave like a plain content panel.
+
+    ```yaml
+    label_examples:
+      label:
+        text: Label examples
+        position: top
+
+      left_label:
+        label: Left label
+        content: Left labels are the default.
+
+      top_label:
+        label:
+          text: Top label
+          position: top
+        content: Top labels span the content width.
+
+      bottom_label:
+        label:
+          text: Bottom label
+          position: bottom
+        content: Bottom labels appear after the content panel.
+
+      no_label:
+        label: false
+        content: This child has no visible label.
+    ```
+
+labels_rendered:
+  label:
+    text: Rendered Label Controls
+    position: top
+  left_label:
+    label: Left label
+    content: |
+      Left labels are the default section style. They work well for scan-heavy
+      pages where each content band needs a stable name.
+  top_label:
+    label:
+      text: Top label
+      position: top
+    content: |
+      Top labels are useful when the section content needs the full width.
+  bottom_label:
+    label:
+      text: Bottom label
+      position: bottom
+    content: |
+      Bottom labels are available when the label should feel like a caption.
+  no_label:
+    label: false
+    content: |
+      Disabled labels keep the standard content panel but remove the visible
+      label column.
+
+nested_yaml:
+  label: Nested Sections YAML
+  content: |
+    Nesting is recursive. Any child dictionary without another `kind` becomes
+    another standard section. This lets you structure pages into chapters,
+    subchapters, callouts, examples, or result panels without memorizing a
+    special schema.
+
+    ```yaml
+    chapter:
+      label: Chapter
+      opening: |
+        Introductory Markdown for the chapter.
+
+      subsection:
+        label:
+          text: Subsection
+          position: top
+        note: |
+          Nested content can contain more Markdown.
+
+        deeper:
+          label: Deeper
+          content: |
+            This is a nested nested section.
+    ```
+
+nested_rendered:
+  label: Rendered Nested Sections
+  opening: |
+    This is the parent section. The blocks below are children rendered by the
+    same section renderer.
+  subsection:
+    label:
+      text: Subsection
+      position: top
+    note: |
+      Nested content can contain Markdown, lists, code, and more sections.
+    deeper:
+      label: Deeper
+      content: |
+        This is a nested nested section. The layout stays predictable because
+        each dictionary is dispatched through the same renderer contract.
+
+kind_yaml:
+  label: Kind Dispatch YAML
+  content: |
+    `kind` is how you switch behavior. The standard extension registers
+    `section`, `links`, and `freeform`; other extensions register things like
+    `people`, `experience`, `publications`, `comments`, `notebook`, or `pdf`.
 
     ```yaml
     resources:
       kind: links
-      label: Resources
-      content:
+      items:
         - text: User guide
-          link: index=pages/user-guide/index.yml
+          src: pages/user-guide/index.yml
         - text: Markdown example
-          link: md=pages/user-guide/extensions/examples/tiny-markdown.md
+          src: pages/user-guide/extensions/examples/tiny-markdown.md
         - text: Tiny PDF
-          link: pdf=pages/user-guide/extensions/examples/tiny.pdf
+          src: pages/user-guide/extensions/examples/tiny.pdf
+
+    raw_intro:
+      kind: freeform
+      html: |
+        <div class="alert alert-secondary">
+          Freeform content skips the section wrapper.
+        </div>
     ```
+
+links_rendered_intro:
+  label: Rendered Links
+  content: |
+    The explicit `kind: links` block below is rendered directly as a list group.
 
 links_rendered:
   kind: links
-  label: Rendered Links
-  content:
+  items:
     - text: User guide
-      link: index=pages/user-guide/index.yml
+      src: pages/user-guide/index.yml
     - text: Markdown example
-      link: md=pages/user-guide/extensions/examples/tiny-markdown.md
+      src: pages/user-guide/extensions/examples/tiny-markdown.md
     - text: Tiny PDF
-      link: pdf=pages/user-guide/extensions/examples/tiny.pdf
+      src: pages/user-guide/extensions/examples/tiny.pdf
 
-override:
-  label: Extending or Overriding
+freeform_rendered:
+  kind: freeform
+  html: |
+    <div class="alert alert-secondary mt-3">
+      <strong>Freeform renderer:</strong> this block is not wrapped by the
+      standard labeled section container.
+    </div>
+
+background_yaml:
+  label: Background YAML
   content: |
-    Override standard behavior by adding a later extension instance with
-    `override: true`, or by using page-level `template` values to replace a
-    specific template without replacing the whole renderer.
+    `background` accepts a local image path or an external image URL and
+    applies it to the section. Local image paths are copied into the built site.
+    It is a section-level visual option, so nested sections can use it too.
+
+    ```yaml
+    background_example:
+      label:
+        text: Background example
+        position: top
+      background: https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=80
+      content: |
+        This content is still ordinary Markdown.
+    ```
+
+background_rendered:
+  label:
+    text: Rendered Background
+    position: top
+  background: https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=80
+  content: |
+    This section uses an external background URL. The content remains regular
+    Markdown inside the standard section chrome.
+
+template_yaml:
+  label: Section Template YAML
+  content: |
+    At the page root, `template` replaces the page template. Inside a section,
+    `template` only replaces the section's inner content. The label,
+    background, spacing, and section wrapper still come from the standard
+    section renderer.
+
+    Templates are written in
+    [Jinja2](https://jinja.palletsprojects.com/en/stable/), the Python
+    templating engine Webifier uses under the hood. A section template receives
+    the section's non-reserved YAML keys as `data`, and can use helpers such as
+    `markdown(...)` to render Markdown inside the template.
+
+    For the full customization path, see
+    [Template Overrides](md=pages/user-guide/07-template-overrides.md),
+    [Template-Only Renderers](md=pages/user-guide/08-template-renderers.md),
+    and the lower-level
+    [Renderer / Kind System](md=pages/user-guide/reference/03-renderers.md).
+
+    ```yaml
+    templated_callout:
+      label: Template
+      template: renderers/standard-callout.html
+      eyebrow: Example
+      title: Inner template override
+      body: |
+        The template receives these keys as `data` and can call helpers such as
+        `markdown(...)`.
+    ```
+
+template_html:
+  label: Template HTML
+  content: |
+    Let's say your website has this renderer template at
+    `renderers/standard-callout.html`:
+
+    ```html
+    <div class="border-start border-4 border-primary-subtle ps-3 py-2">
+      {% if data.eyebrow %}
+        <p class="text-uppercase small text-muted fw-semibold mb-1">
+          {{ data.eyebrow }}
+        </p>
+      {% endif %}
+      {% if data.title %}
+        <h3 class="h5 mb-2">{{ data.title }}</h3>
+      {% endif %}
+      {% if data.body %}
+        <div class="mb-0">{{ markdown(data.body) }}</div>
+      {% endif %}
+    </div>
+    ```
+
+    `data.eyebrow`, `data.title`, and `data.body` come directly from the YAML
+    keys under the templated section. The `{% if ... %}` blocks are normal
+    Jinja control flow, and `{{ ... }}` prints a value into the output.
+
+template_rendered:
+  label: Rendered Template Override
+  template: renderers/standard-callout.html
+  eyebrow: Example
+  title: Inner template override
+  body: |
+    The section still owns the label and outer panel, while
+    `renderers/standard-callout.html` controls the content inside it.
+
+defaults_yaml:
+  label: Defaults And Overrides
+  content: |
+    `webifier.standard` contributes default renderer ids:
+
+    ```yaml
+    defaults:
+      page: page
+      section: section
+      links: links
+      markdown: markdown
+    ```
+
+    You can override those defaults in config, or install a later extension
+    instance with `override: true` to replace renderer registrations.
 
     ```yaml
     config:
@@ -111,8 +420,48 @@ override:
           lab_site:
             uses: my_lab.standard
             override: true
+        defaults:
+          section: my-lab-section
     ```
 
-    Template-only changes are usually cleaner when you only want presentation
-    changes. A custom extension is better when you need new renderer logic,
-    assets, hooks, or defaults.
+    The deeper extension contract is documented in the
+    [Extension and Customization Guide](md=pages/user-guide/reference/04-extension-guide.md).
+    For site-level defaults and extension configuration, see
+    [Configuration Basics](md=pages/user-guide/05-configuration.md).
+
+related_docs:
+  label: Related Docs
+  content: |
+    The standard extension is the starting point. These pages go deeper into
+    the pieces it touches:
+
+    - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml): build pages from ordered YAML nodes.
+    - [Section Controls](index=pages/user-guide/tutorials/02-section-controls.yml): labels, templates, defaults, and renderer dispatch in tutorial form.
+    - [Links and Page Discovery](index=pages/user-guide/tutorials/03-links-and-page-discovery.yml): how links create pages from YAML, Markdown, notebooks, PDFs, and assets.
+    - [Template Overrides](md=pages/user-guide/07-template-overrides.md): replace existing Jinja templates while keeping Webifier's renderer logic.
+    - [Template-Only Renderers](md=pages/user-guide/08-template-renderers.md): create new `kind` values with only a Jinja template.
+    - [Python Renderers and Resolvers](md=pages/user-guide/09-python-renderers-and-resolvers.md): move to Python when templates are not enough.
+    - [Renderer / Kind System](md=pages/user-guide/reference/03-renderers.md): detailed dispatch reference for `kind`, templates, and renderer modules.
+    - [Extension and Customization Guide](md=pages/user-guide/reference/04-extension-guide.md): package renderers, templates, hooks, assets, and config as reusable extensions.
+    - [Themes](md=pages/user-guide/06-themes.md): change the visual layer with CSS variables and theme plumbing.
+
+syntax_summary:
+  label: Syntax Summary
+  content: |
+    The practical syntax is:
+
+    - `<page key>: <string>` renders Markdown.
+    - `<page key>: <list>` renders links.
+    - `<page key>: <dict>` renders a section.
+    - `label: "Name"` sets the visible section label.
+    - `label: false` hides the label.
+    - `label: {text: "Name", position: top}` puts the label above content.
+    - `label: {text: "Name", position: bottom}` puts the label below content.
+    - `background: path/to/image` sets a section background image.
+    - `template: path/to/template.html` changes section inner rendering.
+    - `kind: links` renders a direct link list.
+    - `kind: freeform` renders content without the standard section wrapper.
+    - Any other `kind` is handled by whichever extension registered that renderer.
+
+    When the standard renderer stops being enough, create an extension that
+    registers a new `kind` and give that renderer the schema you actually want.

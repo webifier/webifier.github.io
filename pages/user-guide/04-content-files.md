@@ -67,4 +67,20 @@ Local HTML and PDF links can be copied or rendered depending on how they are
 referenced. Local images and assets used by Markdown or HTML are copied into the
 output so the generated site remains self-contained.
 
+Use `pdf=...` with `webifier.pdf` enabled when you want the PDF to live inside a
+normal Webifier page with navigation, comments, open/download links, and a
+site-styled frame:
+
+```markdown
+[Read the report](pdf=reports/index.pdf)
+```
+
+Put `metadata.yml` beside the PDF to control the generated page title:
+
+```yaml
+title: Final Report
+metadata:
+  description: Embedded PDF report.
+```
+
 For more detail, see [Processing Pipeline](reference/05-processing-pipeline.html).
