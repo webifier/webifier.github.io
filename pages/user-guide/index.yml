@@ -1,0 +1,79 @@
+title: Webifier User Guide
+header:
+  title: Webifier User Guide
+  description: Start with files in a repository, then grow toward renderers, extensions, themes, and reusable formats.
+
+overview:
+  label: Overview
+  content: |
+    Webifier is built around a small idea: useful project content should be easy
+    to publish. You keep Markdown, notebooks, HTML files, PDFs, reports, and
+    assets in Git. Webifier reads the structure you describe and turns those
+    files into a static website.
+
+    This guide is also a working example. The pages are ordinary Markdown and
+    YAML files, and the website you are reading is generated from them.
+
+start:
+  label: Start here
+  content: |
+    - [Installation and GitHub Actions](index=pages/user-guide/tutorials/00-installation-and-github-actions.yml)
+      - Install the packages, run locally, and add a GitHub Actions workflow.
+    - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml)
+      - Learn the top-to-bottom page model with rendered examples.
+    - [Section Controls](index=pages/user-guide/tutorials/02-section-controls.yml)
+      - Add labels, templates, defaults, and renderer dispatch.
+    - [Links and Page Discovery](index=pages/user-guide/tutorials/03-links-and-page-discovery.yml)
+      - Link Markdown, notebooks, YAML pages, and static assets.
+
+default_workflow:
+  label: Default workflow
+  content: |
+    - [Using the Default Site](md=pages/user-guide/01-default-site.md)
+    - [Render and Automate](md=pages/user-guide/02-render-and-automate.md)
+    - [Navigation and Pages](md=pages/user-guide/03-navigation-and-pages.md)
+    - [Publishing Content Files](md=pages/user-guide/04-content-files.md)
+    - [Configuration Basics](md=pages/user-guide/05-configuration.md)
+
+renderers:
+  label: Renderers and Extensions
+  content: |
+    - [Renderer Catalog](index=pages/user-guide/renderers/index.yml)
+      - [Page and Section Renderers](index=pages/user-guide/renderers/01-page-and-section-renderers.yml)
+      - [Content and Link Renderers](index=pages/user-guide/renderers/02-content-and-link-renderers.yml)
+      - [Extension Renderers](index=pages/user-guide/renderers/03-extension-renderers.yml)
+    - [Bundled Extensions](index=pages/user-guide/extensions/bundled.yml)
+    - [Themes and Styles](md=pages/user-guide/06-themes.md)
+    - [Template Overrides](md=pages/user-guide/07-template-overrides.md)
+    - [Template-Only Renderers](md=pages/user-guide/08-template-renderers.md)
+    - [Python Renderers and Resolvers](md=pages/user-guide/09-python-renderers-and-resolvers.md)
+    - [Reusable Website Formats](md=pages/user-guide/10-reusable-formats.md)
+
+reference:
+  label: Reference
+  content: |
+    - [Architecture Overview](md=pages/user-guide/reference/00-overview.md)
+    - [YAML Syntax Specification](md=pages/user-guide/reference/01-yaml-syntax.md)
+    - [Resolver System](md=pages/user-guide/reference/02-resolvers.md)
+    - [Renderer / Kind System](md=pages/user-guide/reference/03-renderers.md)
+    - [Extension and Customization Guide](md=pages/user-guide/reference/04-extension-guide.md)
+    - [Processing Pipeline](md=pages/user-guide/reference/05-processing-pipeline.md)
+
+shape:
+  label: Workflow
+  content: |
+    <div class="mermaid">
+    flowchart LR
+      A["Add content to your repo"] --> B["Describe pages in YAML"]
+      B --> C["Render with default extensions"]
+      C --> D["Customize templates and themes"]
+      D --> E["Package reusable formats"]
+    </div>
+
+    Start with the default site. Change one layer at a time only when the
+    project needs it.
+
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "default" });
+    </script>

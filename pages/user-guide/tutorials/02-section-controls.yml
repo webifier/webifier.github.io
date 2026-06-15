@@ -1,0 +1,226 @@
+title: Section Controls
+header:
+  title: Section Controls
+  description: Use reserved section keys to control labels, layout, templates, defaults, and renderer dispatch.
+
+overview:
+  label: Section Controls
+  content: |
+    A section is still just a YAML object, but the default section renderer
+    reserves a few keys for behavior.
+
+    The main controls are:
+
+    - `label`: the visible section label, or `false` to hide it.
+    - `kind`: choose a renderer registered by an extension.
+    - `template`: use a Jinja template for the inside of this section.
+    - `background`: apply a background image to the section band.
+    - `style`: pass section-specific style data for templates that use it.
+    - `defaults`: apply repeated values to child objects.
+
+    Everything else is content and is rendered recursively.
+
+label_source:
+  label: YAML
+  content: |
+    By default, the section label is shown on the left. You can set it to any
+    text you want.
+
+    ```yaml
+    labeled_section:
+      label: Clear Label
+      content: |
+        This section has a custom label.
+    ```
+
+labeled_section:
+  label: Clear Label
+  content: |
+    This section has a custom label.
+
+hide_label_source:
+  label: YAML
+  content: |
+    Use `label: false` when the content already carries its own heading or when
+    the section should blend into the page.
+
+    ```yaml
+    quiet_section:
+      label: false
+      content: |
+        ## A Markdown heading inside the content
+
+        The section wrapper remains, but the side label is removed.
+    ```
+
+quiet_section:
+  label: false
+  content: |
+    ## A Markdown heading inside the content
+
+    The section wrapper remains, but the side label is removed.
+
+top_label_source:
+  label: YAML
+  content: |
+    Labels can also be positioned above or below the content.
+
+    ```yaml
+    top_labeled_section:
+      label:
+        text: A Top Label
+        position: top
+      content: |
+        Top labels are useful for wide sections or visual examples.
+    ```
+
+top_labeled_section:
+  label:
+    text: A Top Label
+    position: top
+  content: |
+    Top labels are useful for wide sections or visual examples.
+
+defaults_source:
+  label: YAML
+  content: |
+    Use `defaults` when many child sections should share the same controls. The
+    defaults apply to sibling YAML objects, and explicit child keys still win.
+
+    ```yaml
+    repeated_notes:
+      label: Repeated Notes
+      defaults:
+        label: false
+
+      first:
+        content: |
+          ### First note
+          This child hides its generated side label.
+
+      second:
+        content: |
+          ### Second note
+          This child inherits the same behavior.
+    ```
+
+repeated_notes:
+  label: Repeated Notes
+  defaults:
+    label: false
+
+  first:
+    content: |
+      ### First note
+      This child hides its generated side label.
+
+  second:
+    content: |
+      ### Second note
+      This child inherits the same behavior.
+
+kind_source:
+  label: YAML
+  content: |
+    Use `kind` when a section should be rendered by an extension instead of the
+    default section renderer.
+
+    This example uses the first-party `chapters` renderer. A project-specific
+    extension could use the same mechanism for resumes, galleries, courses,
+    experiment reports, dashboards, or anything else.
+
+    ```yaml
+    chapter_example:
+      kind: chapters
+      label: Chapter Renderer
+      content:
+        - title: Build
+          body: |
+            The build starts from `index.yml`.
+        - title: Render
+          body: |
+            Renderers decide how each node becomes HTML.
+    ```
+
+chapter_example:
+  kind: chapters
+  label: Chapter Renderer
+  content:
+    - title: Build
+      body: |
+        The build starts from `index.yml`.
+    - title: Render
+      body: |
+        Renderers decide how each node becomes HTML.
+
+template_source:
+  label: Templates
+  content: |
+    `template` is the smallest customization escape hatch. At section level it
+    keeps the normal section wrapper, but lets the named Jinja template render
+    the inside of the section.
+
+    ```yaml
+    gallery:
+      label: Gallery
+      template: assets/templates/gallery.html
+      title: First run
+      images:
+        - assets/run-a.png
+        - assets/run-b.png
+    ```
+
+    For reusable behavior, prefer a renderer extension. A renderer can define
+    its own keys, inject CSS or JavaScript into only the pages that need it,
+    copy assets, and participate in the build lifecycle.
+
+syntax_breakdown:
+  label: Syntax
+  content: |
+    Default section shape:
+
+    ```yaml
+    section_name:
+      label:
+        text: Optional custom label
+        position: left
+      kind: optional-renderer-name
+      template: optional/template.html
+      background: optional-image.png
+      style:
+        optional: template data
+      defaults:
+        label: false
+
+      child_key:
+        content: |
+          Markdown or nested content
+    ```
+
+    Breakdown:
+
+    - `label`
+      - string: visible label text.
+      - `false`: no visible label.
+      - object:
+        - `text`: visible label text.
+        - `position`: `left`, `top`, or `bottom`.
+    - `kind`: dispatch this node to another renderer.
+    - `template`: render the inside with one Jinja template while keeping the
+      default section wrapper.
+    - `background`: background image for the section band.
+    - `style`: renderer/template-specific style data.
+    - `defaults`: values copied into child YAML objects unless the child already
+      defines them.
+    - any other key: child content.
+
+where_next:
+  label: Next
+  content: |
+    Section controls are enough for small sites. When repeated page shapes start
+    showing up, move that structure into a renderer or extension.
+
+    - [Links and Page Discovery](index=pages/user-guide/tutorials/03-links-and-page-discovery.yml)
+    - [Template-Only Renderers](md=pages/user-guide/08-template-renderers.md)
+    - [Python Renderers and Resolvers](md=pages/user-guide/09-python-renderers-and-resolvers.md)
+    - [Extension and Customization Guide](md=pages/user-guide/reference/04-extension-guide.md)

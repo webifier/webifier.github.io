@@ -1,0 +1,207 @@
+title: Bundled Extensions
+header:
+  title: Bundled Extensions
+  description: First-party extensions installed with Webifier, with practical YAML examples.
+
+overview:
+  label: Overview
+  content: |
+    Installing `webifier` also installs the first-party extension package,
+    `webifier-extensions`. The extensions are available, but a site only uses
+    the instances you enable under `config.webifier.extensions`.
+
+    Extension instances are named. The local name can be anything; `uses` points
+    at the installed extension id.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          markdown:
+            uses: webifier.markdown
+          notebook:
+            uses: webifier.notebook
+          search:
+            uses: webifier.search
+          theme:
+            uses: webifier.theme
+    ```
+
+available:
+  label: Available Extensions
+  content: |
+    - `webifier.standard`: page shell, sections, links, freeform content, shared templates, and base assets.
+    - `webifier.markdown`: Markdown section rendering.
+    - `webifier.notebook`: notebook content pages for `.ipynb` links.
+    - `webifier.search`: writes `search.json` from rendered pages and links.
+    - `webifier.theme`: light/dark/system theme assets and optional switcher.
+    - `webifier.analytics.google`: Google Analytics head injection.
+    - `webifier.comments`: Utterances comments blocks.
+    - `webifier.people`: people/profile cards.
+    - `webifier.chapters`: accordion-style chapter lists.
+    - `webifier.resume`: resume experience and publication renderers.
+
+content_source:
+  label: Content File Examples
+  content: |
+    Link to content files directly from Markdown or YAML. Webifier renders
+    Markdown and notebooks as sibling HTML pages, and copies static assets such
+    as PDFs into the output site.
+
+    ```yaml
+    experiments:
+      label: Experiments
+      content: |
+        - [Rendered Markdown](md=pages/user-guide/extensions/examples/tiny-markdown.md)
+        - [Rendered notebook](notebook=pages/user-guide/extensions/examples/tiny-notebook.ipynb)
+        - [Tiny PDF](pdf=pages/user-guide/extensions/examples/tiny.pdf)
+    ```
+
+    This actual docs page includes real links built from files under
+    `pages/user-guide/extensions/examples/`:
+
+    - [Rendered Markdown](md=pages/user-guide/extensions/examples/tiny-markdown.md)
+    - [Rendered notebook](notebook=pages/user-guide/extensions/examples/tiny-notebook.ipynb)
+    - [Tiny PDF](pdf=pages/user-guide/extensions/examples/tiny.pdf)
+
+    Markdown can define page metadata with YAML front matter. A notebook can do
+    the same in its first Markdown cell:
+
+    ```yaml
+    ---
+    title: Tiny Notebook Example
+    nav: false
+    ---
+    ```
+
+theme_source:
+  label: Theme Example
+  content: |
+    The theme extension injects CSS and JavaScript into the page head. It can
+    use system preference, force light/dark, show or hide the switcher, and load
+    custom theme CSS files.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          theme:
+            uses: webifier.theme
+            default: system
+            switcher: true
+            themes:
+              - name: lab
+                label: Lab
+                css: assets/css/themes/lab.css
+    ```
+
+search_analytics_source:
+  label: Search and Analytics
+  content: |
+    Search and analytics are site-level extensions. They do not need a visible
+    section to be useful.
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          search:
+            uses: webifier.search
+            content: true
+            links: true
+          analytics:
+            uses: webifier.analytics.google
+            measurement_id: G-XXXXXXX
+    ```
+
+    `webifier.search` writes `search.json` after the build. The standard navbar
+    template can use that file for client-side search.
+
+comments_people_chapters_source:
+  label: Section Renderers
+  content: |
+    Some extensions add section renderers you use with `kind`.
+
+    ```yaml
+    outline:
+      kind: chapters
+      label: Walkthrough
+      content:
+        - title: Start
+          body: |
+            Describe the page in YAML.
+        - title: Publish
+          body: |
+            Commit and let the action rebuild.
+
+    team:
+      kind: people
+      label: People
+      content:
+        - name: Ada Lovelace
+          bio: Wrote about computation.
+          contact:
+            - text: Website
+              link: https://example.com
+
+    discussion:
+      kind: comments
+      label: Comments
+      repo: owner/repo
+      issue_term: pathname
+    ```
+
+resume_source:
+  label: Resume Renderers
+  content: |
+    The resume extension is intentionally generic: it renders experience,
+    education, activities, and publication-style lists. You can set defaults at
+    the section level and override individual entries.
+
+    ```yaml
+    work:
+      kind: resume.experience
+      label: Experience
+      inline:
+        heading: true
+        tags: false
+      separators: true
+      defaults:
+        compact: true
+
+      example:
+        heading:
+          institution: Example Lab
+          role: Research Engineer
+          date: 2026
+          location: Remote
+        description: Short visible summary.
+        content: |
+          - Full details appear when expanded.
+    ```
+
+syntax:
+  label: Syntax
+  content: |
+    Extension instance keys:
+
+    - instance name: any key under `config.webifier.extensions`.
+    - `uses`: installed extension id.
+    - `enabled: false`: disables an instance without deleting it.
+    - `override: true`: allows a later instance to replace prior registrations.
+    - other keys: extension-specific config.
+
+    Renderer section keys:
+
+    - `kind`: renderer id registered by an enabled extension.
+    - `label`, `sub-label`, `background`, `style`: standard section controls.
+    - renderer-specific keys: interpreted by that renderer.
+
+next:
+  label: Next
+  content: |
+    - [Extension Renderers](index=pages/user-guide/renderers/03-extension-renderers.yml)
+    - [Extension and Customization Guide](md=pages/user-guide/reference/04-extension-guide.md)
+    - [Python Renderers and Resolvers](md=pages/user-guide/09-python-renderers-and-resolvers.md)

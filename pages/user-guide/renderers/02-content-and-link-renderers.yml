@@ -1,0 +1,131 @@
+title: Content and Link Renderers
+header:
+  title: Content and Link Renderers
+  description: Markdown blocks, generated Markdown pages, notebooks, links, PDFs, and static assets.
+
+markdown_source:
+  label: YAML
+  content: |
+    Strings are rendered as Markdown by the `markdown` renderer.
+
+    ```yaml
+    note:
+      label: Note
+      content: |
+        ## Markdown works here
+
+        Use paragraphs, lists, code blocks, links, and images.
+    ```
+
+note:
+  label: Note
+  content: |
+    ## Markdown works here
+
+    Use paragraphs, lists, code blocks, links, and images.
+
+content_pages:
+  label: Pages
+  content: |
+    The `webifier.markdown` and `webifier.notebook` extensions also register
+    content renderers. Links create generated pages when they target supported
+    file types.
+
+    ```markdown
+    - [Markdown report](md=pages/report.md)
+    - [Notebook analysis](md=notebooks/analysis.ipynb)
+    - [YAML sub-page](index=pages/report.yml)
+    - [PDF](pdf=assets/report.pdf)
+    ```
+
+    Markdown files can include front matter:
+
+    ```markdown
+    ---
+    title: Report
+    header:
+      title: Report
+      description: Rendered from Markdown.
+    ---
+
+    # Report
+    ```
+
+    Notebook files can use the same metadata shape in the first Markdown cell:
+
+    ```markdown
+    ---
+    title: Notebook Report
+    header:
+      title: Notebook Report
+    nav: false
+    ---
+
+    # Visible notebook content
+    ```
+
+links_source:
+  label: YAML
+  content: |
+    Lists are rendered by the `links` renderer. Link objects can carry text,
+    descriptions, images, icons, and source files.
+
+    ```yaml
+    resources:
+      label: Resources
+      links:
+        - src: pages/user-guide/05-configuration.md
+          text: Configuration Basics
+          description: Extension instances and defaults.
+        - link: https://github.com/webifier/build
+          text: GitHub
+    ```
+
+resources:
+  label: Resources
+  links:
+    - src: pages/user-guide/05-configuration.md
+      text: Configuration Basics
+      description: Extension instances and defaults.
+    - link: https://github.com/webifier/build
+      text: GitHub
+
+syntax:
+  label: Syntax
+  content: |
+    Markdown renderer:
+
+    - inferred for string values.
+    - explicit form: `kind: markdown` with `content`.
+    - supports fenced code, tables, footnotes, definition lists, attributes, and
+      Markdown inside HTML.
+
+    Content links:
+
+    - `md=path/to/file.md`: render Markdown page.
+    - `md=path/to/file.ipynb`: render notebook page when notebook extension is enabled.
+    - `index=path/to/page.yml`: render YAML page.
+    - `pdf=path/to/file.pdf`: copy and link PDF.
+
+    Content page metadata:
+
+    - Markdown: YAML front matter at the top of the file.
+    - Notebooks: YAML front matter in the first Markdown cell.
+    - supported keys include `title`, `header`, `nav`, `footer`, `meta`, `style`,
+      and page-local `config`.
+
+    Link object keys:
+
+    - `src`: local file to render or copy.
+    - `link` or `href`: existing URL.
+    - `text`: visible label.
+    - `description`: tooltip/list description, rendered as Markdown.
+    - `image`: local image path or image object.
+    - `icon`: icon class for templates that show icons.
+    - `kind`: small label, often used for file type.
+
+next:
+  label: Next
+  content: |
+    - [Extension Renderers](index=pages/user-guide/renderers/03-extension-renderers.yml)
+    - [Publishing Content Files](md=pages/user-guide/04-content-files.md)

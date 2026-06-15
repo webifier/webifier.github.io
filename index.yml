@@ -4,19 +4,79 @@ title: Webifier
 # page header (is an object with title, description, background)
 header:
   title: Webifier
-  background: https://picsum.photos/1000
+  background: https://picsum.photos/seed/webifier/1600/900
   description: |
-    Turn any repository into a website!
+    Turn project content into a complete static website.
 
 # meta tags
 meta:
-  patch: index/meta.yml
+  patch: configurations/meta.yml
 
 # navbar management
 nav:
-  patch: index/nav.yml
+  patch: configurations/nav.yml
 
 # website configuration
 config:
-  patch: index/config.yml
+  patch: configurations/config.yml
 
+intro:
+  label: What it is
+  overview: |
+    # Publish from the files you already have
+
+    Webifier turns repository content into a static website. You keep writing
+    Markdown, notebooks, YAML, HTML, PDFs, and assets where the work already
+    lives; Webifier follows the links, renders the reachable pages, copies the
+    assets, and produces the site.
+
+    The point is not to replace full frontend frameworks. The point is to remove
+    the publishing overhead for evolving project content: write the result,
+    commit, push, and let the website update in a readable format.
+
+    <div class="mermaid">
+    flowchart LR
+      A["Work in your repository"] --> B["Add docs, notebooks, HTML, and assets"]
+      B --> C["Describe the site in YAML"]
+      C --> D["GitHub Actions runs Webifier"]
+      D --> E["GitHub Pages serves the result"]
+    </div>
+
+    Add the action once, then let your project website evolve with the content.
+    This documentation is built with Webifier and can serve as a working example
+    for organizing a small docs site.
+
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "default" });
+    </script>
+
+docs:
+  label: Start building
+  preface: |
+    # Learn by reading the generated site
+
+    This website is built with Webifier, so it is also a compact working example:
+    Markdown files live under `pages/`, the homepage decides where they appear,
+    and the build turns those links into pages.
+
+    - [Start with the User Guide](index=pages/user-guide/index.yml)
+    - [Install and automate with GitHub Actions](index=pages/user-guide/tutorials/00-installation-and-github-actions.yml)
+    - [Browse renderers and extensions](index=pages/user-guide/renderers/index.yml)
+
+collaboration:
+  label: Collaboration
+  overview: |
+    # Make publishing easier together
+
+    Webifier is most valuable when it lets people share work without building a
+    website by hand. Contributions are welcome around templates, examples,
+    notebook rendering, documentation patterns, and repository workflows.
+
+    Feel free to check out the contribution page for concrete ways of helping
+    the project.
+
+    [Open the collaboration page](/pages/collaboration.html)
+
+    The website itself is intentionally small and source-driven, so it can be
+    refactored into a clearer example as Webifier improves.

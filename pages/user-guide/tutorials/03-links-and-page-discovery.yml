@@ -1,0 +1,165 @@
+title: Links and Page Discovery
+header:
+  title: Links and Page Discovery
+  description: Link from one content node to another and let Webifier render the reachable pages.
+
+overview:
+  label: Linked Content
+  content: |
+    A static website is a set of pages connected by hyperlinks. Webifier keeps
+    that model: a page links to another source file, and the build renders that
+    source file into the corresponding output page.
+
+    This is what makes the workflow feel natural for personal projects. Add a
+    Markdown note, notebook, report, or YAML page. Link to it from content that
+    is already reachable. Commit and push. The website grows from the same files
+    you were already maintaining.
+
+markdown_source:
+  label: Markdown Link
+  content: |
+    Markdown links can use explicit prefixes. `md=` tells Webifier to render the
+    Markdown file as a content page and rewrite the link to the generated HTML.
+
+    ```yaml
+    reading:
+      label: Reading
+      content: |
+        - [Navigation and Pages](md=pages/user-guide/03-navigation-and-pages.md)
+        - [Publishing Content Files](md=pages/user-guide/04-content-files.md)
+    ```
+
+reading:
+  label: Reading
+  content: |
+    - [Navigation and Pages](md=pages/user-guide/03-navigation-and-pages.md)
+    - [Publishing Content Files](md=pages/user-guide/04-content-files.md)
+
+yaml_page_source:
+  label: YAML Page Link
+  content: |
+    `index=` links to another YAML page. The target YAML file gets the same page
+    treatment as the root `index.yml`: page controls at the top, sections below,
+    generated HTML in the output.
+
+    ```yaml
+    tutorials:
+      label: Tutorials
+      content: |
+        - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml)
+        - [Section Controls](index=pages/user-guide/tutorials/02-section-controls.yml)
+    ```
+
+tutorials:
+  label: Tutorials
+  content: |
+    - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml)
+    - [Section Controls](index=pages/user-guide/tutorials/02-section-controls.yml)
+
+list_source:
+  label: Link Objects
+  content: |
+    YAML lists can also describe links as objects. `src` points to a file that
+    Webifier should process. `href` or `link` points to something that already
+    exists.
+
+    ```yaml
+    resources:
+      label: Resources
+      links:
+        - src: pages/user-guide/05-configuration.md
+          text: Configuration Basics
+          description: Site config, defaults, and extension instances.
+        - link: https://github.com/webifier/build
+          text: Webifier on GitHub
+    ```
+
+resources:
+  label: Resources
+  links:
+    - src: pages/user-guide/05-configuration.md
+      text: Configuration Basics
+      description: Site config, defaults, and extension instances.
+    - link: https://github.com/webifier/build
+      text: Webifier on GitHub
+
+page_config_source:
+  label: Page Config
+  content: |
+    Every YAML page can carry page-level controls. The root page usually defines
+    site-wide config, but generated YAML pages can still set local metadata,
+    headers, templates, or page-specific config.
+
+    ```yaml
+    title: Experiment Report
+    header:
+      title: Experiment Report
+      description: A generated page linked from the main site.
+
+    config:
+      theme:
+        default: light
+
+    summary:
+      label: Summary
+      content: |
+        This page can use the normal defaults or override what it needs.
+    ```
+
+extensions:
+  label: Extensions
+  content: |
+    The default building blocks are intentionally plain. Once a structure is
+    repeated, move it into an extension:
+
+    - A page renderer can define a full-page format.
+    - A section renderer can render a specific block such as publications,
+      experience, people, galleries, or courses.
+    - A content renderer can turn a file type into a page.
+    - Hooks can inject page-specific CSS, JavaScript, metadata, navigation, or
+      footer content based on page config or page content.
+
+    In other words, YAML gives you the graph and the content. Extensions let
+    your project decide what new objects mean.
+
+syntax_breakdown:
+  label: Syntax
+  content: |
+    Markdown link prefixes:
+
+    ```markdown
+    [Markdown page](md=pages/report.md)
+    [Notebook page](md=notebooks/run.ipynb)
+    [YAML page](index=pages/report.yml)
+    [PDF asset](pdf=assets/report.pdf)
+    ```
+
+    Link object shape:
+
+    ```yaml
+    links:
+      - src: pages/report.md
+        text: Report
+        description: Optional Markdown description.
+      - link: https://example.com
+        text: External link
+    ```
+
+    Breakdown:
+
+    - `md=...`: render a Markdown-supported content page.
+    - `index=...`: render a YAML page.
+    - `pdf=...`: copy a PDF and link to it.
+    - `src`: local file to render or copy.
+    - `link` / `href`: existing URL that Webifier should leave alone.
+    - `text`: visible link text.
+    - `description`: optional supporting text.
+    - `image`, `icon`, `kind`: optional presentation data used by link templates.
+
+where_next:
+  label: Next
+  content: |
+    - [Using the Default Site](md=pages/user-guide/01-default-site.md)
+    - [Configuration Basics](md=pages/user-guide/05-configuration.md)
+    - [Reusable Website Formats](md=pages/user-guide/10-reusable-formats.md)
+    - [Processing Pipeline](md=pages/user-guide/reference/05-processing-pipeline.md)

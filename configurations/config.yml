@@ -1,0 +1,100 @@
+webifier:
+  extensions:
+    site:
+      uses: webifier.standard
+    markdown:
+      uses: webifier.markdown
+    notebook:
+      uses: webifier.notebook
+    search:
+      uses: webifier.search
+      content: true
+      links: true
+    theme:
+      uses: webifier.theme
+      switcher: true
+      default: system
+      # Custom themes can be added later with:
+      # themes:
+      #   - name: silly
+      #     label: Silly
+      #     css: assets/css/themes/silly.css
+    analytics:
+      uses: webifier.analytics.google
+      measurement_id: G-TYRMXHZ5YH
+    comments:
+      uses: webifier.comments
+      repo: webifier/comments
+      issue_term: pathname
+      issue_label: comments
+      theme: github-light
+      crossorigin: anonymous
+    people:
+      uses: webifier.people
+    chapters:
+      uses: webifier.chapters
+page_navigation:
+  home:
+    title: User Guide
+    href: /pages/user-guide/
+  items:
+    - title: Getting Started
+      items:
+        - title: User Guide
+          href: /pages/user-guide/
+        - title: Installation and GitHub Actions
+          href: /pages/user-guide/tutorials/00-installation-and-github-actions.html
+        - title: YAML Pages and Sections
+          href: /pages/user-guide/tutorials/01-yaml-pages-and-sections.html
+        - title: Section Controls
+          href: /pages/user-guide/tutorials/02-section-controls.html
+        - title: Links and Page Discovery
+          href: /pages/user-guide/tutorials/03-links-and-page-discovery.html
+    - title: Default Workflow
+      items:
+        - title: Using the Default Site
+          href: /pages/user-guide/01-default-site.html
+        - title: Render and Automate
+          href: /pages/user-guide/02-render-and-automate.html
+        - title: Navigation and Pages
+          href: /pages/user-guide/03-navigation-and-pages.html
+        - title: Publishing Content Files
+          href: /pages/user-guide/04-content-files.html
+        - title: Configuration Basics
+          href: /pages/user-guide/05-configuration.html
+    - title: Renderers and Extensions
+      items:
+        - title: Renderer Catalog
+          href: /pages/user-guide/renderers/
+        - title: Page and Section Renderers
+          href: /pages/user-guide/renderers/01-page-and-section-renderers.html
+        - title: Content and Link Renderers
+          href: /pages/user-guide/renderers/02-content-and-link-renderers.html
+        - title: Extension Renderers
+          href: /pages/user-guide/renderers/03-extension-renderers.html
+        - title: Bundled Extensions
+          href: /pages/user-guide/extensions/bundled.html
+        - title: Themes and Styles
+          href: /pages/user-guide/06-themes.html
+        - title: Template Overrides
+          href: /pages/user-guide/07-template-overrides.html
+        - title: Template-Only Renderers
+          href: /pages/user-guide/08-template-renderers.html
+        - title: Python Renderers and Resolvers
+          href: /pages/user-guide/09-python-renderers-and-resolvers.html
+        - title: Reusable Website Formats
+          href: /pages/user-guide/10-reusable-formats.html
+    - title: Reference
+      items:
+        - title: Architecture Overview
+          href: /pages/user-guide/reference/00-overview.html
+        - title: YAML Syntax Specification
+          href: /pages/user-guide/reference/01-yaml-syntax.html
+        - title: Resolver System
+          href: /pages/user-guide/reference/02-resolvers.html
+        - title: Renderer / Kind System
+          href: /pages/user-guide/reference/03-renderers.html
+        - title: Extension and Customization Guide
+          href: /pages/user-guide/reference/04-extension-guide.html
+        - title: Processing Pipeline
+          href: /pages/user-guide/reference/05-processing-pipeline.html

@@ -1,0 +1,184 @@
+title: Installation and GitHub Actions
+header:
+  title: Installation and GitHub Actions
+  description: Install Webifier, render locally, and automate publishing from GitHub Actions.
+
+install:
+  label: Install
+  content: |
+    Webifier is a Python build tool. Installing `webifier` also installs the
+    first-party extensions package used by the default renderers.
+
+    ```shell
+    pip install webifier
+    ```
+
+    During local development in this repository, the packages may be installed
+    from adjacent checkouts instead. Published users should use the package name.
+
+minimal_config_source:
+  label: YAML
+  content: |
+    A small site usually starts with `index.yml` and a `config` block that enables
+    the default extensions.
+
+    ```yaml
+    title: My Project
+
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          markdown:
+            uses: webifier.markdown
+          notebook:
+            uses: webifier.notebook
+          search:
+            uses: webifier.search
+            content: true
+            links: true
+          theme:
+            uses: webifier.theme
+            default: system
+            switcher: true
+
+    intro:
+      label: Overview
+      content: |
+        # My Project
+
+        Notes, notebooks, and reports from the repository.
+    ```
+
+minimal_config_rendered:
+  label: Overview
+  content: |
+    # My Project
+
+    Notes, notebooks, and reports from the repository.
+
+local_render:
+  label: Render
+  content: |
+    Run Webifier from the repository root:
+
+    ```shell
+    webify --index index.yml --output webified --baseurl ""
+    ```
+
+    Common options:
+
+    - `--index`: the root YAML page.
+    - `--output`: the generated static site directory.
+    - `--baseurl`: URL prefix for deployment; use `""` for a domain-root site.
+    - `--templates-dir`: local template override directory.
+    - `--repo-full-name`: repository name such as `owner/repo`, used by features
+      that need GitHub context.
+
+    Preview the output with any static file server:
+
+    ```shell
+    python -m http.server 4173 --directory webified
+    ```
+
+action:
+  label: Action
+  content: |
+    Add `.github/workflows/webifier.yml` to build and deploy with GitHub Actions.
+    The Webifier action installs Python and Webifier for you:
+
+    ```yaml
+    name: Build Webifier site
+
+    on:
+      push:
+        branches: [main]
+      workflow_dispatch:
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+
+          - name: Webify
+            uses: webifier/build@v1.0.1
+            with:
+              baseurl: ""
+              index: index.yml
+              publish_dir: webified
+              templates_dir: .
+
+          - uses: actions/upload-pages-artifact@v3
+            with:
+              path: webified
+
+      deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        environment:
+          name: github-pages
+          url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+          - id: deployment
+            uses: actions/deploy-pages@v4
+    ```
+
+    If you prefer to call the CLI directly, replace the `Webify` step with:
+
+    ```yaml
+          - uses: actions/setup-python@v5
+            with:
+              python-version: "3.12"
+
+          - name: Install Webifier
+            run: pip install webifier
+
+          - name: Build site
+            run: |
+              webify \
+                --repo-full-name "${{ github.repository }}" \
+                --baseurl "" \
+                --index index.yml \
+                --output webified \
+                --templates-dir .
+    ```
+
+syntax:
+  label: Syntax
+  content: |
+    Full setup checklist:
+
+    - `pip install webifier`
+    - `index.yml`
+      - `title`: browser/page title.
+      - `config.webifier.extensions`: named extension instances.
+      - ordinary section keys: page content rendered top to bottom.
+    - `webify`
+      - `--index index.yml`
+      - `--output webified`
+      - `--baseurl ""` for root deployments.
+      - `--templates-dir .` when site-local templates and assets live beside
+        `index.yml`.
+    - GitHub Actions
+      - checkout source.
+      - install Python and Webifier packages.
+      - run `webify`.
+      - upload and deploy `webified`.
+
+next:
+  label: Next
+  content: |
+    - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml)
+    - [Configuration Basics](md=pages/user-guide/05-configuration.md)
+    - [Renderer Catalog](index=pages/user-guide/renderers/index.yml)

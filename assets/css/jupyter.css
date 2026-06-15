@@ -1,0 +1,25 @@
+/* Lightweight notebook/content defaults for generated Webifier pages. */
+.app-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+.app-body table {
+  width: 100%;
+  margin: 1rem 0;
+  border-collapse: collapse;
+}
+
+.app-body th,
+.app-body td {
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+}
+
+.app-body pre {
+  padding: 1rem;
+  overflow-x: auto;
+  background: #f8f9fa;
+  border-radius: 0.25rem;
+}
+

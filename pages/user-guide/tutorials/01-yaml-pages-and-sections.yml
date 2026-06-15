@@ -1,0 +1,242 @@
+title: YAML Pages and Sections
+header:
+  title: YAML Pages and Sections
+  description: Build a page from top to bottom with plain YAML, then let Webifier render the same structure.
+
+overview:
+  label: Start With A Page
+  content: |
+    A Webifier site starts with a landing page. By convention that page is
+    `index.yml`, because static websites already use `index.html` as the page
+    people land on first.
+
+    The important idea is not the filename. The important idea is the graph:
+    your site starts from one page, that page links to other content pages, and
+    Webifier follows those links to render the reachable website.
+
+    A Webifier page is a YAML object. Ordinary top-level keys become sections
+    in the order you write them. Those sections can contain Markdown, links,
+    nested sections, notebooks, generated content, or custom objects handled by
+    extensions.
+
+mental_model:
+  label: The Model
+  content: |
+    You can think of the source tree as content nodes:
+
+    - `index.yml` describes the first page.
+    - Markdown files, notebooks, HTML files, PDFs, and YAML sub-pages are linked
+      from content.
+    - Links such as `md=pages/notes.md` or `index=pages/report.yml` tell
+      Webifier to render another page.
+    - Extensions can teach Webifier what new content and page shapes mean.
+
+    So the workflow is close to ordinary writing: define what goes on the page,
+    link to the next useful thing, and let the build walk the reachable content.
+
+simple_section_source:
+  label: YAML
+  content: |
+    This YAML defines one section named `introduction`. The section label is
+    shown on the side, and its `content` is rendered as Markdown.
+
+    ```yaml
+    introduction:
+      label: Introduction
+      content: |
+        # A small project site
+
+        This page can start as a note and grow into documentation.
+        Add sections in the order you want people to read them.
+    ```
+
+introduction:
+  label: Introduction
+  content: |
+    # A small project site
+
+    This page can start as a note and grow into documentation.
+    Add sections in the order you want people to read them.
+
+top_to_bottom_source:
+  label: YAML
+  content: |
+    A page is just top-to-bottom content. The YAML key names are yours. They do
+    not need to be from a fixed list unless a renderer or extension says
+    otherwise.
+
+    ```yaml
+    question:
+      label: Question
+      content: |
+        What changed in this experiment?
+
+    result:
+      label: Result
+      content: |
+        The new preprocessing step reduced noisy examples.
+
+    next_steps:
+      label: Next Steps
+      content: |
+        Try the same run on the larger dataset.
+    ```
+
+question:
+  label: Question
+  content: |
+    What changed in this experiment?
+
+result:
+  label: Result
+  content: |
+    The new preprocessing step reduced noisy examples.
+
+next_steps:
+  label: Next Steps
+  content: |
+    Try the same run on the larger dataset.
+
+nested_source:
+  label: YAML
+  content: |
+    Sections can contain other sections. This lets you group related content
+    without switching to a different file format.
+
+    ```yaml
+    project_notes:
+      label: Project Notes
+      summary:
+        label: Summary
+        content: |
+          The project turns repository content into a static website.
+
+      details:
+        label: Details
+        motivation:
+          label: Motivation
+          content: |
+            Publishing should be close to writing and committing files.
+        output:
+          label: Output
+          content: |
+            The build produces static HTML, copied assets, and generated pages.
+    ```
+
+project_notes:
+  label: Project Notes
+  summary:
+    label: Summary
+    content: |
+      The project turns repository content into a static website.
+
+  details:
+    label: Details
+    motivation:
+      label: Motivation
+      content: |
+        Publishing should be close to writing and committing files.
+    output:
+      label: Output
+      content: |
+        The build produces static HTML, copied assets, and generated pages.
+
+reserved_keys:
+  label: Reserved Keys
+  content: |
+    Most keys are content, but a few keys are page controls. They describe the
+    surrounding webpage instead of becoming rendered sections.
+
+    ```yaml
+    title: My Project
+
+    header:
+      title: My Project
+      description: Notes, notebooks, and results from the project.
+
+    nav:
+      brand:
+        text: My Project
+        link: /
+      content:
+        - text: Docs
+          link: /pages/
+
+    meta:
+      - name: description
+        content: Project documentation and experiments.
+
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          markdown:
+            uses: webifier.markdown
+
+    introduction:
+      label: Introduction
+      content: This is content, because `introduction` is not reserved.
+    ```
+
+    The default page renderer treats these page-level keys specially:
+    `kind`, `template`, `title`, `nav`, `header`, `footer`, `meta`, `config`,
+    `search`, and `style`.
+
+    Every other top-level key is passed to the section renderer unless you set a
+    different `kind`.
+
+syntax_breakdown:
+  label: Syntax
+  content: |
+    Page shape:
+
+    ```yaml
+    title: Page title
+
+    header:
+      title: Visible header title
+      description: Optional header text
+
+    nav:
+      ...
+
+    config:
+      ...
+
+    section_key:
+      label: Section Label
+      content: |
+        Markdown content
+    ```
+
+    Breakdown:
+
+    - `index.yml`: the starting page.
+    - reserved page keys:
+      - `title`
+      - `header`
+      - `nav`
+      - `footer`
+      - `meta`
+      - `config`
+      - `search`
+      - `style`
+      - `kind`
+      - `template`
+    - ordinary top-level keys:
+      - become sections in source order.
+      - can be named freely.
+      - can contain strings, lists, nested YAML objects, or renderer-specific data.
+    - nested YAML objects:
+      - are rendered recursively as nested sections unless a `kind` changes their renderer.
+
+where_next:
+  label: Next
+  content: |
+    The next layer is section control: labels, label positions, hidden labels,
+    templates, defaults, and renderer dispatch.
+
+    - [Section Controls](index=pages/user-guide/tutorials/02-section-controls.yml)
+    - [Links and Page Discovery](index=pages/user-guide/tutorials/03-links-and-page-discovery.yml)
+    - [YAML Syntax Reference](md=pages/user-guide/reference/01-yaml-syntax.md)
