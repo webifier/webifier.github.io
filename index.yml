@@ -7,6 +7,14 @@ header:
   description: |
     Turn project content into a complete static website.
 
+style: |
+  .app-content > header:first-child h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-style: italic;
+      font-weight: 800;
+      letter-spacing: 0;
+  }
+
 # meta tags
 meta:
   patch: configurations/meta.yml
@@ -22,8 +30,6 @@ config:
 intro:
   label: What it is
   overview: |
-    # Publish from the files you already have
-
     Webifier turns repository content into a static website. You keep writing
     Markdown, notebooks, YAML, HTML, PDFs, and assets where the work already
     lives; Webifier follows the links, renders the reachable pages, copies the
@@ -53,8 +59,6 @@ intro:
 docs:
   label: Start building
   preface: |
-    # Learn by reading the generated site
-
     This website is built with Webifier, so it is also a compact working example:
     Markdown files live under `pages/`, the homepage decides where they appear,
     and the build turns those links into pages.
@@ -66,16 +70,12 @@ docs:
 collaboration:
   label: Collaboration
   overview: |
-    # Make publishing easier together
-
     Webifier is most valuable when it lets people share work without building a
     website by hand. Contributions are welcome around templates, examples,
     notebook rendering, documentation patterns, and repository workflows.
 
-    Feel free to check out the contribution page for concrete ways of helping
-    the project.
-
-    [Open the collaboration page](/pages/collaboration.html)
+    See the [collaboration page](/pages/collaboration.html) for concrete ways
+    to help the project, share feedback, or shape useful extension examples.
 
     The website itself is intentionally small and source-driven, so it can be
     refactored into a clearer example as Webifier improves.

@@ -32,6 +32,8 @@ webifier:
 favicon:
   href: /assets/images/webifier-logo.png
   type: image/png
+stylesheets:
+  - assets/css/site.css
 page_navigation:
   home:
     title: User Guide
