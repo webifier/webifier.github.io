@@ -1,11 +1,14 @@
 brand:
   text: Webifier
-  icon: fas fa-cloud
-  link: https://webifier.github.io/
+  link: /
+  image:
+    src: /assets/images/webifier-logo.png
+    size: 28
+    alt: Webifier logo
 content:
   - text: Docs
     link: /pages/user-guide/
   - text: Collaborate
     link: /pages/collaboration.html
-  - text: GitHub
-    link: https://github.com/webifier/build
+  - text: GitHub Pages
+    link: https://github.com/webifier/webifier.github.io

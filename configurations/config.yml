@@ -6,10 +6,6 @@ webifier:
       uses: webifier.markdown
     notebook:
       uses: webifier.notebook
-    search:
-      uses: webifier.search
-      content: true
-      links: true
     theme:
       uses: webifier.theme
       switcher: true
@@ -33,6 +29,9 @@ webifier:
       uses: webifier.people
     chapters:
       uses: webifier.chapters
+favicon:
+  href: /assets/images/webifier-logo.png
+  type: image/png
 page_navigation:
   home:
     title: User Guide
