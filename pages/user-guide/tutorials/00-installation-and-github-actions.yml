@@ -112,7 +112,7 @@ action:
           - uses: actions/checkout@v4
 
           - name: Webify
-            uses: webifier/build@v1.0.1
+            uses: webifier/build@v1.0.5
             with:
               baseurl: ""
               index: index.yml
