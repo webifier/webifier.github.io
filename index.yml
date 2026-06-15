@@ -39,6 +39,15 @@ intro:
     the publishing overhead for evolving project content: write the result,
     commit, push, and let the website update in a readable format.
 
+    Getting started is one install command or GitHub Action away:
+
+    ```shell
+    pip install webifier
+    ```
+
+    For repository automation, see the
+    [installation and GitHub Actions guide](index=pages/user-guide/tutorials/00-installation-and-github-actions.yml).
+
     <div class="mermaid">
     flowchart LR
       A["Work in your repository"] --> B["Add docs, notebooks, HTML, and assets"]
