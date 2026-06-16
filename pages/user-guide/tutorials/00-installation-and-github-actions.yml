@@ -118,6 +118,8 @@ action:
               index: index.yml
               publish_dir: webified
               templates_dir: .
+              # Optional: install extra extension packages before rendering.
+              # extra-packages: my-webifier-extension
 
           - uses: actions/upload-pages-artifact@v3
             with:
@@ -154,27 +156,57 @@ action:
                 --templates-dir .
     ```
 
+    If the site uses a custom extension, install it in the action too:
+
+    ```yaml
+          - name: Webify
+            uses: webifier/build@v1.0.5
+            with:
+              baseurl: ""
+              index: index.yml
+              publish_dir: webified
+              templates_dir: .
+              extra-packages: "my-extension @ git+https://github.com/me/my-extension.git"
+    ```
+
+    Use one requirement per line when installing multiple extra packages:
+
+    ```yaml
+              extra-packages: |
+                my-extension
+                another-extension
+    ```
+
 syntax:
   label: Syntax
   content: |
-    Full setup checklist:
+    Setup checklist:
 
-    - `pip install webifier`
-    - `index.yml`
-      - `title`: browser/page title.
-      - `config.webifier.extensions`: named extension instances.
-      - ordinary section keys: page content rendered top to bottom.
-    - `webify`
-      - `--index index.yml`
-      - `--output webified`
-      - `--baseurl ""` for root deployments.
-      - `--templates-dir .` when site-local templates and assets live beside
-        `index.yml`.
-    - GitHub Actions
-      - checkout source.
-      - install Python and Webifier packages.
-      - run `webify`.
-      - upload and deploy `webified`.
+    | Step | Command or file | Purpose |
+    |---|---|---|
+    | Install | `pip install webifier` | Installs the core package and first-party extensions. |
+    | Source page | `index.yml` | The root page Webifier starts from. |
+    | Local build | `webify --index index.yml --output webified --baseurl ""` | Generates static HTML into `webified/`. |
+    | Local preview | `python -m http.server 4173 --directory webified` | Serves the generated files during development. |
+    | Automation | `.github/workflows/webifier.yml` | Runs the same build on every push. |
+    | Custom extensions | `extra-packages: my-extension` | Installs extra extension packages in GitHub Actions. |
+
+    Important `index.yml` keys:
+
+    | Key | Meaning |
+    |---|---|
+    | `title` | Browser/page title. |
+    | `config.webifier.extensions` | Named extension instances to enable. |
+    | ordinary section keys | Page content rendered top to bottom. |
+
+    Useful CLI flags:
+
+    | Flag | Meaning |
+    |---|---|
+    | `--index index.yml` | Root YAML page. |
+    | `--output webified` | Generated static site directory. |
+    | `--baseurl ""` | URL prefix; empty string is common for root-domain deployments. |
+    | `--templates-dir .` | Look for site-local templates/assets beside `index.yml`. |
 
 next:
   label: Next

@@ -133,7 +133,7 @@ Loads all files matching a glob pattern. Returns a list.
 
 - Each YAML file is loaded as a dict.
 - Each non-YAML file is loaded as a string.
-- Each loaded dict gets a `_source` metadata key with the file path (stripped
+- Each loaded dict gets a `_source` source-data key with the file path (stripped
   before rendering).
 - Results are sorted by filename by default.
 

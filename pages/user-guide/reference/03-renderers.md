@@ -22,7 +22,7 @@ are Python classes, Jinja2 templates, or both.
 - [Built-in Renderers](#built-in-renderers)
 - [Two-Phase Rendering](#two-phase-rendering)
 - [Template Search Path](#template-search-path)
-- [META_KEYS — Renderer-Specific Metadata](#meta_keys--renderer-specific-metadata)
+- [META_KEYS — Renderer-Reserved Keys](#meta_keys--renderer-reserved-keys)
 - [Registry API](#registry-api)
 - [Module File Layout](#module-file-layout)
 
@@ -144,7 +144,8 @@ class RendererModule(ABC):
 
     Subclasses may set:
     - ``template``: path to a Jinja2 template in the search path
-    - ``META_KEYS``: keys that are metadata, not content (skipped by
+    - ``META_KEYS``: keys that are reserved by the renderer, not child content
+      (skipped by
       default ``process()``)
 
     Subclasses may override:
@@ -201,7 +202,7 @@ class RendererModule(ABC):
    loads and renders it. Most renderers only need to set `template`.
 
 3. **`META_KEYS` replaces hardcoded special-key lists.** Each renderer
-   declares which keys it considers metadata. The framework has zero
+   declares which keys it reserves for its own contract. The framework has zero
    knowledge of `label`, `title`, `nav`, etc.
 
 4. **Template receives `process` and `markdown` callables.** Templates can
@@ -349,10 +350,10 @@ The user's version is found first in the search path. The Python processing
 
 ---
 
-## META_KEYS — Renderer-Specific Metadata
+## META_KEYS — Renderer-Reserved Keys
 
-Each renderer declares which keys it treats as metadata (not recursively
-processed as content):
+Each renderer declares which keys it reserves for its own contract instead of
+recursively processing them as child content:
 
 ```python
 class SectionRenderer(RendererModule):

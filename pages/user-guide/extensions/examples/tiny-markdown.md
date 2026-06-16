@@ -1,14 +1,16 @@
 ---
 title: Tiny Markdown Example
-toc: true
+config:
+  markdown:
+    toc: true
 ---
 
 # Tiny Markdown Example
 
 This file is rendered by linking to it with `md=...`.
 
-Markdown files can carry YAML front matter for page-level metadata, then normal
-Markdown content below it.
+Markdown files can carry a YAML page preface for page-level controls, then
+normal Markdown content below it.
 
 ## Discovery
 
@@ -18,8 +20,9 @@ Markdown content below it.
 
 ## Page Controls
 
-The front matter at the top of this file sets `toc: true`, so the generated
-page gets a collapsible table of contents when enough headings are present.
+The page preface at the top of this file sets `config.markdown.toc: true`,
+so the generated page gets a collapsible table of contents when enough headings
+are present.
 
 ## Content
 

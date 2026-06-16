@@ -37,14 +37,13 @@ pseudocode:
     ```python
     class GoogleAnalyticsExtension(Extension):
         id = "webifier.analytics.google"
-        config_key = "google_analytics"
 
         def register(self, ctx):
             super().register(ctx)
             ctx.add_hook("head", self.render_head)
 
-        def render_head(self, builder, *, config=None, **kwargs):
-            measurement_id = config["google_analytics"]["measurement_id"]
+        def render_head(self, builder, *, config=None, instance_name="analytics", **kwargs):
+            measurement_id = config[instance_name]["measurement_id"]
             return google_tag_html(measurement_id)
     ```
 
@@ -52,5 +51,5 @@ extending:
   label: Extending Analytics
   content: |
     Analytics-like extensions usually use `head` because they inject scripts or
-    metadata into each page. A package can expose multiple provider-specific ids,
+    head tags into each page. A package can expose multiple provider-specific ids,
     such as `my_org.analytics.plausible` and `my_org.analytics.google`.

@@ -34,7 +34,10 @@ webifier:
 ```
 
 Each key is a local instance name. `uses` points to the installed extension id.
-This lets one extension be used more than once:
+The instance name is also the config namespace exported for that instance, so
+`resume:` exports its settings to `config.resume`, `publications:` exports to
+`config.publications`, and so on. This lets one extension be used more than
+once:
 
 ```yaml
 webifier:
@@ -136,12 +139,12 @@ class ResumeExtension(Extension):
 | `dependencies` | Extension ids that must already be enabled |
 | `renderers` | `kind` aliases to `RendererModule` classes |
 | `content_renderers` | File suffixes or aliases to content-page builders |
+| `page_keys` | Page-level keys consumed before ordinary section rendering |
 | `resolvers` | `${resolver:...}` functions |
 | `formats` | Patch/load handlers for file extensions |
 | `template_dirs` | Jinja2 template directories |
 | `assets` | Asset directories copied into output |
 | `hooks` | Optional build or HTML injection hooks |
-| `config_key` | Export instance config into `config.<key>` |
 | `default_config` | Defaults for that extension instance |
 | `config_defaults` | Defaults merged into the site config |
 
@@ -163,7 +166,7 @@ Useful `head` hook arguments:
 | `hook_context` | Stable object with area, builder, page, ctx, config, extension id, instance name, and instance config |
 | `page` | The processed page data currently being rendered |
 | `ctx` | The current `NodeContext`, including page URL |
-| `config` | Global config merged with page-local `config` and Markdown front matter `config` |
+| `config` | Global config merged with page-local `config` and Markdown page-preface `config` |
 | `instance_config` | Config for this named extension instance |
 | `baseurl` | Base URL for building asset links |
 
@@ -199,6 +202,84 @@ def render_head(builder, *, config=None, baseurl="", **_):
 ```
 
 Head hooks usually return a string; build hooks usually return nothing.
+
+## Page Key Consumers
+
+By default, page keys outside reserved Webifier controls are visible content.
+With `webifier.standard`, they render as sections in YAML order. Extensions can
+claim additional page-level keys when a key should control behavior instead of
+appearing as content.
+
+Register a consumer imperatively:
+
+```python
+from webifier.core.extensions import Extension
+
+
+class WeatherExtension(Extension):
+    id = "example.weather"
+
+    def register(self, ctx):
+        ctx.consume_page_key("weather", self.consume_weather)
+
+    def consume_weather(self, builder, *, value, page, config, instance_name, **_):
+        page.setdefault("_weather", value)
+```
+
+Or declare a mapping:
+
+```python
+class WeatherExtension(Extension):
+    id = "example.weather"
+    page_keys = {
+        "weather": "example_weather.consumers.consume_weather",
+    }
+```
+
+Then page data can include:
+
+```yaml
+title: Field Notes
+weather: cloudy
+notes:
+  label: Notes
+  content: This section still renders normally.
+```
+
+`weather` is passed to the registered consumer and removed before renderer
+dispatch sees normal sections. That means downstream renderers do not need to
+know about keys owned by other extensions.
+
+Consumer callbacks receive the builder plus lifecycle keyword arguments:
+
+| Argument | Purpose |
+|---|---|
+| `key` | Consumed key name |
+| `value` | Original value from the page |
+| `page` / `data` | Remaining mutable page mapping after the key is removed |
+| `ctx` | Current `NodeContext` |
+| `config` | Merged page config |
+| `instance_name` | Named extension instance that owns the key |
+| `instance_config` | Config for that extension instance |
+| `hook_context` | Stable context object with the same lifecycle data |
+
+If the callback returns a value, Webifier stores it under internal
+`_extension_data.<instance-name>.<key>`. A callback can also mutate `page`
+directly when it wants to add hidden derived data for a renderer or hook.
+
+Only one extension instance can consume a page key by default. A later instance
+can replace the consumer with `override: true`:
+
+```yaml
+config:
+  webifier:
+    extensions:
+      weather:
+        uses: example.weather
+      better_weather:
+        uses: other.weather
+        override: true
+```
 
 ## Content Renderers
 

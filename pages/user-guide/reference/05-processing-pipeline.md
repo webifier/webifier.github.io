@@ -20,8 +20,9 @@ outputs.
 - [Phase 2 — Patch](#phase-2--patch)
 - [Phase 3 — Defaults](#phase-3--defaults)
 - [Phase 4 — Interpolate](#phase-4--interpolate)
-- [Phase 5 — Dispatch & Render](#phase-5--dispatch--render)
-- [Phase 6 — Output](#phase-6--output)
+- [Phase 5 — Consume Page Keys](#phase-5--consume-page-keys)
+- [Phase 6 — Dispatch & Render](#phase-6--dispatch--render)
+- [Phase 7 — Output](#phase-7--output)
 - [Builder — The Orchestrator](#builder--the-orchestrator)
 - [Recursion & Sub-Pages](#recursion--sub-pages)
 - [Search Indexing](#search-indexing)
@@ -50,18 +51,23 @@ outputs.
                      └──────┬───────┘
                             │
                      ┌──────▼───────┐
-                     │  5. Dispatch │──▶ kind → renderer.process() → renderer.render()
+                     │  5. Consume  │──▶ extension-owned page keys removed
+                     │  Page Keys   │
+                     └──────┬───────┘
+                            │
+                     ┌──────▼───────┐
+                     │  6. Dispatch │──▶ kind → renderer.process() → renderer.render()
                      │  & Render    │    produces HTML fragments, triggers sub-pages
                      └──────┬───────┘
                             │
                      ┌──────▼───────┐
-                     │  6. Output   │──▶ .html files, search.json, copied assets
+                     │  7. Output   │──▶ .html files, search.json, copied assets
                      └──────────────┘
 ```
 
 Phases 1–4 are **pure data transforms** — no rendering, no side effects, no
-file output. By the time a renderer sees data in phase 5, everything is
-resolved and merged.
+file output. Extension configuration happens before rendering, then page-key
+consumers remove extension-owned controls before normal section rendering.
 
 ---
 
@@ -78,9 +84,9 @@ Standard YAML parsing. No custom tags, no constructors. The YAML file is
 a plain document — all webifier-specific syntax (`${}`, `patch`, `defaults`,
 `kind`) is handled in subsequent phases.
 
-### Front Matter in Markdown
+### Page Prefaces in Markdown
 
-Markdown files may have YAML front matter delimited by `---`:
+Markdown files may have a YAML page preface delimited by `---`:
 
 ```markdown
 ---
@@ -91,7 +97,37 @@ nav: ...
 # Content here
 ```
 
-The parser splits front matter (→ metadata dict) from body (→ content string).
+The parser splits the page preface from the body.
+
+The same page-data contract is used by Markdown pages, notebook first-cell YAML
+prefaces, PDF sibling `page.yml` files, and normal YAML pages:
+
+```yaml
+title: My Page
+header:
+  title: My Page
+  description: Page header text.
+config:
+  content_pages:
+    toc: true
+  markdown:
+    toc: true
+
+authors:
+  kind: people
+  content:
+    - name: Ada Lovelace
+      role: Author
+```
+
+Reserved keys such as `title`, `header`, `nav`, `footer`, `meta`, `style`, and
+`config` control the generated page and are not rendered as ordinary content.
+Other keys are treated like regular Webifier sections and are rendered after the
+content body.
+
+`config` is the page-local override layer. During rendering, Webifier deep-merges
+extension defaults, root site config, and page-local config, then passes that
+merged object to renderers and hooks.
 
 ---
 
@@ -289,7 +325,41 @@ CircularReferenceError: Circular reference detected:
 
 ---
 
-## Phase 5 — Dispatch & Render
+## Phase 5 — Consume Page Keys
+
+**Input:** Resolved page dict plus enabled extension instances
+**Output:** Page dict with extension-owned keys removed
+
+Before top-level page rendering, Webifier lets extensions consume page keys
+they explicitly registered. This keeps the page syntax extensible without
+making every renderer know about every possible extension.
+
+```python
+for key in page.keys():
+    if extension_manager.has_page_key_consumer(key):
+        consumer = extension_manager.consumer_for(key)
+        value = page.pop(key)
+        consumer(builder, key=key, value=value, page=page, config=page_config)
+```
+
+For example:
+
+```yaml
+title: Field Notes
+weather: cloudy
+summary:
+  content: This still renders as a section.
+```
+
+If an enabled extension registered `weather`, that key is consumed and removed.
+If no extension registered it, `weather` remains ordinary content and the
+standard renderer treats it as a section.
+
+Markdown front matter, notebook first-cell prefaces, and PDF `page.yml` files
+use the same content-page contract. Their preface keys are consumed before
+after-content sections such as `authors` or `comments` are rendered.
+
+## Phase 6 — Dispatch & Render
 
 **Input:** Fully resolved data dict
 **Output:** HTML fragments
@@ -382,7 +452,7 @@ process_node(data)
 The page renderer is special — it's the top-level orchestrator for a single
 HTML page:
 
-1. Extract page metadata (`title`, `nav`, `header`, `footer`, `config`, `meta`).
+1. Extract page data (`title`, `nav`, `header`, `footer`, `config`, `meta`).
 2. Process each remaining key as a section.
 3. For each section:
    a. Dispatch to the section's renderer → get inner HTML.
@@ -408,7 +478,7 @@ link item
 
 ---
 
-## Phase 6 — Output
+## Phase 7 — Output
 
 **Input:** Rendered HTML, collected assets, search index
 **Output:** Files on disk

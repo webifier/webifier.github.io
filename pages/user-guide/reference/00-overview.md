@@ -14,15 +14,20 @@ HTML websites. Users define their site structure in `.yml` files, write content
 in Markdown, notebooks, HTML, or other static files, and Webifier handles the
 rendering, asset management, search indexing, and output.
 
-The architecture is built on three small core mechanisms:
+The architecture is built on one small core plus extension-defined page
+grammar. Webifier loads config, enables extensions, walks reachable pages, and
+dispatches rendering. Extensions decide what most syntax means.
+
+Three mechanisms show up everywhere:
 
 | Axis | Mechanism | Purpose |
 |------|-----------|---------|
 | **Value** | `${resolver:arg \| transform}` | Compute, load, and transform values |
 | **Node** | `kind: name` | Control how a YAML block is processed and rendered |
 | **Template** | `template: path` | Use a specific template file for one node |
-Everything else — labels, navigation, headers, styles, search, analytics, and
-themes — comes from enabled extensions.
+Everything else — labels, navigation, headers, styles, search, analytics,
+themes, comments, notebook controls, PDF controls, and custom page keys — comes
+from enabled extensions.
 
 ---
 
@@ -32,10 +37,11 @@ themes — comes from enabled extensions.
    Users customize by placing files in conventional locations (templates, assets).
    No Python required for 90% of use cases.
 
-2. **Zero hardcoded content keys.**
-   The framework knows `kind`, `template`, `patch` (with `@location` and `!modifier`), `defaults`, and `${}`. That's it.
-   Keys like `label`, `title`, `nav`, `header` are renderer-specific — defined
-   and documented by each renderer, not by the framework.
+2. **Extension-defined page grammar.**
+   The core knows how to load config, enable extensions, dispatch renderers,
+   resolve values, and write files. Keys like `title`, `nav`, `header`, `label`,
+   `toc`, or a future `weather` key are owned by renderers or extensions. If an
+   extension consumes a page key, later renderers do not see it as content.
 
 3. **Composition over configuration.**
    Sites are composed from small files (`${load:}`, `${glob:}`), not configured
@@ -89,6 +95,7 @@ extensions/
 | Give one page its own layout | Write a template, use `template: templates/landing.html` | No |
 | Override the page layout | Drop `templates/page.html` in my repo | No |
 | Add search, theme, notebooks, comments | Enable the matching extension under `webifier.extensions` | No |
+| Add a custom page key such as `weather` | Write an extension that consumes that key | Yes |
 | Add a custom value resolver | Write an extension that registers a resolver | Yes |
 | Custom data processing + rendering | Write a `RendererModule` subclass and expose it from an extension | Yes |
 | Share a reusable renderer | Publish a pip package with a `webifier.extensions` entry point | Yes |

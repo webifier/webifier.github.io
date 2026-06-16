@@ -197,22 +197,19 @@ syntax_breakdown:
           Markdown or nested content
     ```
 
-    Breakdown:
+    Section controls:
 
-    - `label`
-      - string: visible label text.
-      - `false`: no visible label.
-      - object:
-        - `text`: visible label text.
-        - `position`: `left`, `top`, or `bottom`.
-    - `kind`: dispatch this node to another renderer.
-    - `template`: render the inside with one Jinja template while keeping the
-      default section wrapper.
-    - `background`: background image for the section band.
-    - `style`: renderer/template-specific style data.
-    - `defaults`: values copied into child YAML objects unless the child already
-      defines them.
-    - any other key: child content.
+    | Key | Shape | Meaning |
+    |---|---|---|
+    | `label` | string | Visible side label. |
+    | `label` | `false` | Hide the visible label. |
+    | `label` | `{text, position}` | Label text plus `left`, `top`, or `bottom` placement. |
+    | `kind` | renderer name | Dispatch this node to another renderer. |
+    | `template` | template path | Render the section inside with one Jinja template while keeping the section wrapper. |
+    | `background` | image path | Use an image behind the section band. |
+    | `style` | dictionary/string | Renderer or template-specific style data. |
+    | `defaults` | dictionary | Copy values into child YAML objects unless the child overrides them. |
+    | any other key | any value | Child content rendered recursively. |
 
 where_next:
   label: Next

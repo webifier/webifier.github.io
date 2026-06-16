@@ -1,0 +1,102 @@
+title: Hello World Website
+header:
+  title: Hello World Website
+  description: Build the smallest useful Webifier page before adding automation, links, notebooks, or custom renderers.
+
+idea:
+  label: Idea
+  content: |
+    A Webifier site can start as one YAML file. That file says two things:
+
+    - which extensions define the page grammar.
+    - what content should appear on the page, from top to bottom.
+
+    This first page uses only the standard page shell and Markdown rendering.
+    There are no notebooks, no GitHub Actions, no custom templates, and no
+    project structure yet.
+
+hello_source:
+  label: YAML
+  content: |
+    Create `index.yml`:
+
+    ```yaml
+    title: Hello Webifier
+
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          markdown:
+            uses: webifier.markdown
+
+    header:
+      title: Hello Webifier
+      description: A tiny static website generated from one YAML file.
+
+    hello:
+      label: Hello
+      content: |
+        # Hello world
+
+        This is a Webifier page. The `hello` key is ordinary content, so it
+        renders as a section.
+    ```
+
+hello_rendered:
+  label: Hello
+  content: |
+    # Hello world
+
+    This is a Webifier page. The `hello` key is ordinary content, so it
+    renders as a section.
+
+what_happened:
+  label: What Happened
+  content: |
+    The root file becomes the first page of the site. With the two extensions
+    above enabled:
+
+    | Source | Meaning |
+    |---|---|
+    | `webifier.standard` | Adds the default page shell, page controls, and section renderer. |
+    | `webifier.markdown` | Lets string content render as Markdown. |
+    | `title` | Sets the browser/page title. |
+    | `config` | Configures Webifier and extensions; it does not render as content. |
+    | `header` | Controls the visible page header because the standard extension understands it. |
+    | `hello` | Renders as a section because no extension consumed it as a control key. |
+
+run_it:
+  label: Run It
+  content: |
+    Install Webifier and build the page:
+
+    ```shell
+    pip install webifier
+    webify --index index.yml --output webified --baseurl ""
+    python -m http.server 4173 --directory webified
+    ```
+
+    Then open `http://127.0.0.1:4173/`.
+
+summary:
+  label: Syntax Summary
+  content: |
+    | Pattern | Use it for |
+    |---|---|
+    | `title: ...` | Page title. |
+    | `config.webifier.extensions` | The extension instances that define what the page syntax means. |
+    | `header: ...` | Page header, when `webifier.standard` is enabled. |
+    | `<section_name>:` | A visible section, unless an enabled extension consumes that key. |
+    | `content: |` | Markdown body inside a section. |
+
+    The next tutorials expand this one-file site into a publishable project:
+    setup and automation, page structure, section controls, and linked content
+    discovery.
+
+next:
+  label: Next
+  content: |
+    - [Installation and GitHub Actions](index=pages/user-guide/tutorials/00-installation-and-github-actions.yml)
+    - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml)

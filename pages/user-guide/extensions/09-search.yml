@@ -49,7 +49,6 @@ lifecycle:
     ```python
     class SearchExtension(Extension):
         id = "webifier.search"
-        config_key = "search"
 
         def register(self, ctx):
             super().register(ctx)

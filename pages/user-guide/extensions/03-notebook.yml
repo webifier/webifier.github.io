@@ -1,7 +1,7 @@
 title: Notebook Extension
 header:
   title: Notebook Extension
-  description: Render Jupyter notebooks as linked content pages with metadata, assets, code cells, outputs, math, Colab links, comments, and site navigation.
+  description: Render Jupyter notebooks as linked content pages with page data, assets, code cells, outputs, math, Colab links, comments, and site navigation.
 
 overview:
   label: What It Provides
@@ -31,8 +31,8 @@ rendering:
     Notebook rendering is intentionally close to the normal content-page flow:
 
     1. Webifier reads the `.ipynb`.
-    2. It extracts optional metadata from a first-cell YAML preface and from a
-       sibling `metadata.yml`.
+    2. It extracts optional page data from a first-cell YAML preface and from a
+       sibling `page.yml`.
     3. It converts the notebook with `nbconvert`.
     4. It extracts the notebook body from the exported HTML.
     5. It post-processes local images, videos, iframes, scripts, and links.
@@ -45,33 +45,59 @@ rendering:
 yaml_preface:
   label: Notebook YAML Preface
   content: |
-    A notebook can define page metadata in the first Markdown cell. If the cell
-    contains only YAML front matter, Webifier removes that cell from the rendered
+    A notebook can define page data in the first Markdown cell. If the cell
+    contains only a YAML page preface, Webifier removes that cell from the rendered
     notebook.
 
     ```markdown
     ---
     title: Tiny Notebook Example
     nav: false
-    metadata:
+    header:
+      title: Tiny Notebook Example
       description: Rendered from a notebook.
     ---
     ```
 
-    If the preface cell has only front matter, it is removed from the rendered
-    notebook so readers do not see configuration. If the cell has front matter
-    followed by Markdown, the front matter is removed and the remaining Markdown
+    If the preface cell has only page data, it is removed from the rendered
+    notebook so readers do not see configuration. If the cell has a page preface
+    followed by Markdown, the page preface is removed and the remaining Markdown
     still renders.
 
     Common keys:
 
     - `title`: page title and header text.
-    - `metadata`: metadata passed into the content page template.
     - `nav`: override or disable inherited navigation.
     - `footer`: override or disable inherited footer.
+    - `config`: page-local generation controls; this key is not rendered.
     - `comments`: page-level comments settings when comments are enabled.
-    - `toc`: enable or disable the generated table of contents for this notebook page.
-    - `colab`: enable or disable the Colab badge for this notebook page.
+
+    Any other first-cell page preface key is treated like a normal Webifier
+    section and is rendered after the notebook body.
+
+    Renderer controls should be grouped under `config`:
+
+    ```markdown
+    ---
+    title: Training Curves
+    config:
+      notebook:
+        colab: true
+        toc: true
+      content_pages:
+        toc: true
+
+    authors:
+      kind: people
+      content:
+        - name: Grace Hopper
+          role: Author
+    ---
+    ```
+
+    `config.notebook` is consumed by the notebook extension,
+    `config.content_pages` is consumed by the standard content-page shell, and
+    `authors` renders after the notebook body.
 
 linking:
   label: Link a Notebook
@@ -110,15 +136,22 @@ colab:
     ```markdown
     ---
     title: Local-only Notebook
-    colab: false
+    config:
+      notebook:
+        colab: false
     ---
     ```
 
-    Or set the site-wide notebook default:
+    Or set the site-wide notebook default on the extension instance:
 
     ```yaml
-    notebook:
-      colab: false
+    config:
+      webifier:
+        extensions:
+          notebook:
+            uses: webifier.notebook
+            colab: false
+            toc: true
     ```
 
 assets_and_outputs:
@@ -149,7 +182,9 @@ toc_and_polish:
     ```markdown
     ---
     title: Tiny Notebook
-    toc: false
+    config:
+      notebook:
+        toc: false
     ---
     ```
 
@@ -158,21 +193,74 @@ toc_and_polish:
     ```markdown
     ---
     title: Tiny Notebook
-    content_pages:
-      toc: true
-      cleanup: true
+    config:
+      notebook:
+        toc: true
+        cleanup: true
     ---
     ```
 
     Recommended notebook cleanup before publishing:
 
-    - Put metadata in the first Markdown cell as YAML front matter.
+    - Put page data in the first Markdown cell as a YAML page preface.
     - Remove duplicate manual title cells when the Webifier page title already
       names the page.
     - Remove hand-written table-of-contents cells and let Webifier generate one.
     - Keep headings separated from previous prose with a blank line in the
       notebook source.
     - Commit outputs intentionally; Webifier publishes what is saved.
+
+page_config_contract:
+  label: Notebook Page Config
+  content: |
+    Notebook page configuration uses the same `config` contract as Markdown
+    pages. Put this in the first Markdown cell:
+
+    ```markdown
+    ---
+    title: Model Diagnostics
+    config:
+      notebook:
+        colab: false
+        toc: true
+      content_pages:
+        toc: true
+        cleanup: true
+
+    authors:
+      kind: people
+      content:
+        - name: Katherine Johnson
+          role: Author
+    comments:
+      kind: comments
+      label: false
+    ---
+    ```
+
+    The notebook extension consumes `config.notebook`, including notebook page
+    controls such as `colab`, `toc`, and `cleanup`. The standard content-page
+    shell still consumes `config.content_pages` as the lower-level shared
+    content-page controls. The `authors` and `comments` blocks are rendered
+    after the converted notebook output.
+
+    Site defaults and page overrides compose naturally:
+
+    ```yaml
+    # root site config
+    notebook:
+      colab: true
+      toc: true
+    ```
+
+    ```markdown
+    ---
+    title: Private Notebook
+    config:
+      notebook:
+        colab: false
+    ---
+    ```
 
 syntax:
   label: Syntax
@@ -195,12 +283,12 @@ syntax:
     [Rendered notebook](notebook=notebooks/example.ipynb)
     ```
 
-    Optional sibling metadata:
+    Optional sibling page data:
 
     ```text
     notebooks/example/
       index.ipynb
-      metadata.yml
+      page.yml
     ```
 
 extending:

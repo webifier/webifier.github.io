@@ -19,6 +19,10 @@ overview:
     nested sections, notebooks, generated content, or custom objects handled by
     extensions.
 
+    The page syntax depends on the extensions you enable. The tutorials use
+    `webifier.standard`, which gives the familiar webpage controls such as
+    `header`, `nav`, `meta`, `footer`, and regular sections.
+
 mental_model:
   label: The Model
   content: |
@@ -142,10 +146,11 @@ project_notes:
         The build produces static HTML, copied assets, and generated pages.
 
 reserved_keys:
-  label: Reserved Keys
+  label: Standard Page Keys
   content: |
-    Most keys are content, but a few keys are page controls. They describe the
-    surrounding webpage instead of becoming rendered sections.
+    Most keys are content, but the standard page renderer reserves a few keys as
+    page controls. They describe the surrounding webpage instead of becoming
+    rendered sections.
 
     ```yaml
     title: My Project
@@ -183,8 +188,9 @@ reserved_keys:
     `kind`, `template`, `title`, `nav`, `header`, `footer`, `meta`, `config`,
     `search`, and `style`.
 
-    Every other top-level key is passed to the section renderer unless you set a
-    different `kind`.
+    Other extensions can also consume their own page keys. If an extension
+    claims a key, that key is removed before ordinary section rendering. If no
+    extension claims it, the standard renderer treats it as content.
 
 syntax_breakdown:
   label: Syntax
@@ -210,26 +216,26 @@ syntax_breakdown:
         Markdown content
     ```
 
-    Breakdown:
+    Page-level summary:
 
-    - `index.yml`: the starting page.
-    - reserved page keys:
-      - `title`
-      - `header`
-      - `nav`
-      - `footer`
-      - `meta`
-      - `config`
-      - `search`
-      - `style`
-      - `kind`
-      - `template`
-    - ordinary top-level keys:
-      - become sections in source order.
-      - can be named freely.
-      - can contain strings, lists, nested YAML objects, or renderer-specific data.
-    - nested YAML objects:
-      - are rendered recursively as nested sections unless a `kind` changes their renderer.
+    | Key shape | Meaning |
+    |---|---|
+    | `index.yml` | The starting page. |
+    | `title` | Browser/page title. |
+    | `header`, `nav`, `footer`, `meta`, `style` | Standard page controls from `webifier.standard`. |
+    | `config` | Site or page behavior; not visible content. |
+    | `kind`, `template` | Renderer/template dispatch controls. |
+    | extension-consumed keys | Custom keys claimed by enabled extensions before section rendering. |
+    | ordinary top-level keys | Visible sections rendered in source order. |
+
+    Content shape summary:
+
+    | Value type | Default behavior |
+    |---|---|
+    | string | Render as Markdown. |
+    | list | Render as a link list. |
+    | dictionary | Render as a page at the root, or as a section below the root. |
+    | nested dictionary | Render recursively unless `kind` chooses another renderer. |
 
 where_next:
   label: Next

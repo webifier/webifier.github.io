@@ -4,10 +4,19 @@ webifier:
       uses: webifier.standard
     markdown:
       uses: webifier.markdown
+      toc: true
+      cleanup: false
     notebook:
       uses: webifier.notebook
+      toc: true
+      cleanup: true
+      colab: true
     pdf:
       uses: webifier.pdf
+      toc: false
+      download: true
+      toolbar: true
+      height: min(82vh, 1100px)
     theme:
       uses: webifier.theme
       switcher: true
@@ -47,6 +56,8 @@ page_navigation:
       items:
         - title: User Guide
           href: /pages/user-guide/
+        - title: Hello World Website
+          href: /pages/user-guide/tutorials/00-hello-world.html
         - title: Installation and GitHub Actions
           href: /pages/user-guide/tutorials/00-installation-and-github-actions.html
         - title: YAML Pages and Sections
@@ -101,7 +112,7 @@ page_navigation:
           href: /pages/user-guide/08-template-renderers.html
         - title: Python Renderers and Resolvers
           href: /pages/user-guide/09-python-renderers-and-resolvers.html
-        - title: Reusable Website Formats
+        - title: Custom Extensions and Reusable Formats
           href: /pages/user-guide/10-reusable-formats.html
     - title: Reference
       items:

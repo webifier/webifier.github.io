@@ -1,7 +1,7 @@
 title: Markdown Extension
 header:
   title: Markdown Extension
-  description: Markdown sections, Markdown content pages, links, front matter, math, code highlighting, tables, footnotes, and HTML passthrough.
+  description: Markdown sections, Markdown content pages, links, page prefaces, math, code highlighting, tables, footnotes, and HTML passthrough.
 
 overview:
   label: What It Provides
@@ -45,21 +45,23 @@ features:
     directly inside page YAML.
 
 frontmatter:
-  label: Markdown Front Matter
+  label: Markdown Page Preface
   content: |
-    Markdown pages can include YAML front matter. Front matter is treated as
-    page metadata/config and the rest of the file becomes the page body. A
-    sibling `metadata.yml` file is also supported; front matter wins when the
-    same key appears in both places.
+    Markdown pages can include a YAML page preface. The preface uses the same
+    top-level syntax as a normal Webifier YAML page, and the rest of the file
+    becomes the page body. A sibling `page.yml` file is also supported; the
+    inline preface wins when the same key appears in both places.
 
     ```text
     ---
     title: Experiment Notes
     nav: false
-    metadata:
+    header:
+      title: Experiment Notes
       description: Rendered from Markdown.
     comments:
-      enabled: true
+      kind: comments
+      label: false
     ---
 
     # Experiment Notes
@@ -67,15 +69,42 @@ frontmatter:
     This file becomes `experiment-notes.html`.
     ```
 
-    Common front matter keys:
+    Common page preface keys:
 
     - `title`: page title and header text.
-    - `metadata`: metadata passed into the content page template.
     - `nav`: override or disable the inherited navigation.
     - `footer`: override or disable the inherited footer.
-    - `comments`: page-level comments configuration when `webifier.comments` is enabled.
-    - `toc`: enable or disable the generated table of contents for this page.
-    - `content_pages`: page-level content-page controls such as `toc` and `cleanup`.
+    - `config`: page-local generation controls; this key is not rendered.
+
+    Any other page preface key is treated like a normal Webifier section and is
+    rendered after the Markdown body. This is useful for authors, comments,
+    related links, people cards, or other structured blocks that should follow
+    the main content.
+
+    Renderer controls should be nested under `config`, grouped by the extension
+    that owns them:
+
+    ```text
+    ---
+    title: Course Notes
+    config:
+      content_pages:
+        toc: true
+        cleanup: true
+      markdown:
+        toc: true
+
+    authors:
+      kind: people
+      content:
+        - name: Ada Lovelace
+          role: Author
+    ---
+    ```
+
+    Here, `config.markdown` and `config.content_pages` control the generated
+    page, while `authors` renders after the Markdown content as a normal
+    `people` section.
 
 toc_controls:
   label: Table of Contents
@@ -89,26 +118,84 @@ toc_controls:
     ```text
     ---
     title: Short Note
-    toc: false
+    config:
+      markdown:
+        toc: false
     ---
 
     # Short Note
     ```
 
-    Or use the more explicit content-page block when you want to group related
-    controls:
+    Group related content-page controls under the same reserved `config` block:
 
     ```text
     ---
     title: Course Notes
-    content_pages:
-      toc: true
-      cleanup: true
+    config:
+      markdown:
+        toc: true
+        cleanup: true
     ---
     ```
 
-    Site-wide defaults live under `content_pages` in the normal Webifier config.
-    Page front matter wins over the site default.
+    Site-wide defaults are normally set on the Markdown extension instance:
+
+    ```yaml
+    config:
+      webifier:
+        extensions:
+          markdown:
+            uses: webifier.markdown
+            toc: true
+            cleanup: true
+    ```
+
+    Webifier exports those settings to `config.markdown`, and page preface
+    `config.markdown` wins for one page. `content_pages` remains available as
+    the shared lower-level content-page config.
+
+frontmatter_contract:
+  label: Page Preface Contract
+  content: |
+    A Markdown page preface is a small page YAML document. Webifier
+    splits it into two groups:
+
+    - Reserved page keys configure the generated HTML page.
+    - Free-form keys become Webifier sections rendered after the Markdown body.
+
+    ```markdown
+    ---
+    title: Paper Notes
+    header:
+      title: Paper Notes
+      description: Reading notes with links and comments.
+    nav: false
+    config:
+      content_pages:
+        toc: true
+      markdown:
+        toc: true
+
+    links:
+      kind: links
+      label: Related
+      items:
+        - text: Source paper
+          link: https://example.com/paper.pdf
+    comments:
+      kind: comments
+      label: false
+    ---
+
+    # Paper Notes
+    ```
+
+    `title`, `header`, `nav`, and `config` do not render as content. The
+    `links` and `comments` keys render as sections after the Markdown body.
+
+    This gives page renderer extensions a stable place to read behavior:
+    `config.<extension-key>`. It also keeps visible page additions in the normal
+    Webifier section syntax.
 
 linking:
   label: Typed Links
@@ -223,12 +310,12 @@ syntax:
     [Rendered Markdown page](md=path/to/page.md)
     ```
 
-    Optional sibling metadata:
+    Optional sibling page data:
 
     ```text
     path/to/
       page.md
-      metadata.yml
+      page.yml
     ```
 
 extending:

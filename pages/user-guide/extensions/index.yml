@@ -36,13 +36,43 @@ lifecycle:
       mermaid.initialize({ startOnLoad: true, theme: "default" });
     </script>
 
+learning_map:
+  label: How To Read This Section
+  content: |
+    Read this page first if you want the extension mental model. Then use the
+    first-party pages as practical contracts for the syntax they add.
+
+    - [Standard](index=pages/user-guide/extensions/01-standard.yml): the default page grammar, sections, links, and content-page shell.
+    - [Markdown](index=pages/user-guide/extensions/02-markdown.yml), [Notebook](index=pages/user-guide/extensions/03-notebook.yml), and [PDF](index=pages/user-guide/extensions/11-pdf.yml): content-file page renderers.
+    - [Chapters](index=pages/user-guide/extensions/04-chapters.yml), [People](index=pages/user-guide/extensions/05-people.yml), and [Resume](index=pages/user-guide/extensions/06-resume.yml): reusable section renderers.
+    - [Theme](index=pages/user-guide/extensions/07-theme.yml), [Comments](index=pages/user-guide/extensions/08-comments.yml), [Search](index=pages/user-guide/extensions/09-search.yml), and [Google Analytics](index=pages/user-guide/extensions/10-analytics-google.yml): site behavior and page hooks.
+
+    If you want to build your own extension, read this page, then use the
+    [Custom Extensions and Reusable Formats](md=pages/user-guide/10-reusable-formats.md)
+    page for the practical install/configure/action workflow and the
+    [Extension and Customization Guide](md=pages/user-guide/reference/04-extension-guide.md)
+    as the implementation reference.
+
 how_rendering_works:
   label: How a Page Is Rendered
   content: |
-    The page model is deliberately boring: a page is content from top to bottom.
-    YAML keys become sections in the order you write them, except reserved keys
-    such as `title`, `config`, `nav`, `header`, `footer`, `meta`, `metadata`, and
-    `style` control page behavior instead of becoming content.
+    Webifier is deliberately small. It knows how to load a page, read `config`,
+    run the configured extension pipeline, and hand content back to that
+    pipeline recursively when links discover more pages. Extensions define the
+    useful contracts: what YAML means, what a notebook means, what a PDF page
+    means, how head tags are injected, which assets are copied, and how custom
+    page formats behave.
+
+    With the standard extension enabled, the page model is deliberately boring:
+    a page is content from top to bottom. YAML keys become sections in the order
+    you write them, except reserved keys such as `title`, `config`, `nav`,
+    `header`, `footer`, `meta`, and `style` control page behavior instead of
+    becoming content.
+
+    Extensions can also claim additional page keys. If an extension registers a
+    consumer for `weather`, then a page-level `weather: cloudy` key is passed to
+    that extension and removed from the content stream before sections render.
+    Later renderers do not accidentally treat it as a visible section.
 
     Extensions participate at three main moments:
 
@@ -63,6 +93,7 @@ how_rendering_works:
     root_page = load_and_resolve(index_yml, config)
 
     for page in reachable_pages(root_page):
+        page = extension_manager.consume_page_keys(page)
         processed = process_sections(page)
         html = render_page_template(processed)
         write_output(page.url, html)
@@ -70,6 +101,169 @@ how_rendering_works:
     copy_extension_assets()
     extension_manager.run_hooks("after_build")
     ```
+
+page_config:
+  label: Site Defaults and Page Overrides
+  content: |
+    Extension instance settings are the canonical place for site-wide defaults.
+    Page `config` can then override those settings without inventing a new
+    syntax for every content type. The contract is:
+
+    - Root `config` is the site-wide configuration.
+    - `config.webifier` is reserved for Webifier itself: extension loading,
+      extension instance config, and other tool-level behavior.
+    - Page-preface `config` is the page-local override.
+    - Page-local `config.webifier.extensions` can register or reconfigure
+      extension instances before that page renders.
+    - Each extension instance owns a namespace inside config with the same name
+      as the instance, such as `theme`, `comments`, `markdown`, `notebook`, or
+      `pdf`.
+    - Extensions receive the full merged page config and decide which parts of
+      their namespace mean what.
+    - Reserved keys configure the page; free-form keys outside `config` render
+      as content sections.
+
+    ```yaml
+    # index.yml
+    config:
+      webifier:
+        extensions:
+          site:
+            uses: webifier.standard
+          markdown:
+            uses: webifier.markdown
+            toc: true
+          notebook:
+            uses: webifier.notebook
+            toc: true
+            colab: true
+          pdf:
+            uses: webifier.pdf
+            toc: false
+            download: true
+            toolbar: true
+    ```
+
+    Webifier exports those instance settings into the page config seen by
+    renderers:
+
+    ```yaml
+    markdown:
+      toc: true
+    notebook:
+      toc: true
+      colab: true
+    pdf:
+      toc: false
+      download: true
+      toolbar: true
+    ```
+
+    A Markdown page can then override only what it needs directly:
+
+    ```markdown
+    ---
+    title: Short Note
+    config:
+      markdown:
+        toc: false
+
+    related:
+      kind: links
+      items:
+        - text: Full notes
+          src: notes/full.md
+    ---
+
+    # Short Note
+    ```
+
+    The `config` block affects rendering but does not show up on the page. The
+    `related` block is not reserved, so it renders after the Markdown body as a
+    normal Webifier section.
+
+    Or the page can reconfigure an extension instance before it renders:
+
+    ```markdown
+    ---
+    title: Local Notebook Page
+    config:
+      webifier:
+        extensions:
+          notebook:
+            reset: true
+            colab: false
+            toc: false
+    ---
+    ```
+
+    `reset: true` means the page starts from that extension's own defaults
+    instead of inheriting the site-level instance settings for the exported
+    instance namespace.
+
+    Page-local config applies to that generated page only. Linked child pages
+    use the root site config unless they declare their own page config. That
+    keeps generated pages independent and avoids surprising config leakage
+    through links.
+
+    When a page reconfigures a root extension instance, `uses` can be omitted.
+    Use `uses` when the page introduces a new extension instance that was not
+    declared in the root config.
+
+    Markdown page prefaces are read before Markdown links are processed, so a
+    Markdown page can enable or reconfigure an extension before typed links in
+    its body are resolved.
+
+page_keys:
+  label: Consuming Page Keys
+  content: |
+    Visible page content and extension controls are intentionally separate.
+    `config` is for behavior settings, while page keys outside `config` normally
+    become content sections. Sometimes an extension needs a top-level page key
+    that looks like content but should actually drive logic.
+
+    For that case, an extension can consume a page key:
+
+    ```python
+    from webifier.core.extensions import Extension
+
+
+    class WeatherExtension(Extension):
+        id = "example.weather"
+
+        def register(self, ctx):
+            ctx.consume_page_key("weather", self.consume_weather)
+
+        def consume_weather(self, builder, *, value, page, instance_name, **_):
+            page.setdefault("_weather", value)
+    ```
+
+    Then a page can say:
+
+    ```yaml
+    title: Field Notes
+    config:
+      webifier:
+        extensions:
+          weather:
+            uses: example.weather
+
+    weather: cloudy
+
+    notes:
+      label: Notes
+      content: The weather key is not rendered as a section.
+    ```
+
+    The `weather` key is seen by the weather extension and removed before
+    ordinary page sections render. If another extension also wants `weather`,
+    Webifier raises an error unless the later instance is explicitly marked
+    `override: true`.
+
+    Content-page prefaces use the same idea. Markdown front matter, notebook
+    first-cell page prefaces, and PDF `page.yml` files can contain extension
+    consumed keys, visible after-content sections, and `config` overrides in
+    one place.
 
 hooks:
   label: Hooks and Page-Aware Injection
@@ -137,8 +331,9 @@ using_extensions:
     ```
 
     The key such as `site`, `markdown`, or `docs_people` is a local instance
-    name. It can be whatever makes sense in your project. The `uses` value is the
-    installed extension id.
+    name and also the config namespace exported for that instance. It can be
+    whatever makes sense in your project. The `uses` value is the installed
+    extension id.
 
 order_and_override:
   label: Order and Override Rules
@@ -155,9 +350,9 @@ order_and_override:
     - `override: true` is intentional friction. Use it when you really want a
       later extension to replace an earlier behavior.
     - Any key besides `uses`, `enabled`, and `override` becomes instance config.
-    - If an extension declares a config key, its instance config is merged into
-      the site config under that key. For example, `webifier.theme` exports to
-      `config.theme`, and `webifier.comments` exports to `config.comments`.
+    - Each instance's config is merged into the page config under that instance
+      name. For example, an instance named `theme` exports to `config.theme`,
+      and an instance named `comments` exports to `config.comments`.
 
     ```yaml
     config:
@@ -217,8 +412,8 @@ first_party:
     - Foundation and content
         - [Standard](index=pages/user-guide/extensions/01-standard.yml): page shell, sections, links, templates, shared CSS/JS, and base assets.
         - [Markdown](index=pages/user-guide/extensions/02-markdown.yml): Markdown sections and `.md` content pages.
-        - [Notebook](index=pages/user-guide/extensions/03-notebook.yml): `.ipynb` content pages with YAML preface metadata.
-        - [PDF](index=pages/user-guide/extensions/11-pdf.yml): embedded `.pdf` content pages with site chrome, metadata, comments, and navigation.
+        - [Notebook](index=pages/user-guide/extensions/03-notebook.yml): `.ipynb` content pages with YAML page prefaces.
+        - [PDF](index=pages/user-guide/extensions/11-pdf.yml): embedded `.pdf` content pages with site chrome, page data, comments, and navigation.
     - Section renderers
         - [Chapters](index=pages/user-guide/extensions/04-chapters.yml): accordion-style nested chapter sections.
         - [People](index=pages/user-guide/extensions/05-people.yml): profile and team cards.

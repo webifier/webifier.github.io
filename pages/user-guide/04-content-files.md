@@ -20,7 +20,7 @@ Link to a Markdown file with `md=...` to generate a page:
 [Read the notes](md=pages/notes.md)
 ```
 
-Markdown front matter can provide page metadata:
+Markdown page prefaces can provide the same page data as YAML pages:
 
 ```markdown
 ---
@@ -33,7 +33,7 @@ header:
 # Notes
 ```
 
-Front matter can set page controls such as `title`, `header`, `nav`, `footer`,
+The page preface can set page controls such as `title`, `header`, `nav`, `footer`,
 `meta`, `style`, and page-local `config`.
 
 ## Notebooks
@@ -48,7 +48,7 @@ This makes Webifier a good fit for research projects, experiments, and small
 technical reports where the notebook is the work and the website is the sharing
 surface.
 
-Notebook pages can use the same page metadata shape in the first Markdown cell:
+Notebook pages can use the same page-data shape in the first Markdown cell:
 
 ```markdown
 ---
@@ -75,11 +75,11 @@ site-styled frame:
 [Read the report](pdf=reports/index.pdf)
 ```
 
-Put `metadata.yml` beside the PDF to control the generated page title:
+Put `page.yml` beside the PDF to control the generated page title:
 
 ```yaml
 title: Final Report
-metadata:
+meta:
   description: Embedded PDF report.
 ```
 

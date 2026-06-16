@@ -87,7 +87,7 @@ page_config_source:
   label: Page Config
   content: |
     Every YAML page can carry page-level controls. The root page usually defines
-    site-wide config, but generated YAML pages can still set local metadata,
+    site-wide config, but generated YAML pages can still set local page data,
     headers, templates, or page-specific config.
 
     ```yaml
@@ -116,7 +116,7 @@ extensions:
     - A section renderer can render a specific block such as publications,
       experience, people, galleries, or courses.
     - A content renderer can turn a file type into a page.
-    - Hooks can inject page-specific CSS, JavaScript, metadata, navigation, or
+    - Hooks can inject page-specific CSS, JavaScript, head tags, navigation, or
       footer content based on page config or page content.
 
     In other words, YAML gives you the graph and the content. Extensions let
@@ -145,21 +145,30 @@ syntax_breakdown:
         text: External link
     ```
 
-    Breakdown:
+    Prefix summary:
 
-    - `md=...`: render a Markdown-supported content page.
-    - `index=...`: render a YAML page.
-    - `pdf=...`: copy a PDF and link to it.
-    - `src`: local file to render or copy.
-    - `link` / `href`: existing URL that Webifier should leave alone.
-    - `text`: visible link text.
-    - `description`: optional supporting text.
-    - `image`, `icon`, `kind`: optional presentation data used by link templates.
+    | Prefix | Target | Output behavior |
+    |---|---|---|
+    | `md=...` | Markdown-supported content file | Render a generated content page and rewrite the link to `.html`. |
+    | `md=...` | Notebook file | Render a generated notebook page when the notebook extension is enabled. |
+    | `index=...` | YAML page | Render another Webifier page. |
+    | `pdf=...` | PDF file | Render an embedded PDF page when the PDF extension is enabled. |
+
+    Link object summary:
+
+    | Key | Meaning |
+    |---|---|
+    | `src` | Local file Webifier should render or copy. |
+    | `link` / `href` | Existing URL that Webifier should leave alone. |
+    | `text` | Visible link text. |
+    | `description` | Optional supporting Markdown text. |
+    | `image` / `icon` | Optional presentation data used by link templates. |
+    | `kind` | Optional renderer/presentation hint. |
 
 where_next:
   label: Next
   content: |
     - [Using the Default Site](md=pages/user-guide/01-default-site.md)
     - [Configuration Basics](md=pages/user-guide/05-configuration.md)
-    - [Reusable Website Formats](md=pages/user-guide/10-reusable-formats.md)
+    - [Custom Extensions and Reusable Formats](md=pages/user-guide/10-reusable-formats.md)
     - [Processing Pipeline](md=pages/user-guide/reference/05-processing-pipeline.md)

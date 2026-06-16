@@ -1,75 +1,84 @@
 title: Webifier User Guide
 header:
   title: Webifier User Guide
-  description: Start with files in a repository, then grow toward renderers, extensions, themes, and reusable formats.
+  description: Start with repository files, then grow toward extension-defined page syntax, renderers, themes, and reusable formats.
 
-overview:
-  label: Overview
+core_idea:
+  label: Core Idea
   content: |
-    Webifier is built around a small idea: useful project content should be easy
-    to publish. You keep Markdown, notebooks, HTML files, PDFs, reports, and
-    assets in Git. Webifier reads the structure you describe and turns those
-    files into a static website.
+    Webifier is built around a small idea: publishing should feel close to
+    writing and committing files. You keep Markdown, notebooks, HTML files,
+    PDFs, reports, and assets in Git. Webifier reads the page structure you
+    describe and turns the reachable files into a static website.
 
     This guide is also a working example. The pages are ordinary Markdown and
     YAML files, and the website you are reading is generated from them.
 
+    The important design point is that Webifier itself is intentionally small.
+    Extensions teach it what page syntax means. When you enable the standard
+    extension, keys like `header`, `nav`, `meta`, and `footer` become page
+    controls. When you enable Markdown, notebooks, PDFs, comments, people cards,
+    or a custom extension, those extensions add their own renderers, page
+    config, hooks, templates, assets, and sometimes their own page-level keys.
+
+    So the mental model is:
+
+    - Start with one page, usually `index.yml`.
+    - Enable the extensions that define the grammar you want to use.
+    - Write visible sections as ordinary YAML keys in reading order.
+    - Put behavior under `config`.
+    - Link to Markdown, notebooks, PDFs, YAML pages, and assets.
+    - Let Webifier follow those links and render the static site.
+
 start:
-  label: Start here
+  label: Start Here
   content: |
     These pages are the shortest path from an empty repository to a working
     Webifier site. Read them in order if you are setting up a project for the
-    first time.
+    first time; each page starts with the idea and ends with the detailed syntax.
 
+    - [Hello World Website](index=pages/user-guide/tutorials/00-hello-world.yml): create the smallest useful Webifier page from one YAML file.
     - [Installation and GitHub Actions](index=pages/user-guide/tutorials/00-installation-and-github-actions.yml): install the packages, render locally, and add a GitHub Actions workflow.
     - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml): learn the top-to-bottom page model with rendered examples.
     - [Section Controls](index=pages/user-guide/tutorials/02-section-controls.yml): add labels, templates, defaults, and renderer dispatch.
     - [Links and Page Discovery](index=pages/user-guide/tutorials/03-links-and-page-discovery.yml): link Markdown, notebooks, YAML pages, and static assets.
 
 default_workflow:
-  label: Default workflow
+  label: Default Publishing Workflow
   content: |
-    The default workflow covers the pieces most projects use immediately:
-    choosing an entry point, publishing from source files, and letting automation
-    do the repeat work.
+    Use these pages once the first tutorial path makes sense. They explain the
+    default site grammar, content files, and the config layer you will edit most
+    often.
 
-    - [Using the Default Site](md=pages/user-guide/01-default-site.md): start from the bundled layout and understand what Webifier renders for you.
+    - [Using the Default Site](md=pages/user-guide/01-default-site.md): understand how enabling `webifier.standard` gives you the default page grammar.
     - [Render and Automate](md=pages/user-guide/02-render-and-automate.md): run the build locally and wire it into repository publishing.
     - [Navigation and Pages](md=pages/user-guide/03-navigation-and-pages.md): configure site navigation and decide which pages belong in the guide.
     - [Publishing Content Files](md=pages/user-guide/04-content-files.md): publish Markdown, notebooks, HTML, PDFs, and assets from your repository.
     - [Configuration Basics](md=pages/user-guide/05-configuration.md): keep site-level defaults, page settings, and extension options in one place.
 
 renderers:
-  label: Extensions and customization
+  label: Extensions And Reuse
   content: |
-    Extensions are where Webifier becomes reusable. Start with the bundled
-    extension pages, then move toward your own templates, Python renderers, and
-    packaged website formats.
+    Extensions are where Webifier becomes reusable. The first-party extension
+    pages show the available building blocks. The customization pages then show
+    how to override templates, add renderers, and package repeatable site
+    formats.
 
-    - [Extensions](index=pages/user-guide/extensions/index.yml): follow the extension lifecycle, then open the focused first-party pages.
-        - [Standard Extension](index=pages/user-guide/extensions/01-standard.yml): page shell, sections, links, shared templates, and base assets.
-        - [Markdown Extension](index=pages/user-guide/extensions/02-markdown.yml): Markdown sections and standalone Markdown content pages.
-        - [Notebook Extension](index=pages/user-guide/extensions/03-notebook.yml): linked `.ipynb` pages with YAML preface metadata.
-        - [PDF Extension](index=pages/user-guide/extensions/11-pdf.yml): embedded PDF content pages with site chrome and download/open controls.
-        - [Chapters Extension](index=pages/user-guide/extensions/04-chapters.yml): accordion-style chapters and nested content.
-        - [People Extension](index=pages/user-guide/extensions/05-people.yml): profile cards for teams, collaborators, and contributors.
-        - [Resume Extension](index=pages/user-guide/extensions/06-resume.yml): experience, education, activity, and publication renderers.
-        - [Theme Extension](index=pages/user-guide/extensions/07-theme.yml): light/dark/system theme plumbing and custom theme CSS.
-        - [Comments Extension](index=pages/user-guide/extensions/08-comments.yml): Utterances comments blocks.
-        - [Search Extension](index=pages/user-guide/extensions/09-search.yml): search index generation from rendered content and links.
-        - [Google Analytics Extension](index=pages/user-guide/extensions/10-analytics-google.yml): Google tag injection through a page head hook.
+    - [Extensions Overview](index=pages/user-guide/extensions/index.yml): lifecycle, named instances, hooks, page config, and consumed page keys.
+    - [Bundled Extensions](index=pages/user-guide/extensions/index.yml): standard pages, Markdown, notebooks, PDFs, chapters, people, resume, theme, comments, search, and analytics.
     - [Themes and Styles](md=pages/user-guide/06-themes.md): set defaults, switch themes, and prepare for custom visual systems.
     - [Template Overrides](md=pages/user-guide/07-template-overrides.md): replace specific templates without rewriting the whole site.
     - [Template-Only Renderers](md=pages/user-guide/08-template-renderers.md): add new rendering kinds from templates alone.
     - [Python Renderers and Resolvers](md=pages/user-guide/09-python-renderers-and-resolvers.md): plug in Python code when templates are not enough.
-    - [Reusable Website Formats](md=pages/user-guide/10-reusable-formats.md): package repeatable formats for resumes, labs, academic sites, and project pages.
+    - [Custom Extensions and Reusable Formats](md=pages/user-guide/10-reusable-formats.md): install custom extensions, update GitHub Actions, and package repeatable formats.
     - [Renderer / Kind System](md=pages/user-guide/reference/03-renderers.md): use this reference when you need the lower-level dispatch model.
 
 reference:
   label: Reference
   content: |
     Use the reference pages when you need exact syntax, lifecycle details, or a
-    deeper mental model for extending Webifier.
+    deeper mental model for extending Webifier. These pages are intentionally
+    more complete than the tutorials.
 
     - [Architecture Overview](md=pages/user-guide/reference/00-overview.md): see the core pieces and how extensions fit around them.
     - [YAML Syntax Specification](md=pages/user-guide/reference/01-yaml-syntax.md): check the supported YAML shapes and reserved keys.

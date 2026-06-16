@@ -9,7 +9,7 @@ header:
 
 Templates are best for presentation. Python extension points are useful when a
 site format needs logic: normalizing resume entries, grouping publications,
-fetching metadata, or turning a folder into a structured page.
+fetching page data, or turning a folder into a structured page.
 
 ## Custom Renderers
 

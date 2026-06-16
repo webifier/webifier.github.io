@@ -517,8 +517,7 @@ These are all optional:
 
 ### Markdown Files
 
-Markdown files (`.md`) can optionally include YAML front matter for page
-metadata:
+Markdown files (`.md`) can optionally include a YAML page preface:
 
 ```markdown
 ---
@@ -537,16 +536,18 @@ header:
 - **CS 201** — Data Structures
 ```
 
-The front matter keys are passed to the **page** renderer as page metadata.
-The markdown body is rendered as the page content.
+The page preface keys use the same shape as a normal YAML page. Reserved keys
+such as `title`, `header`, `nav`, `footer`, `meta`, `style`, and `config`
+control the generated page. Any other keys render as sections after the
+Markdown body.
 
-If no front matter is present, the file is rendered as a simple content page
-with default metadata.
+If no page preface is present, the file is rendered as a simple content page
+with default page data.
 
 ### Notebook Files
 
-Jupyter notebooks (`.ipynb`) are converted to HTML via nbconvert. Page metadata
-can be provided as YAML front matter in the first Markdown cell:
+Jupyter notebooks (`.ipynb`) are converted to HTML via nbconvert. Page data can
+be provided as a YAML page preface in the first Markdown cell:
 
 ```markdown
 ---
@@ -810,22 +811,31 @@ background, no padding). Useful for full-width custom HTML.
 
 ## Key Conventions
 
-### Reserved Keys = Framework Directives
+### Structural Keys
 
-The following keys are framework directives, processed and removed before
-renderers see the data:
+Some keys are structural transforms that run while YAML is loaded:
 
 - `patch` (with optional `@location` and `!modifier`) — structural merge
 - `defaults` — sibling defaults
-- `_source` — injected by `glob` resolver (file path metadata, stripped before rendering)
+- `_source` — injected by `glob` resolver (file path data, stripped before rendering)
 
-### All Other Keys = Renderer Data
+### Renderer And Extension Keys
 
-All other keys are passed through to renderers. The framework never interprets
-them.
+After loading, keys are passed to renderers and extensions. The active syntax is
+therefore controlled by the extensions you enabled:
 
-### `kind` and `template` — The Two Exceptions
+- `webifier.standard` defines page controls such as `title`, `header`, `nav`,
+  `footer`, `meta`, `style`, and `config`.
+- Renderers define their own reserved keys such as section `label`,
+  `background`, `kind`, or `template`.
+- Extensions can consume page-level keys before ordinary section rendering, so a
+  future `weather` or `change_log` key can belong to an extension instead of
+  becoming visible content.
+- Everything not consumed by an extension or reserved by the active renderer is
+  normal renderer data.
 
-`kind` and `template` have no underscore but are framework keys. These are the
-only two. This is intentional — they're the most-used directives and deserve
-clean syntax.
+### `kind` and `template`
+
+`kind` and `template` are the common renderer dispatch controls. `kind` chooses
+a registered renderer, while `template` selects a Jinja template for the current
+page or section.

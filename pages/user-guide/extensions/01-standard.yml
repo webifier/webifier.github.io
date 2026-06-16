@@ -45,7 +45,7 @@ reserved_page_keys:
     - `header`: page hero/header data.
     - `nav`: navigation links.
     - `footer`: footer data.
-    - `meta`: metadata for the page template.
+    - `meta`: HTML meta tags for the page template.
     - `config`: page or site configuration.
     - `search`: search behavior for the page.
     - `style`: page-level style data for templates.
@@ -53,6 +53,77 @@ reserved_page_keys:
     - `template`: page template override.
 
     Every other top-level key renders as content in YAML order.
+
+page_renderer_config:
+  label: Page Renderer Config
+  content: |
+    Content-page renderers can read page-local controls from the reserved
+    `config` key. The same contract is used for Markdown page prefaces,
+    notebook first-cell page prefaces, PDF sibling `page.yml` files, and normal
+    YAML pages:
+
+    ```yaml
+    title: Page title
+    config:
+      content_pages:
+        toc: true
+      markdown:
+        toc: true
+      notebook:
+        toc: true
+        colab: false
+      pdf:
+        toc: false
+        download: false
+
+    related:
+      kind: links
+      items:
+        - text: Another page
+          src: pages/user-guide/index.yml
+    ```
+
+    `config` is never rendered as content. It is merged over the site-level
+    config for that one page, then extensions read the parts they own. In the
+    example above, `content_pages`, `markdown`, `notebook`, and `pdf` are
+    extension-owned config namespaces.
+
+    Free-form keys outside `config`, such as `related`, are normal page
+    sections. For Markdown and notebooks, those extra sections render after the
+    main file body, which lets a content file carry authors, comments, related
+    links, or custom extension sections without mixing them into the prose.
+
+    The important distinction is:
+
+    - Put behavior under `config`.
+    - Put visible structured content outside `config`.
+
+    ```markdown
+    ---
+    title: A Markdown Page
+    config:
+      content_pages:
+        toc: true
+      markdown:
+        toc: true
+
+    authors:
+      kind: people
+      content:
+        - name: Vahid Zehtab
+          role: Author
+          website: https://vahidz.com
+    comments:
+      kind: comments
+      label: false
+    ---
+
+    # Body
+    ```
+
+    In this example, `config.markdown` and `config.content_pages` control the
+    generated content page. The `authors` and `comments` keys render after the
+    body using normal section renderers.
 
 section_contract:
   label: Section Shape
@@ -438,6 +509,7 @@ related_docs:
     - [YAML Pages and Sections](index=pages/user-guide/tutorials/01-yaml-pages-and-sections.yml): build pages from ordered YAML nodes.
     - [Section Controls](index=pages/user-guide/tutorials/02-section-controls.yml): labels, templates, defaults, and renderer dispatch in tutorial form.
     - [Links and Page Discovery](index=pages/user-guide/tutorials/03-links-and-page-discovery.yml): how links create pages from YAML, Markdown, notebooks, PDFs, and assets.
+    - [Navigation and Pages](md=pages/user-guide/03-navigation-and-pages.md): top navigation and bottom previous/home/next page navigation.
     - [Template Overrides](md=pages/user-guide/07-template-overrides.md): replace existing Jinja templates while keeping Webifier's renderer logic.
     - [Template-Only Renderers](md=pages/user-guide/08-template-renderers.md): create new `kind` values with only a Jinja template.
     - [Python Renderers and Resolvers](md=pages/user-guide/09-python-renderers-and-resolvers.md): move to Python when templates are not enough.
@@ -462,6 +534,9 @@ syntax_summary:
     - `kind: links` renders a direct link list.
     - `kind: freeform` renders content without the standard section wrapper.
     - Any other `kind` is handled by whichever extension registered that renderer.
+    - `config.markdown.toc`, `config.notebook.toc`, and `config.pdf.toc` control generated tables of contents for those page types.
+    - `config.content_pages.toc` is the shared lower-level content-page control.
+    - `config.content_pages.cleanup` enables shared content cleanup for generated content pages.
 
     When the standard renderer stops being enough, create an extension that
     registers a new `kind` and give that renderer the schema you actually want.
