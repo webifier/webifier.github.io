@@ -1,0 +1,1720 @@
+
+
+
+
+
+
+
+
+<html>
+
+
+
+
+<head>
+    <title>Resume Extension</title>
+    
+
+<!-- viewport meta-tag for responsiveness -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+<link rel="icon" href="/assets/images/webifier-logo.png" type="image/png">
+
+
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+<!-- Bootstrap v5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- FontAwesome JS -->
+<script src="https://kit.fontawesome.com/01c0691b3e.js" crossorigin="anonymous"></script>
+
+<!-- Loading mathjax macro -->
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true,
+                skipTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+            },
+            displayAlign: 'center',
+            "HTML-CSS": {
+                styles: {'.MathJax_Display': {"margin": 0}},
+                linebreaks: { automatic: true }
+            }
+        });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+  const webifierTheme = document.documentElement.getAttribute("data-bs-theme");
+  mermaid.initialize({ startOnLoad: true, theme: webifierTheme === "dark" ? "dark" : "default" });
+</script>
+<link rel="stylesheet" href="/assets/css/codehilite.css">
+<link rel="stylesheet" href="/assets/css/main.css">
+<script defer src="/assets/js/codeblocks.js"></script>
+<script defer src="/assets/js/content-toc.js"></script>
+
+<script>
+(function () {
+  const switcherEnabled = true;
+  const stored = switcherEnabled ? localStorage.getItem("webifier-theme") : null;
+  const selected = stored || "system";
+  const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const resolved = selected === "system" ? (systemDark ? "dark" : "light") : selected;
+  document.documentElement.dataset.wfTheme = selected;
+  document.documentElement.dataset.wfResolvedTheme = resolved;
+  document.documentElement.dataset.bsTheme = resolved === "dark" ? "dark" : "light";
+})();
+</script>
+<link rel="stylesheet" href="/assets/css/theme.css">
+<script defer src="/assets/js/theme.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TYRMXHZ5YH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-TYRMXHZ5YH');
+</script>
+<link rel="stylesheet" href="/assets/webifier/resume/css/resume.css">
+<script defer src="/assets/webifier/resume/js/resume.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/assets/css/site.css">
+
+
+
+    
+
+    
+
+
+    
+</head>
+
+<body class="bg-body-tertiary">
+<div class="app-content container-fluid">
+    
+
+
+
+
+
+
+<header class="container-fluid wf-page-chrome text-center align-items-center p-0"
+        
+        style="min-height: 5vh;"
+        
+>
+    <div
+            
+            class="wf-page-chrome-panel p-3 m-auto text-center"
+            
+    >
+        <h1>Resume Extension</h1>
+        
+        <p class="mt-3">Experience and publication renderers for resumes, academic pages, portfolios, and CV-like sections.</p>
+        
+    </div>
+</header>
+
+
+    
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<nav class="px-2 navbar navbar-expand-sm bg-body-tertiary m-0 p-2 sticky-top shadow wf-navbar">
+    
+    
+    
+
+
+
+
+
+
+
+    <a href="/" class="btn navbar-brand"
+       
+    >
+    
+    
+        
+        
+        
+        
+        
+        <img src="/assets/images/webifier-logo.png" width="28" height="28" class="d-inline-block" alt="Webifier logo">
+    
+    
+        Webifier
+    
+    </a>
+
+
+    
+
+    <div
+            
+            class="collapse navbar-collapse p-0 m-0"
+            id="navbarSupportedContent"
+            
+    >
+        <ul class="navbar-nav me-auto my-1 p-0">
+            
+            <li class="nav-item">
+                
+                
+                
+
+
+
+
+
+
+
+    <a href="/pages/user-guide/" class="btn nav-link"
+       
+    >
+    
+    
+    
+        Docs
+    
+    </a>
+
+
+                
+            </li>
+            
+            <li class="nav-item">
+                
+                
+                
+
+
+
+
+
+
+
+    <a href="/pages/collaboration.html" class="btn nav-link"
+       
+    >
+    
+    
+    
+        Collaborate
+    
+    </a>
+
+
+                
+            </li>
+            
+            <li class="nav-item">
+                
+                
+                
+
+
+
+
+
+
+
+    <a href="https://github.com/webifier" class="btn nav-link"
+       
+    >
+    
+    
+    
+        GitHub
+    
+    </a>
+
+
+                
+            </li>
+            
+        </ul>
+        
+    </div>
+    <div class="d-flex my-1 ms-auto wf-navbar-actions">
+        
+        <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+
+        
+        
+            <a href="/pages/user-guide/" class="btn nav-item mt-1 wf-nav-back" aria-label="Back" title="Back">
+                <span aria-hidden="true">&lsaquo;</span>
+            </a>
+        
+
+        
+        
+        
+
+        
+        
+        
+        <button
+                class="btn nav-item mt-1 webifier-theme-toggle"
+                type="button"
+                id="webifier-theme-toggle"
+                title="Switch color theme"
+                aria-label="Switch color theme"
+                data-theme-default="system"
+                data-theme-modes="system,light,dark"
+        >
+            <svg class="webifier-theme-symbol webifier-theme-symbol-system" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="13" rx="2"></rect>
+                <path d="M8 21h8"></path>
+                <path d="M12 17v4"></path>
+            </svg>
+            <svg class="webifier-theme-symbol webifier-theme-symbol-light" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="M4.93 4.93l1.41 1.41"></path>
+                <path d="M17.66 17.66l1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="M6.34 17.66l-1.41 1.41"></path>
+                <path d="M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+            <svg class="webifier-theme-symbol webifier-theme-symbol-dark" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+            </svg>
+            <span class="visually-hidden webifier-theme-label">Theme</span>
+        </button>
+        
+
+        
+    </div>
+</nav>
+
+
+
+
+
+
+
+    <div id="app-body"
+         class="app-body container-fluid bg-body justify-content-center align-items-center d-flex shadow">
+        <div class="container-fluid p-0 m-0 no-gutters">
+            
+                
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+<div id="overview"
+    
+        class=" row align-items-start my-2 pe-xs-0
+            pe-sm-0 pe-md-1
+         pe-lg-2 pe-xlg-2 pe-xxlg-2"
+        style="min-height: 5vh;"
+    
+>
+    
+    
+        
+            <div class="wf-section-label mt-4 mb shadow-lg col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2
+                col-xxl-2 p-3 d-flex justify-content-center">
+                <strong>What It Provides</strong>
+            </div>
+        
+    
+
+    <div
+        
+            class="rounded hover-shadow bg-body shadow col-12 col-sm-12
+                col-md-10 col-lg-10 col-xl-10 col-xxl-10 px-4 p-4 justify-content-center"
+        
+    >
+        
+            
+                <p><code>webifier.resume</code> registers <code>resume.experience</code>, <code>resume-experience</code>, and
+<code>resume.publications</code>. It also injects its CSS and JavaScript only on pages
+that use resume renderers.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">webifier</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">extensions</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">site</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.standard</span>
+<span class="w">      </span><span class="nt">markdown</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.markdown</span>
+<span class="w">      </span><span class="nt">resume</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.resume</span>
+</code></pre></div>
+            
+        
+    </div>
+
+    
+    
+</div>
+            
+                
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+<div id="experience_yaml"
+    
+        class=" row align-items-start my-2 pe-xs-0
+            pe-sm-0 pe-md-1
+         pe-lg-2 pe-xlg-2 pe-xxlg-2"
+        style="min-height: 5vh;"
+    
+>
+    
+    
+        
+            <div class="wf-section-label mt-4 mb shadow-lg col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2
+                col-xxl-2 p-3 d-flex justify-content-center">
+                <strong>Experience YAML With Separators</strong>
+            </div>
+        
+    
+
+    <div
+        
+            class="rounded hover-shadow bg-body shadow col-12 col-sm-12
+                col-md-10 col-lg-10 col-xl-10 col-xxl-10 px-4 p-4 justify-content-center"
+        
+    >
+        
+            
+                <div class="codehilite"><pre><span></span><code><span class="nt">experience</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resume.experience</span>
+<span class="w">  </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Experience</span>
+<span class="w">  </span><span class="nt">compact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">inline</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">separators</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="nt">foundation_lab</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">institution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Example Foundation Lab</span>
+<span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Senior Machine Learning Scientist</span>
+<span class="w">      </span><span class="nt">details</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Applied ML</span>
+<span class="w">      </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2025 - Present</span>
+<span class="w">      </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Toronto, ON, Canada</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Compact summaries stay visible before expansion.</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">- Lead model training experiments across data, infrastructure, and evaluation.</span>
+<span class="w">      </span><span class="no">- Build reusable tooling so research ideas can survive contact with production.</span>
+
+<span class="w">  </span><span class="nt">product_team</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">institution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Example Product Team</span>
+<span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Machine Learning Engineer</span>
+<span class="w">      </span><span class="nt">details</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Imaging Systems</span>
+<span class="w">      </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2023 - 2025</span>
+<span class="w">      </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Remote</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entries can expose short summaries and hide longer notes.</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">- Designed model-serving workflows and evaluation dashboards.</span>
+<span class="w">      </span><span class="no">- Turned research prototypes into tools other people could actually run.</span>
+
+<span class="w">  </span><span class="nt">graduate_program</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">institution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Example University</span>
+<span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MSc. in Useful Things</span>
+<span class="w">      </span><span class="nt">details</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Thesis on practical automation</span>
+<span class="w">      </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2021 - 2023</span>
+<span class="w">      </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Somewhere</span>
+<span class="w">    </span><span class="nt">compact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">- Non-compact entries render their content immediately.</span>
+<span class="w">      </span><span class="no">- This is useful for education, awards, and short permanent details.</span>
+</code></pre></div>
+            
+        
+    </div>
+
+    
+    
+</div>
+            
+                
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+<div id="experience_rendered"
+    
+        class=" row align-items-start my-2 pe-xs-0
+            pe-sm-0 pe-md-1
+         pe-lg-2 pe-xlg-2 pe-xxlg-2"
+        style="min-height: 5vh;"
+    
+>
+    
+    
+        
+            <div class="wf-section-label mt-4 mb shadow-lg col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2
+                col-xxl-2 p-3 d-flex justify-content-center">
+                <strong>Rendered With Separators</strong>
+            </div>
+        
+    
+
+    <div
+        
+            class="rounded hover-shadow bg-body shadow col-12 col-sm-12
+                col-md-10 col-lg-10 col-xl-10 col-xxl-10 px-4 p-4 justify-content-center"
+        
+    >
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container-fluid">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    <div class="collapse show experience-compact-view" id="experience-entry-experience_rendered-1-compact">
+        
+        <div class="experience-summary experience-summary-stack-inline has-details">
+            <div class="experience-toggle-column">
+                <button class="btn experience-toggle experience-toggle-expand"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#experience-entry-experience_rendered-1-compact, #experience-entry-experience_rendered-1-expanded"
+        aria-expanded="false"
+        aria-controls="experience-entry-experience_rendered-1-compact experience-entry-experience_rendered-1-expanded"
+        aria-label="Show details">
+    <span class="experience-toggle-icon" aria-hidden="true"></span>
+</button>
+            </div>
+            <div class="experience-stack-inline-main">
+                <span class="experience-inline-desktop">
+    <span class="experience-inline-role">Senior Machine Learning Scientist</span>
+    
+    <span class="experience-inline-divider"> - </span>
+    
+    <span class="experience-inline-institution">Example Foundation Lab</span>
+    
+    <span class="experience-inline-extra text-muted">Applied ML</span>
+    
+</span>
+
+<span class="experience-description experience-inline-description text-muted">Compact summaries stay visible before expansion.</span>
+
+<span class="experience-inline-mobile">
+    
+    <span class="experience-mobile-institution">Example Foundation Lab</span>
+    
+    
+    <span class="experience-mobile-role">Senior Machine Learning Scientist</span>
+    
+    
+    <span class="experience-mobile-extra text-muted">Applied ML</span>
+    
+    
+    <span class="experience-description experience-mobile-description text-muted">Compact summaries stay visible before expansion.</span>
+    
+</span>
+            </div>
+            <div class="experience-stack-inline-side experience-meta">
+                
+<div class="experience-tags">
+    
+    
+    <p class="text-muted mb-0">2025 - Present</p>
+    
+    
+    <p class="text-muted mb-0">Toronto, ON, Canada</p>
+    
+    
+</div>
+
+            </div>
+        </div>
+        
+    </div>
+    <div class="collapse experience-expanded-view" id="experience-entry-experience_rendered-1-expanded">
+        <div class="row my-0 experience-summary experience-summary-inline experience-summary-expanded">
+            <div class="col-auto experience-toggle-column">
+                <button class="btn experience-toggle experience-toggle-close"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#experience-entry-experience_rendered-1-compact, #experience-entry-experience_rendered-1-expanded"
+        aria-expanded="true"
+        aria-controls="experience-entry-experience_rendered-1-compact experience-entry-experience_rendered-1-expanded"
+        aria-label="Hide details">
+    <span class="experience-toggle-icon" aria-hidden="true"></span>
+</button>
+            </div>
+            <div class="col-12 col-md-4 experience-heading-inline">
+                <div class="experience-heading-vertical text-center">
+    
+    <div class="experience-heading-institution">Example Foundation Lab</div>
+    
+    
+    <p class="experience-heading-role">Senior Machine Learning Scientist</p>
+    
+    
+    <p class="experience-heading-extra text-muted">Applied ML</p>
+    
+    
+</div>
+                
+<div class="experience-tags experience-tags-inline text-center">
+    
+    <p class="text-muted mb-0">
+        2025 - Present
+         • 
+        Toronto, ON, Canada
+    </p>
+    
+</div>
+
+            </div>
+            <div class="col-12 col-md-7 experience-inline-content">
+                <ul>
+<li>Lead model training experiments across data, infrastructure, and evaluation.</li>
+<li>Build reusable tooling so research ideas can survive contact with production.</li>
+</ul>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+    
+    <hr class="row mb-3 mt-3 mx-5 p-0">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    <div class="collapse show experience-compact-view" id="experience-entry-experience_rendered-2-compact">
+        
+        <div class="experience-summary experience-summary-stack-inline has-details">
+            <div class="experience-toggle-column">
+                <button class="btn experience-toggle experience-toggle-expand"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#experience-entry-experience_rendered-2-compact, #experience-entry-experience_rendered-2-expanded"
+        aria-expanded="false"
+        aria-controls="experience-entry-experience_rendered-2-compact experience-entry-experience_rendered-2-expanded"
+        aria-label="Show details">
+    <span class="experience-toggle-icon" aria-hidden="true"></span>
+</button>
+            </div>
+            <div class="experience-stack-inline-main">
+                <span class="experience-inline-desktop">
+    <span class="experience-inline-role">Machine Learning Engineer</span>
+    
+    <span class="experience-inline-divider"> - </span>
+    
+    <span class="experience-inline-institution">Example Product Team</span>
+    
+    <span class="experience-inline-extra text-muted">Imaging Systems</span>
+    
+</span>
+
+<span class="experience-description experience-inline-description text-muted">Entries can expose short summaries and hide longer notes.</span>
+
+<span class="experience-inline-mobile">
+    
+    <span class="experience-mobile-institution">Example Product Team</span>
+    
+    
+    <span class="experience-mobile-role">Machine Learning Engineer</span>
+    
+    
+    <span class="experience-mobile-extra text-muted">Imaging Systems</span>
+    
+    
+    <span class="experience-description experience-mobile-description text-muted">Entries can expose short summaries and hide longer notes.</span>
+    
+</span>
+            </div>
+            <div class="experience-stack-inline-side experience-meta">
+                
+<div class="experience-tags">
+    
+    
+    <p class="text-muted mb-0">2023 - 2025</p>
+    
+    
+    <p class="text-muted mb-0">Remote</p>
+    
+    
+</div>
+
+            </div>
+        </div>
+        
+    </div>
+    <div class="collapse experience-expanded-view" id="experience-entry-experience_rendered-2-expanded">
+        <div class="row my-0 experience-summary experience-summary-inline experience-summary-expanded">
+            <div class="col-auto experience-toggle-column">
+                <button class="btn experience-toggle experience-toggle-close"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#experience-entry-experience_rendered-2-compact, #experience-entry-experience_rendered-2-expanded"
+        aria-expanded="true"
+        aria-controls="experience-entry-experience_rendered-2-compact experience-entry-experience_rendered-2-expanded"
+        aria-label="Hide details">
+    <span class="experience-toggle-icon" aria-hidden="true"></span>
+</button>
+            </div>
+            <div class="col-12 col-md-4 experience-heading-inline">
+                <div class="experience-heading-vertical text-center">
+    
+    <div class="experience-heading-institution">Example Product Team</div>
+    
+    
+    <p class="experience-heading-role">Machine Learning Engineer</p>
+    
+    
+    <p class="experience-heading-extra text-muted">Imaging Systems</p>
+    
+    
+</div>
+                
+<div class="experience-tags experience-tags-inline text-center">
+    
+    <p class="text-muted mb-0">
+        2023 - 2025
+         • 
+        Remote
+    </p>
+    
+</div>
+
+            </div>
+            <div class="col-12 col-md-7 experience-inline-content">
+                <ul>
+<li>Designed model-serving workflows and evaluation dashboards.</li>
+<li>Turned research prototypes into tools other people could actually run.</li>
+</ul>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+    
+    <hr class="row mb-3 mt-3 mx-5 p-0">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    <div class="row my-0 experience-summary experience-summary-inline">
+        <div class="col-12 col-md-4 experience-heading-inline">
+            <div class="experience-heading-vertical text-center">
+    
+    <div class="experience-heading-institution">Example University</div>
+    
+    
+    <p class="experience-heading-role">MSc. in Useful Things</p>
+    
+    
+    <p class="experience-heading-extra text-muted">Thesis on practical automation</p>
+    
+    
+</div>
+            
+<div class="experience-tags experience-tags-inline text-center">
+    
+    <p class="text-muted mb-0">
+        2021 - 2023
+         • 
+        Somewhere
+    </p>
+    
+</div>
+
+        </div>
+        <div class="col-12 col-md-8 experience-inline-content">
+            <ul>
+<li>Non-compact entries render their content immediately.</li>
+<li>This is useful for education, awards, and short permanent details.</li>
+</ul>
+        </div>
+    </div>
+
+    
+
+    
+    
+    
+</div>
+        
+    </div>
+
+    
+    
+</div>
+            
+                
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+<div id="experience_yaml_no_separators"
+    
+        class=" row align-items-start my-2 pe-xs-0
+            pe-sm-0 pe-md-1
+         pe-lg-2 pe-xlg-2 pe-xxlg-2"
+        style="min-height: 5vh;"
+    
+>
+    
+    
+        
+            <div class="wf-section-label mt-4 mb shadow-lg col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2
+                col-xxl-2 p-3 d-flex justify-content-center">
+                <strong>Experience YAML Without Separators</strong>
+            </div>
+        
+    
+
+    <div
+        
+            class="rounded hover-shadow bg-body shadow col-12 col-sm-12
+                col-md-10 col-lg-10 col-xl-10 col-xxl-10 px-4 p-4 justify-content-center"
+        
+    >
+        
+            
+                <div class="codehilite"><pre><span></span><code><span class="nt">compact_experience</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resume.experience</span>
+<span class="w">  </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Compact List</span>
+<span class="w">  </span><span class="nt">compact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">inline</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">separators</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">  </span><span class="nt">teaching</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">institution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Example Course Staff</span>
+<span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Teaching Assistant</span>
+<span class="w">      </span><span class="nt">details</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Graduate ML course</span>
+<span class="w">      </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Fall 2022</span>
+<span class="w">      </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Campus</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A compact card with inline date and location tags.</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">- Held tutorials, reviewed notebooks, and helped students debug ideas.</span>
+<span class="w">      </span><span class="no">- This entry expands without separator lines between neighbors.</span>
+
+<span class="w">  </span><span class="nt">community</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">institution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Example Open Source Group</span>
+<span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Contributor</span>
+<span class="w">      </span><span class="nt">details</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Documentation and examples</span>
+<span class="w">      </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2021 - 2024</span>
+<span class="w">      </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Online</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Separator-free sections feel more like a compact stack.</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">- Added examples, cleaned docs, and turned rough workflows into recipes.</span>
+</code></pre></div>
+            
+        
+    </div>
+
+    
+    
+</div>
+            
+                
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+<div id="experience_rendered_no_separators"
+    
+        class=" row align-items-start my-2 pe-xs-0
+            pe-sm-0 pe-md-1
+         pe-lg-2 pe-xlg-2 pe-xxlg-2"
+        style="min-height: 5vh;"
+    
+>
+    
+    
+        
+            <div class="wf-section-label mt-4 mb shadow-lg col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2
+                col-xxl-2 p-3 d-flex justify-content-center">
+                <strong>Rendered Without Separators</strong>
+            </div>
+        
+    
+
+    <div
+        
+            class="rounded hover-shadow bg-body shadow col-12 col-sm-12
+                col-md-10 col-lg-10 col-xl-10 col-xxl-10 px-4 p-4 justify-content-center"
+        
+    >
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container-fluid">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    <div class="collapse show experience-compact-view" id="experience-entry-experience_rendered_no_separators-1-compact">
+        
+        <div class="row my-0 align-items-center experience-summary has-details">
+            <div class="col-auto experience-toggle-column">
+                <button class="btn experience-toggle experience-toggle-expand"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#experience-entry-experience_rendered_no_separators-1-compact, #experience-entry-experience_rendered_no_separators-1-expanded"
+        aria-expanded="false"
+        aria-controls="experience-entry-experience_rendered_no_separators-1-compact experience-entry-experience_rendered_no_separators-1-expanded"
+        aria-label="Show details">
+    <span class="experience-toggle-icon" aria-hidden="true"></span>
+</button>
+            </div>
+            <div class="col-12 col-md-8 experience-heading-column">
+                <div class="experience-heading-vertical">
+    
+    <div class="experience-heading-institution">Example Course Staff</div>
+    
+    
+    <p class="experience-heading-role">Teaching Assistant</p>
+    
+    
+    <p class="experience-heading-extra text-muted">Graduate ML course</p>
+    
+    
+    <p class="experience-description text-muted">A compact card with inline date and location tags.</p>
+    
+</div>
+            </div>
+            <div class="col-12 col-md text-md-end text-center mt-2 mt-md-0 experience-meta">
+                
+<div class="experience-tags experience-tags-inline">
+    
+    <p class="text-muted mb-0">
+        Fall 2022
+         • 
+        Campus
+    </p>
+    
+</div>
+
+            </div>
+        </div>
+        
+    </div>
+    <div class="collapse experience-expanded-view" id="experience-entry-experience_rendered_no_separators-1-expanded">
+        <div class="row my-0 experience-summary experience-summary-inline experience-summary-expanded">
+            <div class="col-auto experience-toggle-column">
+                <button class="btn experience-toggle experience-toggle-close"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#experience-entry-experience_rendered_no_separators-1-compact, #experience-entry-experience_rendered_no_separators-1-expanded"
+        aria-expanded="true"
+        aria-controls="experience-entry-experience_rendered_no_separators-1-compact experience-entry-experience_rendered_no_separators-1-expanded"
+        aria-label="Hide details">
+    <span class="experience-toggle-icon" aria-hidden="true"></span>
+</button>
+            </div>
+            <div class="col-12 col-md-4 experience-heading-inline">
+                <div class="experience-heading-vertical text-center">
+    
+    <div class="experience-heading-institution">Example Course Staff</div>
+    
+    
+    <p class="experience-heading-role">Teaching Assistant</p>
+    
+    
+    <p class="experience-heading-extra text-muted">Graduate ML course</p>
+    
+    
+</div>
+                
+<div class="experience-tags experience-tags-inline text-center">
+    
+    <p class="text-muted mb-0">
+        Fall 2022
+         • 
+        Campus
+    </p>
+    
+</div>
+
+            </div>
+            <div class="col-12 col-md-7 experience-inline-content">
+                <ul>
+<li>Held tutorials, reviewed notebooks, and helped students debug ideas.</li>
+<li>This entry expands without separator lines between neighbors.</li>
+</ul>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    <div class="collapse show experience-compact-view" id="experience-entry-experience_rendered_no_separators-2-compact">
+        
+        <div class="row my-0 align-items-center experience-summary has-details">
+            <div class="col-auto experience-toggle-column">
+                <button class="btn experience-toggle experience-toggle-expand"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#experience-entry-experience_rendered_no_separators-2-compact, #experience-entry-experience_rendered_no_separators-2-expanded"
+        aria-expanded="false"
+        aria-controls="experience-entry-experience_rendered_no_separators-2-compact experience-entry-experience_rendered_no_separators-2-expanded"
+        aria-label="Show details">
+    <span class="experience-toggle-icon" aria-hidden="true"></span>
+</button>
+            </div>
+            <div class="col-12 col-md-8 experience-heading-column">
+                <div class="experience-heading-vertical">
+    
+    <div class="experience-heading-institution">Example Open Source Group</div>
+    
+    
+    <p class="experience-heading-role">Contributor</p>
+    
+    
+    <p class="experience-heading-extra text-muted">Documentation and examples</p>
+    
+    
+    <p class="experience-description text-muted">Separator-free sections feel more like a compact stack.</p>
+    
+</div>
+            </div>
+            <div class="col-12 col-md text-md-end text-center mt-2 mt-md-0 experience-meta">
+                
+<div class="experience-tags experience-tags-inline">
+    
+    <p class="text-muted mb-0">
+        2021 - 2024
+         • 
+        Online
+    </p>
+    
+</div>
+
+            </div>
+        </div>
+        
+    </div>
+    <div class="collapse experience-expanded-view" id="experience-entry-experience_rendered_no_separators-2-expanded">
+        <div class="row my-0 experience-summary experience-summary-inline experience-summary-expanded">
+            <div class="col-auto experience-toggle-column">
+                <button class="btn experience-toggle experience-toggle-close"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#experience-entry-experience_rendered_no_separators-2-compact, #experience-entry-experience_rendered_no_separators-2-expanded"
+        aria-expanded="true"
+        aria-controls="experience-entry-experience_rendered_no_separators-2-compact experience-entry-experience_rendered_no_separators-2-expanded"
+        aria-label="Hide details">
+    <span class="experience-toggle-icon" aria-hidden="true"></span>
+</button>
+            </div>
+            <div class="col-12 col-md-4 experience-heading-inline">
+                <div class="experience-heading-vertical text-center">
+    
+    <div class="experience-heading-institution">Example Open Source Group</div>
+    
+    
+    <p class="experience-heading-role">Contributor</p>
+    
+    
+    <p class="experience-heading-extra text-muted">Documentation and examples</p>
+    
+    
+</div>
+                
+<div class="experience-tags experience-tags-inline text-center">
+    
+    <p class="text-muted mb-0">
+        2021 - 2024
+         • 
+        Online
+    </p>
+    
+</div>
+
+            </div>
+            <div class="col-12 col-md-7 experience-inline-content">
+                <ul>
+<li>Added examples, cleaned docs, and turned rough workflows into recipes.</li>
+</ul>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+    
+    
+</div>
+        
+    </div>
+
+    
+    
+</div>
+            
+                
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+<div id="experience_syntax"
+    
+        class=" row align-items-start my-2 pe-xs-0
+            pe-sm-0 pe-md-1
+         pe-lg-2 pe-xlg-2 pe-xxlg-2"
+        style="min-height: 5vh;"
+    
+>
+    
+    
+        
+            <div class="wf-section-label mt-4 mb shadow-lg col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2
+                col-xxl-2 p-3 d-flex justify-content-center">
+                <strong>Experience Syntax</strong>
+            </div>
+        
+    
+
+    <div
+        
+            class="rounded hover-shadow bg-body shadow col-12 col-sm-12
+                col-md-10 col-lg-10 col-xl-10 col-xxl-10 px-4 p-4 justify-content-center"
+        
+    >
+        
+            
+                <p>Section-level keys:</p>
+<ul>
+<li><code>kind: resume.experience</code></li>
+<li><code>compact</code>: default compact/expandable behavior for entries.</li>
+<li><code>defaults.compact</code>: another way to set the default compact behavior.</li>
+<li><code>inline.heading</code>: display role and institution on one line in desktop mode.</li>
+<li><code>inline.tags</code>: display date and location on one line.</li>
+<li><code>horizontal</code>: render cards horizontally with scroll when needed.</li>
+<li><code>separators</code>: show/hide lines between entries.</li>
+</ul>
+<p>Entry keys:</p>
+<ul>
+<li><code>heading.institution</code></li>
+<li><code>heading.role</code></li>
+<li><code>heading.details</code></li>
+<li><code>heading.date</code></li>
+<li><code>heading.location</code></li>
+<li><code>expanded_heading</code>: optional full heading for expanded mode.</li>
+<li><code>description</code>: short compact summary.</li>
+<li><code>content</code>: Markdown details. If omitted, no details toggle is shown.</li>
+<li><code>compact</code>: per-entry override.</li>
+<li><code>inline.heading</code>, <code>inline.tags</code>: per-entry layout override.</li>
+<li><code>no_line</code>: hide the separator after this entry.</li>
+</ul>
+            
+        
+    </div>
+
+    
+    
+</div>
+            
+                
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+<div id="publications_yaml"
+    
+        class=" row align-items-start my-2 pe-xs-0
+            pe-sm-0 pe-md-1
+         pe-lg-2 pe-xlg-2 pe-xxlg-2"
+        style="min-height: 5vh;"
+    
+>
+    
+    
+        
+            <div class="wf-section-label mt-4 mb shadow-lg col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2
+                col-xxl-2 p-3 d-flex justify-content-center">
+                <strong>Publications YAML</strong>
+            </div>
+        
+    
+
+    <div
+        
+            class="rounded hover-shadow bg-body shadow col-12 col-sm-12
+                col-md-10 col-lg-10 col-xl-10 col-xxl-10 px-4 p-4 justify-content-center"
+        
+    >
+        
+            
+                <div class="codehilite"><pre><span></span><code><span class="nt">publications</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resume.publications</span>
+<span class="w">  </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Publications</span>
+<span class="w">  </span><span class="nt">neural_widgets</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Useful Neural Widgets for Static-Site Automation</span>
+<span class="w">    </span><span class="nt">authors</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">me</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Your Name</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Collaborator</span>
+<span class="w">        </span><span class="nt">link</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com</span>
+<span class="w">    </span><span class="nt">authors_notes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Equal contribution</span>
+<span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">[Paper](https://example.com/paper)</span>
+<span class="w">      </span><span class="no">[Code](https://github.com/example/widgets)</span>
+<span class="w">      </span><span class="no">[Demo](https://example.com/demo)</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">A short abstract or project note can go here. Tags are Markdown, so</span>
+<span class="w">      </span><span class="no">each item can be a normal link.</span>
+
+<span class="w">  </span><span class="nt">notebook_systems</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Notebook Publishing Systems That Do Not Hate You</span>
+<span class="w">    </span><span class="nt">authors</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">First Author</span>
+<span class="w">        </span><span class="nt">link</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/first</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">me</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Your Name</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Another Collaborator</span>
+<span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">[arXiv](https://arxiv.org)</span>
+<span class="w">      </span><span class="no">[Dataset](https://example.com/dataset)</span>
+<span class="w">      </span><span class="no">[Slides](https://example.com/slides)</span>
+<span class="w">      </span><span class="no">Reproducible</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Mix links and plain labels when some outputs have URLs and some are</span>
+<span class="w">      </span><span class="no">just status or context tags.</span>
+
+<span class="w">  </span><span class="nt">template_notes</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Template Notes for Reusable Project Websites</span>
+<span class="w">    </span><span class="nt">authors</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">me</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Your Name</span>
+<span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">[PDF](https://example.com/template-notes.pdf)</span>
+<span class="w">      </span><span class="no">[BibTeX](https://example.com/template-notes.bib)</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">Entries can also be short notes, reports, preprints, internal docs, or</span>
+<span class="w">      </span><span class="no">anything else that belongs in a publication-like list.</span>
+</code></pre></div>
+            
+        
+    </div>
+
+    
+    
+</div>
+            
+                
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+<div id="publications_rendered"
+    
+        class=" row align-items-start my-2 pe-xs-0
+            pe-sm-0 pe-md-1
+         pe-lg-2 pe-xlg-2 pe-xxlg-2"
+        style="min-height: 5vh;"
+    
+>
+    
+    
+        
+            <div class="wf-section-label mt-4 mb shadow-lg col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2
+                col-xxl-2 p-3 d-flex justify-content-center">
+                <strong>Rendered Publications</strong>
+            </div>
+        
+    
+
+    <div
+        
+            class="rounded hover-shadow bg-body shadow col-12 col-sm-12
+                col-md-10 col-lg-10 col-xl-10 col-xxl-10 px-4 p-4 justify-content-center"
+        
+    >
+        
+            
+
+<div class="container-fluid resume-publications">
+    
+    <div class="row m-0 p-0">
+        <div class="col-12 col-md-9 mb-md-0 mb-1">
+            
+            <div class="resume-publication-title">Useful Neural Widgets for Static-Site Automation</div>
+            
+            
+            <div class="small d-inline-block">
+                
+                
+                <span class="text-dark">
+                    Your Name</span>,
+                
+                <a href="https://example.com" class="text-secondary">
+                    Collaborator</a>
+                
+                
+                <span class="d-inline-block text-secondary small">- Equal contribution</span>
+                
+            </div>
+            
+        </div>
+        
+        <div class="col-12 col-md-3 text-center align-middle m-auto"><p><a href="https://example.com/paper">Paper</a>
+<a href="https://github.com/example/widgets">Code</a>
+<a href="https://example.com/demo">Demo</a></p></div>
+        
+    </div>
+    
+    <div class="row m-0 p-0 mt-2 mt-md-0">
+        <p>A short abstract or project note can go here. Tags are Markdown, so
+each item can be a normal link.</p>
+    </div>
+    
+    
+    <hr class="row mb-3 mt-3 mx-5 p-0">
+    
+    
+    <div class="row m-0 p-0">
+        <div class="col-12 col-md-9 mb-md-0 mb-1">
+            
+            <div class="resume-publication-title">Notebook Publishing Systems That Do Not Hate You</div>
+            
+            
+            <div class="small d-inline-block">
+                
+                
+                <a href="https://example.com/first" class="text-secondary">
+                    First Author</a>,
+                
+                <span class="text-dark">
+                    Your Name</span>,
+                
+                <span class="text-secondary">
+                    Another Collaborator</span>
+                
+                
+            </div>
+            
+        </div>
+        
+        <div class="col-12 col-md-3 text-center align-middle m-auto"><p><a href="https://arxiv.org">arXiv</a>
+<a href="https://example.com/dataset">Dataset</a>
+<a href="https://example.com/slides">Slides</a>
+Reproducible</p></div>
+        
+    </div>
+    
+    <div class="row m-0 p-0 mt-2 mt-md-0">
+        <p>Mix links and plain labels when some outputs have URLs and some are
+just status or context tags.</p>
+    </div>
+    
+    
+    <hr class="row mb-3 mt-3 mx-5 p-0">
+    
+    
+    <div class="row m-0 p-0">
+        <div class="col-12 col-md-9 mb-md-0 mb-1">
+            
+            <div class="resume-publication-title">Template Notes for Reusable Project Websites</div>
+            
+            
+            <div class="small d-inline-block">
+                
+                
+                <span class="text-dark">
+                    Your Name</span>
+                
+                
+            </div>
+            
+        </div>
+        
+        <div class="col-12 col-md-3 text-center align-middle m-auto"><p><a href="https://example.com/template-notes.pdf">PDF</a>
+<a href="https://example.com/template-notes.bib">BibTeX</a></p></div>
+        
+    </div>
+    
+    <div class="row m-0 p-0 mt-2 mt-md-0">
+        <p>Entries can also be short notes, reports, preprints, internal docs, or
+anything else that belongs in a publication-like list.</p>
+    </div>
+    
+    
+    
+</div>
+        
+    </div>
+
+    
+    
+</div>
+            
+                
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+<div id="extending"
+    
+        class=" row align-items-start my-2 pe-xs-0
+            pe-sm-0 pe-md-1
+         pe-lg-2 pe-xlg-2 pe-xxlg-2"
+        style="min-height: 5vh;"
+    
+>
+    
+    
+        
+            <div class="wf-section-label mt-4 mb shadow-lg col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2
+                col-xxl-2 p-3 d-flex justify-content-center">
+                <strong>Extending Resume</strong>
+            </div>
+        
+    
+
+    <div
+        
+            class="rounded hover-shadow bg-body shadow col-12 col-sm-12
+                col-md-10 col-lg-10 col-xl-10 col-xxl-10 px-4 p-4 justify-content-center"
+        
+    >
+        
+            
+                <p>Override <code>experience.html</code> or <code>publications.html</code> for markup changes. For a
+new domain-specific CV format, package your own extension that registers a
+new renderer id such as <code>academic.experience</code> or <code>resume.timeline</code>, and ship
+its templates/assets in that package.</p>
+            
+        
+    </div>
+
+    
+    
+</div>
+            
+        </div>
+    </div>
+
+    
+
+<nav class="wf-page-navigation container-fluid bg-body shadow p-3 mt-2" aria-label="Page navigation">
+    <div class="wf-page-navigation-inner">
+        <div class="wf-page-navigation-slot wf-page-navigation-previous">
+            
+            <a class="btn btn-link p-0 wf-page-navigation-back-icon" href="/pages/user-guide/extensions/05-people.html" aria-label="Back to People Extension" title="Back to People Extension">
+                <span aria-hidden="true">&lsaquo;</span>
+                <span>People Extension</span>
+            </a>
+            
+        </div>
+        <div class="wf-page-navigation-home text-center">
+            
+            <a class="btn btn-link p-0" href="/pages/user-guide/">User Guide</a>
+            
+        </div>
+        <div class="wf-page-navigation-slot wf-page-navigation-next">
+            
+            <a class="btn btn-link p-0" href="/pages/user-guide/extensions/07-theme.html">
+                <span>Theme Extension</span>
+                <span aria-hidden="true">&rsaquo;</span>
+            </a>
+            
+        </div>
+    </div>
+</nav>
+
+
+
+    
+
+
+
+
+
+<footer class="container-fluid wf-page-chrome shadow text-center align-items-center p-0 hidden-print"
+        
+        style="min-height: 2vh;"
+        
+>
+    <div
+            
+            class="wf-page-chrome-panel p-3 m-auto text-center"
+            
+    >
+        
+        © Powered by <a class="link-primary" href="https://webifier.github.io/">Webifier</a>
+    </div>
+</footer>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+.app-content {
+    max-width: 82%;
+}
+
+.wf-page-chrome-panel {
+    padding: 1rem !important;
+}
+
+@media only screen and (max-width: 1400px) {
+    .app-content {
+        max-width: 94%;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .app-content {
+        max-width: 100%;
+    }
+}

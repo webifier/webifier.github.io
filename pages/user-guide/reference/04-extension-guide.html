@@ -1,0 +1,829 @@
+
+
+
+
+
+
+
+
+<html>
+
+
+
+
+
+<head>
+    <title>Extension & Customization Guide</title>
+    
+
+<!-- viewport meta-tag for responsiveness -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+<link rel="icon" href="/assets/images/webifier-logo.png" type="image/png">
+
+
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+<!-- Bootstrap v5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- FontAwesome JS -->
+<script src="https://kit.fontawesome.com/01c0691b3e.js" crossorigin="anonymous"></script>
+
+<!-- Loading mathjax macro -->
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true,
+                skipTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+            },
+            displayAlign: 'center',
+            "HTML-CSS": {
+                styles: {'.MathJax_Display': {"margin": 0}},
+                linebreaks: { automatic: true }
+            }
+        });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+  const webifierTheme = document.documentElement.getAttribute("data-bs-theme");
+  mermaid.initialize({ startOnLoad: true, theme: webifierTheme === "dark" ? "dark" : "default" });
+</script>
+<link rel="stylesheet" href="/assets/css/codehilite.css">
+<link rel="stylesheet" href="/assets/css/main.css">
+<script defer src="/assets/js/codeblocks.js"></script>
+<script defer src="/assets/js/content-toc.js"></script>
+
+<script>
+(function () {
+  const switcherEnabled = true;
+  const stored = switcherEnabled ? localStorage.getItem("webifier-theme") : null;
+  const selected = stored || "system";
+  const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const resolved = selected === "system" ? (systemDark ? "dark" : "light") : selected;
+  document.documentElement.dataset.wfTheme = selected;
+  document.documentElement.dataset.wfResolvedTheme = resolved;
+  document.documentElement.dataset.bsTheme = resolved === "dark" ? "dark" : "light";
+})();
+</script>
+<link rel="stylesheet" href="/assets/css/theme.css">
+<script defer src="/assets/js/theme.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TYRMXHZ5YH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-TYRMXHZ5YH');
+</script>
+
+
+
+
+<link rel="stylesheet" href="/assets/css/site.css">
+
+
+
+    
+
+    
+
+
+    
+</head>
+
+<body class="bg-body-tertiary">
+<div class="app-content container-fluid">
+    
+    
+
+
+
+
+
+
+<header class="container-fluid wf-page-chrome text-center align-items-center p-0"
+        
+        style="min-height: 5vh;"
+        
+>
+    <div
+            
+            class="wf-page-chrome-panel p-3 m-auto text-center"
+            
+    >
+        <h1>Extension & Customization Guide</h1>
+        
+        <p class="mt-3">Named extensions, templates, renderers, resolvers, assets, and site features.</p>
+        
+    </div>
+</header>
+
+
+    
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<nav class="px-2 navbar navbar-expand-sm bg-body-tertiary m-0 p-2 sticky-top shadow wf-navbar">
+    
+    
+    
+
+
+
+
+
+
+
+    <a href="/" class="btn navbar-brand"
+       
+    >
+    
+    
+        
+        
+        
+        
+        
+        <img src="/assets/images/webifier-logo.png" width="28" height="28" class="d-inline-block" alt="Webifier logo">
+    
+    
+        Webifier
+    
+    </a>
+
+
+    
+
+    <div
+            
+            class="collapse navbar-collapse p-0 m-0"
+            id="navbarSupportedContent"
+            
+    >
+        <ul class="navbar-nav me-auto my-1 p-0">
+            
+            <li class="nav-item">
+                
+                
+                
+
+
+
+
+
+
+
+    <a href="/pages/user-guide/" class="btn nav-link"
+       
+    >
+    
+    
+    
+        Docs
+    
+    </a>
+
+
+                
+            </li>
+            
+            <li class="nav-item">
+                
+                
+                
+
+
+
+
+
+
+
+    <a href="/pages/collaboration.html" class="btn nav-link"
+       
+    >
+    
+    
+    
+        Collaborate
+    
+    </a>
+
+
+                
+            </li>
+            
+            <li class="nav-item">
+                
+                
+                
+
+
+
+
+
+
+
+    <a href="https://github.com/webifier" class="btn nav-link"
+       
+    >
+    
+    
+    
+        GitHub
+    
+    </a>
+
+
+                
+            </li>
+            
+        </ul>
+        
+    </div>
+    <div class="d-flex my-1 ms-auto wf-navbar-actions">
+        
+        <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+
+        
+        
+            <a href="/pages/user-guide/" class="btn nav-item mt-1 wf-nav-back" aria-label="Back" title="Back">
+                <span aria-hidden="true">&lsaquo;</span>
+            </a>
+        
+
+        
+        
+        
+
+        
+        
+        
+        <button
+                class="btn nav-item mt-1 webifier-theme-toggle"
+                type="button"
+                id="webifier-theme-toggle"
+                title="Switch color theme"
+                aria-label="Switch color theme"
+                data-theme-default="system"
+                data-theme-modes="system,light,dark"
+        >
+            <svg class="webifier-theme-symbol webifier-theme-symbol-system" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="13" rx="2"></rect>
+                <path d="M8 21h8"></path>
+                <path d="M12 17v4"></path>
+            </svg>
+            <svg class="webifier-theme-symbol webifier-theme-symbol-light" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="M4.93 4.93l1.41 1.41"></path>
+                <path d="M17.66 17.66l1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="M6.34 17.66l-1.41 1.41"></path>
+                <path d="M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+            <svg class="webifier-theme-symbol webifier-theme-symbol-dark" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+            </svg>
+            <span class="visually-hidden webifier-theme-label">Theme</span>
+        </button>
+        
+
+        
+    </div>
+</nav>
+
+
+
+
+
+
+    <div id="app-body"
+         class="app-body container-fluid bg-body justify-content-center align-items-center d-flex shadow">
+        <div class="container-fluid p-0 m-0 no-gutters">
+            
+            <div class="wf-content-page-body container-fluid bg-body px-4 py-4 px-md-5 py-md-5">
+                <nav aria-label="Table of contents" class="wf-content-toc is-collapsed"><h2><button aria-expanded="false" class="wf-content-toc-toggle" type="button"><span aria-hidden="true" class="wf-content-toc-toggle-icon">▸</span><span>Table of Contents</span></button></h2><ol><li class="wf-content-toc-level-1"><a href="#extension-customization-guide">Extension &amp; Customization Guide</a></li><li class="wf-content-toc-level-2"><a href="#first-party-extensions">First-Party Extensions</a></li><li class="wf-content-toc-level-2"><a href="#template-overrides">Template Overrides</a></li><li class="wf-content-toc-level-2"><a href="#extension-package-contract">Extension Package Contract</a></li><li class="wf-content-toc-level-2"><a href="#extension-fields">Extension Fields</a></li><li class="wf-content-toc-level-2"><a href="#useful-hooks">Useful Hooks</a></li><li class="wf-content-toc-level-2"><a href="#page-key-consumers">Page Key Consumers</a></li><li class="wf-content-toc-level-2"><a href="#content-renderers">Content Renderers</a></li><li class="wf-content-toc-level-2"><a href="#resume-example">Resume Example</a></li></ol></nav><h1 id="extension-customization-guide">Extension &amp; Customization Guide</h1>
+<p>Webifier extensions are installable Python packages that contribute rendering
+behavior to a site. An extension can provide renderers, templates, assets,
+themes, resolvers, content handlers, and build hooks.</p>
+<p>The public config shape is a named mapping:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">webifier</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">extensions</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">site</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.standard</span>
+
+<span class="w">    </span><span class="nt">search</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.search</span>
+<span class="w">      </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">links</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">    </span><span class="nt">theme</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.theme</span>
+<span class="w">      </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system</span>
+<span class="w">      </span><span class="nt">switcher</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">    </span><span class="nt">resume</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.resume</span>
+</code></pre></div>
+<p>Each key is a local instance name. <code>uses</code> points to the installed extension id.
+The instance name is also the config namespace exported for that instance, so
+<code>resume:</code> exports its settings to <code>config.resume</code>, <code>publications:</code> exports to
+<code>config.publications</code>, and so on. This lets one extension be used more than
+once:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">webifier</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">extensions</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">publications</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my.collection</span>
+<span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">papers/</span>
+
+<span class="w">    </span><span class="nt">projects</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my.collection</span>
+<span class="w">      </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">projects/</span>
+</code></pre></div>
+<p>YAML order is extension load order. A later extension can replace a registration
+from an earlier one only when the instance says <code>override: true</code>.</p>
+<h2 id="first-party-extensions">First-Party Extensions</h2>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>Provides</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>webifier.standard</code></td>
+<td>Default page, section, content page, links, freeform renderers, templates, and base assets</td>
+</tr>
+<tr>
+<td><code>webifier.markdown</code></td>
+<td>Markdown renderer and <code>.md</code> / <code>.markdown</code> content pages</td>
+</tr>
+<tr>
+<td><code>webifier.notebook</code></td>
+<td><code>.ipynb</code> content pages</td>
+</tr>
+<tr>
+<td><code>webifier.pdf</code></td>
+<td>Embedded <code>.pdf</code> content pages with page chrome and PDF controls</td>
+</tr>
+<tr>
+<td><code>webifier.search</code></td>
+<td>Search config and <code>search.json</code> generation</td>
+</tr>
+<tr>
+<td><code>webifier.theme</code></td>
+<td>Light/dark/system theme plumbing and theme assets</td>
+</tr>
+<tr>
+<td><code>webifier.analytics.google</code></td>
+<td>Google tag head injection</td>
+</tr>
+<tr>
+<td><code>webifier.comments</code></td>
+<td>Utterances comments renderer</td>
+</tr>
+<tr>
+<td><code>webifier.people</code></td>
+<td>People/profile renderer</td>
+</tr>
+<tr>
+<td><code>webifier.chapters</code></td>
+<td>Accordion/chapter renderer</td>
+</tr>
+<tr>
+<td><code>webifier.resume</code></td>
+<td>Resume experience renderer, inline detail toggles, and assets</td>
+</tr>
+</tbody>
+</table>
+<h2 id="template-overrides">Template Overrides</h2>
+<p>The template search path starts with your site root, then enabled extension
+template directories in config order.</p>
+<p>To override a template, put a file with the same relative path in your site:</p>
+<div class="codehilite"><pre><span></span><code>my-site/
+  page.html
+  templates/
+    publications.html
+</code></pre></div>
+<p>Template-only renderers still work:</p>
+<div class="codehilite"><pre><span></span><code>my-site/
+  renderers/
+    gallery.html
+</code></pre></div>
+<div class="codehilite"><pre><span></span><code><span class="nt">photos</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gallery</span>
+</code></pre></div>
+<h2 id="extension-package-contract">Extension Package Contract</h2>
+<p>Expose an entry point:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[project.entry-points.</span><span class="s2">"webifier.extensions"</span><span class="k">]</span>
+<span class="s2">"my.resume"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"my_resume.extension:ResumeExtension"</span>
+</code></pre></div>
+<p>Expose an <code>Extension</code> subclass:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">webifier.core.extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AssetMount</span><span class="p">,</span> <span class="n">Extension</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ResumeExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">"my.resume"</span>
+    <span class="n">template_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"/absolute/path/to/templates"</span><span class="p">]</span>
+    <span class="n">assets</span> <span class="o">=</span> <span class="p">[</span><span class="n">AssetMount</span><span class="p">(</span><span class="s2">"/absolute/path/to/assets"</span><span class="p">,</span> <span class="s2">"assets/webifier/resume"</span><span class="p">)]</span>
+    <span class="n">renderers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"resume.experience"</span><span class="p">:</span> <span class="s2">"my_resume.renderers.ExperienceRenderer"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">content_renderers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">".bib"</span><span class="p">:</span> <span class="s2">"my_resume.content.render_bibliography_page"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">resolvers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"resume_files"</span><span class="p">:</span> <span class="s2">"my_resume.resolvers.resume_files"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">hooks</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"head"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"my_resume.hooks.render_head"</span><span class="p">],</span>
+        <span class="s2">"after_build"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"my_resume.hooks.after_build"</span><span class="p">],</span>
+    <span class="p">}</span>
+</code></pre></div>
+<h2 id="extension-fields">Extension Fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>Stable installed extension id used by <code>uses</code></td>
+</tr>
+<tr>
+<td><code>dependencies</code></td>
+<td>Extension ids that must already be enabled</td>
+</tr>
+<tr>
+<td><code>renderers</code></td>
+<td><code>kind</code> aliases to <code>RendererModule</code> classes</td>
+</tr>
+<tr>
+<td><code>content_renderers</code></td>
+<td>File suffixes or aliases to content-page builders</td>
+</tr>
+<tr>
+<td><code>page_keys</code></td>
+<td>Page-level keys consumed before ordinary section rendering</td>
+</tr>
+<tr>
+<td><code>resolvers</code></td>
+<td><code>${resolver:...}</code> functions</td>
+</tr>
+<tr>
+<td><code>formats</code></td>
+<td>Patch/load handlers for file extensions</td>
+</tr>
+<tr>
+<td><code>template_dirs</code></td>
+<td>Jinja2 template directories</td>
+</tr>
+<tr>
+<td><code>assets</code></td>
+<td>Asset directories copied into output</td>
+</tr>
+<tr>
+<td><code>hooks</code></td>
+<td>Optional build or HTML injection hooks</td>
+</tr>
+<tr>
+<td><code>default_config</code></td>
+<td>Defaults for that extension instance</td>
+</tr>
+<tr>
+<td><code>config_defaults</code></td>
+<td>Defaults merged into the site config</td>
+</tr>
+</tbody>
+</table>
+<h2 id="useful-hooks">Useful Hooks</h2>
+<table>
+<thead>
+<tr>
+<th>Hook</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>head</code></td>
+<td>Return HTML for the page <code>&lt;head&gt;</code></td>
+</tr>
+<tr>
+<td><code>before_build</code></td>
+<td>Run before the root page is rendered</td>
+</tr>
+<tr>
+<td><code>after_build</code></td>
+<td>Run after all pages are rendered</td>
+</tr>
+</tbody>
+</table>
+<p>Hook functions receive the builder plus lifecycle keyword arguments. The <code>head</code>
+hook is page-aware: it runs while that page's <code>&lt;head&gt;</code> is being rendered.</p>
+<p>Useful <code>head</code> hook arguments:</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hook_context</code></td>
+<td>Stable object with area, builder, page, ctx, config, extension id, instance name, and instance config</td>
+</tr>
+<tr>
+<td><code>page</code></td>
+<td>The processed page data currently being rendered</td>
+</tr>
+<tr>
+<td><code>ctx</code></td>
+<td>The current <code>NodeContext</code>, including page URL</td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td>Global config merged with page-local <code>config</code> and Markdown page-preface <code>config</code></td>
+</tr>
+<tr>
+<td><code>instance_config</code></td>
+<td>Config for this named extension instance</td>
+</tr>
+<tr>
+<td><code>baseurl</code></td>
+<td>Base URL for building asset links</td>
+</tr>
+</tbody>
+</table>
+<p>That means an extension can inject assets only on pages that actually use it:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">markupsafe</span><span class="w"> </span><span class="kn">import</span> <span class="n">Markup</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">render_head</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">instance_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">_</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">page_uses_widget</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="n">Markup</span><span class="p">(</span><span class="sa">f</span><span class="s1">'&lt;script defer src="</span><span class="si">{</span><span class="n">baseurl</span><span class="si">}</span><span class="s1">/assets/widget/widget.js"&gt;&lt;/script&gt;'</span><span class="p">)</span>
+</code></pre></div>
+<p>Or it can let individual pages opt in through page config:</p>
+<div class="codehilite"><pre><span></span><code>---
+title: Interactive notebook
+config:
+  widget:
+<span class="gu">    enabled: true</span>
+<span class="gu">---</span>
+</code></pre></div>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render_head</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseurl</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="o">**</span><span class="n">_</span><span class="p">):</span>
+    <span class="n">widget</span> <span class="o">=</span> <span class="p">(</span><span class="n">config</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"widget"</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">widget</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"enabled"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">'&lt;script defer src="</span><span class="si">{</span><span class="n">baseurl</span><span class="si">}</span><span class="s1">/assets/widget/widget.js"&gt;&lt;/script&gt;'</span>
+</code></pre></div>
+<p>Head hooks usually return a string; build hooks usually return nothing.</p>
+<h2 id="page-key-consumers">Page Key Consumers</h2>
+<p>By default, page keys outside reserved Webifier controls are visible content.
+With <code>webifier.standard</code>, they render as sections in YAML order. Extensions can
+claim additional page-level keys when a key should control behavior instead of
+appearing as content.</p>
+<p>Register a consumer imperatively:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">webifier.core.extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Extension</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">WeatherExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">"example.weather"</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">consume_page_key</span><span class="p">(</span><span class="s2">"weather"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">consume_weather</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">consume_weather</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">,</span> <span class="o">**</span><span class="n">_</span><span class="p">):</span>
+        <span class="n">page</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">"_weather"</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div>
+<p>Or declare a mapping:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">WeatherExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">"example.weather"</span>
+    <span class="n">page_keys</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"weather"</span><span class="p">:</span> <span class="s2">"example_weather.consumers.consume_weather"</span><span class="p">,</span>
+    <span class="p">}</span>
+</code></pre></div>
+<p>Then page data can include:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Field Notes</span>
+<span class="nt">weather</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudy</span>
+<span class="nt">notes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Notes</span>
+<span class="w">  </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">This section still renders normally.</span>
+</code></pre></div>
+<p><code>weather</code> is passed to the registered consumer and removed before renderer
+dispatch sees normal sections. That means downstream renderers do not need to
+know about keys owned by other extensions.</p>
+<p>Consumer callbacks receive the builder plus lifecycle keyword arguments:</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key</code></td>
+<td>Consumed key name</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>Original value from the page</td>
+</tr>
+<tr>
+<td><code>page</code> / <code>data</code></td>
+<td>Remaining mutable page mapping after the key is removed</td>
+</tr>
+<tr>
+<td><code>ctx</code></td>
+<td>Current <code>NodeContext</code></td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td>Merged page config</td>
+</tr>
+<tr>
+<td><code>instance_name</code></td>
+<td>Named extension instance that owns the key</td>
+</tr>
+<tr>
+<td><code>instance_config</code></td>
+<td>Config for that extension instance</td>
+</tr>
+<tr>
+<td><code>hook_context</code></td>
+<td>Stable context object with the same lifecycle data</td>
+</tr>
+</tbody>
+</table>
+<p>If the callback returns a value, Webifier stores it under internal
+<code>_extension_data.&lt;instance-name&gt;.&lt;key&gt;</code>. A callback can also mutate <code>page</code>
+directly when it wants to add hidden derived data for a renderer or hook.</p>
+<p>Only one extension instance can consume a page key by default. A later instance
+can replace the consumer with <code>override: true</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">webifier</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">extensions</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">weather</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example.weather</span>
+<span class="w">      </span><span class="nt">better_weather</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">other.weather</span>
+<span class="w">        </span><span class="nt">override</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<h2 id="content-renderers">Content Renderers</h2>
+<p>Content renderers turn linked files into generated pages. The markdown extension
+registers <code>.md</code>, <code>.markdown</code>, <code>md</code>, and <code>markdown</code>. The notebook extension
+registers <code>.ipynb</code> and <code>notebook</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render_report</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">convert_report_to_html</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrap_in_content_page</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">html</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+</code></pre></div>
+<p>Then use a YAML link with <code>src</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">webifier</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">extensions</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">reports</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my.reports</span>
+</code></pre></div>
+<div class="codehilite"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Open report</span>
+<span class="w">  </span><span class="nt">src</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reports/run-001.report</span>
+</code></pre></div>
+<h2 id="resume-example">Resume Example</h2>
+<p>The first-party resume extension registers <code>kind: resume.experience</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">webifier</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">extensions</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">site</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.standard</span>
+<span class="w">    </span><span class="nt">markdown</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.markdown</span>
+<span class="w">    </span><span class="nt">resume</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webifier.resume</span>
+</code></pre></div>
+<div class="codehilite"><pre><span></span><code><span class="nt">experience</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Professional Experience</span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resume.experience</span>
+<span class="w">  </span><span class="nt">inline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">compact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">stability</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">institution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Stability AI</span>
+<span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Senior Machine Learning Scientist</span>
+<span class="w">      </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mar. 2025 - Present</span>
+<span class="w">      </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Toronto, ON, Canada</span>
+<span class="w">    </span><span class="nt">expanded_heading</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">institution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Stability AI</span>
+<span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Senior Machine Learning Scientist</span>
+<span class="w">      </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mar. 2025 - Present</span>
+<span class="w">      </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Toronto, ON, Canada</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">- Led model training work.</span>
+<span class="w">  </span><span class="nt">earlier_role</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">compact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">heading</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">institution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Earlier Company</span>
+<span class="w">      </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ML Engineer</span>
+<span class="w">      </span><span class="nt">date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2021 - 2022</span>
+<span class="w">      </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Toronto, ON, Canada</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">      </span><span class="no">- This entry renders inline instead of using the detail toggle.</span>
+</code></pre></div>
+<p>If <code>content</code> is missing, the compact toggle is not shown.
+Set <code>defaults.compact: false</code> to render entries inline by default, or override
+individual entries with <code>compact: true</code> / <code>compact: false</code>.
+Compact entries render as short summaries first; the left-side toggle switches
+that entry into the full non-compact layout and back again.
+Set <code>inline: true</code> on the section for a dense divider-free stack where desktop
+rows read as <code>role - institution</code> with <code>location • date</code> aligned to the right.</p>
+            </div>
+            
+        </div>
+    </div>
+    
+
+<nav class="wf-page-navigation container-fluid bg-body shadow p-3 mt-2" aria-label="Page navigation">
+    <div class="wf-page-navigation-inner">
+        <div class="wf-page-navigation-slot wf-page-navigation-previous">
+            
+            <a class="btn btn-link p-0 wf-page-navigation-back-icon" href="/pages/user-guide/reference/03-renderers.html" aria-label="Back to Renderer / Kind System" title="Back to Renderer / Kind System">
+                <span aria-hidden="true">&lsaquo;</span>
+                <span>Renderer / Kind System</span>
+            </a>
+            
+        </div>
+        <div class="wf-page-navigation-home text-center">
+            
+            <a class="btn btn-link p-0" href="/pages/user-guide/">User Guide</a>
+            
+        </div>
+        <div class="wf-page-navigation-slot wf-page-navigation-next">
+            
+            <a class="btn btn-link p-0" href="/pages/user-guide/reference/05-processing-pipeline.html">
+                <span>Processing Pipeline</span>
+                <span aria-hidden="true">&rsaquo;</span>
+            </a>
+            
+        </div>
+    </div>
+</nav>
+
+
+    
+
+
+
+
+
+<footer class="container-fluid wf-page-chrome shadow text-center align-items-center p-0 hidden-print"
+        
+        style="min-height: 2vh;"
+        
+>
+    <div
+            
+            class="wf-page-chrome-panel p-3 m-auto text-center"
+            
+    >
+        
+        © Powered by <a class="link-primary" href="https://webifier.github.io/">Webifier</a>
+    </div>
+</footer>
+
+</div>
+</body>
+</html>

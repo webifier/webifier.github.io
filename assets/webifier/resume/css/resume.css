@@ -1,0 +1,542 @@
+.experience-summary {
+    border-radius: 0.35rem;
+    padding-bottom: 0.75rem;
+    padding-top: 0.75rem;
+    transition: none;
+}
+
+.experience-summary.has-details {
+    position: relative;
+}
+
+.experience-list-horizontal {
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-bottom: 0.5rem;
+}
+
+.experience-track {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    width: max-content;
+    min-width: 100%;
+}
+
+.experience-card-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 clamp(18rem, 32vw, 28rem);
+}
+
+.experience-card-wrap > .collapse.show,
+.experience-card-wrap > .collapsing {
+    flex: 1 1 auto;
+}
+
+.experience-summary-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 7.5rem;
+    padding: 0.35rem 0.85rem;
+    text-align: center;
+}
+
+.experience-heading {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.experience-heading-column {
+    text-align: center;
+}
+
+.experience-summary-inline {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+.experience-summary-stack-inline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    column-gap: 3rem;
+    align-items: center;
+    min-height: 3.8rem;
+    padding-bottom: 0.45rem;
+    padding-top: 0.45rem;
+}
+
+.experience-summary-stack-inline.has-details {
+    grid-template-columns: auto minmax(0, 1fr) max-content;
+    column-gap: 0.85rem;
+}
+
+.experience-stack-inline-main {
+    min-width: 0;
+}
+
+.experience-inline-desktop {
+    display: block;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.experience-inline-mobile {
+    display: none;
+}
+
+.experience-inline-extra {
+    margin-left: 0.4rem;
+}
+
+.experience-description {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 0.84rem;
+    line-height: 1.25;
+}
+
+.experience-inline-description {
+    text-align: left;
+}
+
+.experience-stack-inline-side {
+    min-width: 13rem;
+    text-align: right;
+}
+
+.experience-heading-inline {
+    text-align: center;
+}
+
+.experience-heading-vertical {
+    display: block;
+    max-width: 100%;
+    text-align: center;
+}
+
+.experience-heading-vertical.text-center {
+    text-align: center;
+}
+
+.experience-heading-institution,
+.experience-inline-institution,
+.experience-mobile-institution {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.22;
+}
+
+.experience-heading-role,
+.experience-inline-role,
+.experience-mobile-role {
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.25;
+}
+
+.experience-heading-extra,
+.experience-inline-extra,
+.experience-mobile-extra {
+    margin: 0;
+    padding: 0;
+    font-size: 0.84rem;
+    line-height: 1.25;
+}
+
+.experience-inline-extra {
+    margin-left: 0.4rem;
+}
+
+.experience-separator {
+    align-self: center;
+    width: 1px;
+    min-height: 4.25rem;
+    margin: 0 0.75rem;
+    background-color: var(--wf-border, var(--bs-border-color));
+}
+
+.experience-meta {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 2.5rem;
+    overflow: visible;
+}
+
+.experience-tags {
+    min-width: 0;
+    color: var(--wf-experience-meta-color, var(--wf-muted, var(--bs-secondary-color)));
+    font-family: var(--bs-font-monospace);
+    font-size: 0.84rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+}
+
+.experience-tags p {
+    font-size: inherit;
+    line-height: 1.25;
+}
+
+.experience-tags .text-muted {
+    color: inherit !important;
+}
+
+.experience-inline-content {
+    text-align: left;
+}
+
+.experience-inline-content > :last-child {
+    margin-bottom: 0;
+}
+
+.experience-meta::after {
+    content: none;
+}
+
+.experience-compact-view,
+.experience-expanded-view {
+    overflow: hidden;
+}
+
+.experience-expanded-view.is-opening .experience-summary {
+    animation: experience-enter-from-right 0.24s ease-out both;
+}
+
+.experience-compact-view.is-closing .experience-summary {
+    animation: experience-exit-to-left 0.2s ease-in both;
+}
+
+.experience-compact-view.is-opening .experience-summary {
+    animation: experience-enter-from-left 0.2s ease-out both;
+}
+
+.experience-expanded-view.is-closing .experience-summary {
+    animation: experience-exit-to-right 0.2s ease-in both;
+}
+
+.experience-action-pane {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.experience-toggle-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.experience-toggle-placeholder {
+    width: 1.7rem;
+}
+
+.experience-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.7rem;
+    min-width: 1.7rem;
+    height: 1.7rem;
+    color: var(--bs-secondary-color, #6c757d);
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    opacity: 0.72;
+    padding: 0;
+    line-height: 1;
+    transition:
+        color 0.16s ease,
+        opacity 0.16s ease,
+        transform 0.16s ease;
+}
+
+.experience-toggle:hover,
+.experience-toggle:focus {
+    color: var(--bs-primary);
+    background: transparent;
+    opacity: 1;
+    transform: translateX(0.08rem);
+}
+
+.experience-toggle:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 0.18rem;
+}
+
+.experience-toggle-icon {
+    display: block;
+    width: 0.48rem;
+    height: 0.48rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+}
+
+.experience-toggle-expand .experience-toggle-icon {
+    transform: rotate(-45deg);
+}
+
+.experience-toggle-close .experience-toggle-icon {
+    transform: rotate(135deg);
+}
+
+.experience-toggle-close:hover,
+.experience-toggle-close:focus {
+    transform: translateX(-0.08rem);
+}
+
+.experience-expanded-view {
+    margin-bottom: 0.75rem;
+}
+
+.experience-expanded-card {
+    height: 100%;
+}
+
+.experience-summary-expanded {
+    align-items: flex-start;
+}
+
+.experience-summary-expanded .experience-toggle-column {
+    padding-top: 0.1rem;
+}
+
+.experience-summary-horizontal .experience-meta {
+    min-height: 2.75rem;
+    margin-top: auto;
+}
+
+.experience-summary-horizontal .experience-action-pane {
+    justify-content: center;
+}
+
+.resume-publication-title {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: left;
+}
+
+.resume-publications .col-md-3 {
+    font-size: 0.78rem;
+    line-height: 1.35;
+}
+
+.resume-publications .col-md-3 p {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.18rem 0.45rem;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.resume-publications .col-md-3 a {
+    font-size: 0.78rem;
+}
+
+@keyframes experience-enter-from-right {
+    from {
+        opacity: 0;
+        transform: translateX(1.25rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes experience-exit-to-left {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-1.25rem);
+    }
+}
+
+@keyframes experience-enter-from-left {
+    from {
+        opacity: 0;
+        transform: translateX(-1rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes experience-exit-to-right {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(1rem);
+    }
+}
+
+@media (min-width: 768px) {
+    .experience-heading-column {
+        padding-left: 3rem;
+        text-align: left;
+    }
+
+    .experience-heading-vertical {
+        text-align: left;
+    }
+
+    .experience-heading-vertical.text-center {
+        text-align: center;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .experience-track {
+        min-width: 100%;
+    }
+
+    .experience-card-wrap {
+        flex-basis: min(80vw, 28rem);
+    }
+
+    .experience-summary-stack-inline {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        min-height: 0;
+        padding-bottom: 0.75rem;
+        padding-top: 0.75rem;
+        text-align: center;
+    }
+
+    .experience-summary-stack-inline.has-details {
+        grid-template-columns: minmax(0, 1fr);
+        column-gap: 0;
+    }
+
+    .experience-summary-stack-inline.has-details .experience-toggle-column {
+        grid-column: 1;
+        grid-row: 3;
+        margin-top: 0.55rem;
+        padding-top: 0;
+    }
+
+    .experience-summary-stack-inline.has-details .experience-stack-inline-main,
+    .experience-summary-stack-inline.has-details .experience-stack-inline-side {
+        grid-column: 1;
+    }
+
+    .experience-summary-stack-inline.has-details .experience-stack-inline-main {
+        grid-row: 1;
+    }
+
+    .experience-summary-stack-inline.has-details .experience-stack-inline-side {
+        grid-row: 2;
+    }
+
+    .row.experience-summary.has-details {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .row.experience-summary.has-details > .experience-toggle-column {
+        grid-column: 1;
+        grid-row: 3;
+        margin-top: 0.55rem;
+    }
+
+    .row.experience-summary.has-details > .experience-heading-column {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .row.experience-summary.has-details > .experience-meta {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .experience-summary-expanded {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .experience-summary-expanded > .experience-toggle-column {
+        grid-column: 1;
+        grid-row: 2;
+        margin: 0.55rem 0 0.8rem;
+    }
+
+    .experience-summary-expanded > .experience-heading-inline {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .experience-summary-expanded > .experience-inline-content {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .experience-inline-desktop {
+        display: none;
+    }
+
+    .experience-inline-description {
+        display: none;
+    }
+
+    .experience-inline-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 0.08rem;
+        text-align: center;
+    }
+
+    .experience-stack-inline-side {
+        min-width: 0;
+        margin-top: 0.18rem;
+        text-align: center;
+    }
+
+    .experience-meta {
+        justify-content: center;
+        min-height: 0;
+    }
+
+    .experience-toggle:hover,
+    .experience-toggle:focus {
+        transform: translateY(0.08rem);
+    }
+
+    .experience-toggle-expand .experience-toggle-icon {
+        transform: translateY(-0.08rem) rotate(45deg);
+    }
+
+    .experience-toggle-close .experience-toggle-icon {
+        transform: translateY(0.08rem) rotate(-135deg);
+    }
+
+    .experience-toggle-close:hover,
+    .experience-toggle-close:focus {
+        transform: translateY(-0.08rem);
+    }
+}

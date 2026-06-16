@@ -1,0 +1,785 @@
+
+
+
+
+
+
+
+
+<html>
+
+
+
+
+
+<head>
+    <title>Resolver System</title>
+    
+
+<!-- viewport meta-tag for responsiveness -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+<link rel="icon" href="/assets/images/webifier-logo.png" type="image/png">
+
+
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+<!-- Bootstrap v5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- FontAwesome JS -->
+<script src="https://kit.fontawesome.com/01c0691b3e.js" crossorigin="anonymous"></script>
+
+<!-- Loading mathjax macro -->
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true,
+                skipTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+            },
+            displayAlign: 'center',
+            "HTML-CSS": {
+                styles: {'.MathJax_Display': {"margin": 0}},
+                linebreaks: { automatic: true }
+            }
+        });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+  const webifierTheme = document.documentElement.getAttribute("data-bs-theme");
+  mermaid.initialize({ startOnLoad: true, theme: webifierTheme === "dark" ? "dark" : "default" });
+</script>
+<link rel="stylesheet" href="/assets/css/codehilite.css">
+<link rel="stylesheet" href="/assets/css/main.css">
+<script defer src="/assets/js/codeblocks.js"></script>
+<script defer src="/assets/js/content-toc.js"></script>
+
+<script>
+(function () {
+  const switcherEnabled = true;
+  const stored = switcherEnabled ? localStorage.getItem("webifier-theme") : null;
+  const selected = stored || "system";
+  const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const resolved = selected === "system" ? (systemDark ? "dark" : "light") : selected;
+  document.documentElement.dataset.wfTheme = selected;
+  document.documentElement.dataset.wfResolvedTheme = resolved;
+  document.documentElement.dataset.bsTheme = resolved === "dark" ? "dark" : "light";
+})();
+</script>
+<link rel="stylesheet" href="/assets/css/theme.css">
+<script defer src="/assets/js/theme.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TYRMXHZ5YH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-TYRMXHZ5YH');
+</script>
+
+
+
+
+<link rel="stylesheet" href="/assets/css/site.css">
+
+
+
+    
+
+    
+
+
+    
+</head>
+
+<body class="bg-body-tertiary">
+<div class="app-content container-fluid">
+    
+    
+
+
+
+
+
+
+<header class="container-fluid wf-page-chrome text-center align-items-center p-0"
+        
+        style="min-height: 5vh;"
+        
+>
+    <div
+            
+            class="wf-page-chrome-panel p-3 m-auto text-center"
+            
+    >
+        <h1>Resolver System</h1>
+        
+        <p class="mt-3">Value interpolation, source resolvers, and pipe transforms.</p>
+        
+    </div>
+</header>
+
+
+    
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<nav class="px-2 navbar navbar-expand-sm bg-body-tertiary m-0 p-2 sticky-top shadow wf-navbar">
+    
+    
+    
+
+
+
+
+
+
+
+    <a href="/" class="btn navbar-brand"
+       
+    >
+    
+    
+        
+        
+        
+        
+        
+        <img src="/assets/images/webifier-logo.png" width="28" height="28" class="d-inline-block" alt="Webifier logo">
+    
+    
+        Webifier
+    
+    </a>
+
+
+    
+
+    <div
+            
+            class="collapse navbar-collapse p-0 m-0"
+            id="navbarSupportedContent"
+            
+    >
+        <ul class="navbar-nav me-auto my-1 p-0">
+            
+            <li class="nav-item">
+                
+                
+                
+
+
+
+
+
+
+
+    <a href="/pages/user-guide/" class="btn nav-link"
+       
+    >
+    
+    
+    
+        Docs
+    
+    </a>
+
+
+                
+            </li>
+            
+            <li class="nav-item">
+                
+                
+                
+
+
+
+
+
+
+
+    <a href="/pages/collaboration.html" class="btn nav-link"
+       
+    >
+    
+    
+    
+        Collaborate
+    
+    </a>
+
+
+                
+            </li>
+            
+            <li class="nav-item">
+                
+                
+                
+
+
+
+
+
+
+
+    <a href="https://github.com/webifier" class="btn nav-link"
+       
+    >
+    
+    
+    
+        GitHub
+    
+    </a>
+
+
+                
+            </li>
+            
+        </ul>
+        
+    </div>
+    <div class="d-flex my-1 ms-auto wf-navbar-actions">
+        
+        <button class="navbar-toggler btn" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+
+        
+        
+            <a href="/pages/user-guide/" class="btn nav-item mt-1 wf-nav-back" aria-label="Back" title="Back">
+                <span aria-hidden="true">&lsaquo;</span>
+            </a>
+        
+
+        
+        
+        
+
+        
+        
+        
+        <button
+                class="btn nav-item mt-1 webifier-theme-toggle"
+                type="button"
+                id="webifier-theme-toggle"
+                title="Switch color theme"
+                aria-label="Switch color theme"
+                data-theme-default="system"
+                data-theme-modes="system,light,dark"
+        >
+            <svg class="webifier-theme-symbol webifier-theme-symbol-system" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="13" rx="2"></rect>
+                <path d="M8 21h8"></path>
+                <path d="M12 17v4"></path>
+            </svg>
+            <svg class="webifier-theme-symbol webifier-theme-symbol-light" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="M4.93 4.93l1.41 1.41"></path>
+                <path d="M17.66 17.66l1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="M6.34 17.66l-1.41 1.41"></path>
+                <path d="M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+            <svg class="webifier-theme-symbol webifier-theme-symbol-dark" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+            </svg>
+            <span class="visually-hidden webifier-theme-label">Theme</span>
+        </button>
+        
+
+        
+    </div>
+</nav>
+
+
+
+
+
+
+    <div id="app-body"
+         class="app-body container-fluid bg-body justify-content-center align-items-center d-flex shadow">
+        <div class="container-fluid p-0 m-0 no-gutters">
+            
+            <div class="wf-content-page-body container-fluid bg-body px-4 py-4 px-md-5 py-md-5">
+                <nav aria-label="Table of contents" class="wf-content-toc is-collapsed"><h2><button aria-expanded="false" class="wf-content-toc-toggle" type="button"><span aria-hidden="true" class="wf-content-toc-toggle-icon">▸</span><span>Table of Contents</span></button></h2><ol><li class="wf-content-toc-level-1"><a href="#resolver-system">Resolver System</a></li><li class="wf-content-toc-level-2"><a href="#table-of-contents">Table of Contents</a></li><li class="wf-content-toc-level-2"><a href="#syntax">Syntax</a></li><li class="wf-content-toc-level-2"><a href="#resolution-modes">Resolution Modes</a></li><li class="wf-content-toc-level-3"><a href="#full-value-resolution">Full-Value Resolution</a></li><li class="wf-content-toc-level-3"><a href="#string-interpolation">String Interpolation</a></li><li class="wf-content-toc-level-2"><a href="#pipe-chaining">Pipe Chaining</a></li><li class="wf-content-toc-level-2"><a href="#built-in-source-resolvers">Built-in Source Resolvers</a></li><li class="wf-content-toc-level-3"><a href="#load-load-a-file">load — Load a File</a></li><li class="wf-content-toc-level-3"><a href="#glob-load-multiple-files">glob — Load Multiple Files</a></li><li class="wf-content-toc-level-3"><a href="#env-environment-variable">env — Environment Variable</a></li><li class="wf-content-toc-level-3"><a href="#ref-explicit-cross-reference">ref — Explicit Cross-Reference</a></li><li class="wf-content-toc-level-3"><a href="#bare-path-cross-reference-default">Bare Path — Cross-Reference (Default)</a></li><li class="wf-content-toc-level-3"><a href="#now-current-date-time">now — Current Date/Time</a></li><li class="wf-content-toc-level-3"><a href="#baseurl-prepend-base-url">baseurl — Prepend Base URL</a></li><li class="wf-content-toc-level-3"><a href="#asset-copy-and-resolve-asset">asset — Copy and Resolve Asset</a></li><li class="wf-content-toc-level-3"><a href="#md-inline-markdown">md — Inline Markdown</a></li><li class="wf-content-toc-level-2"><a href="#built-in-transform-resolvers">Built-in Transform Resolvers</a></li><li class="wf-content-toc-level-3"><a href="#sort-sort-a-list">sort — Sort a List</a></li><li class="wf-content-toc-level-3"><a href="#reverse-reverse-a-list">reverse — Reverse a List</a></li><li class="wf-content-toc-level-3"><a href="#limit-take-first-n-items">limit — Take First N Items</a></li><li class="wf-content-toc-level-3"><a href="#offset-skip-first-n-items">offset — Skip First N Items</a></li><li class="wf-content-toc-level-3"><a href="#filter-keep-matching-items">filter — Keep Matching Items</a></li><li class="wf-content-toc-level-3"><a href="#exclude-remove-matching-items">exclude — Remove Matching Items</a></li><li class="wf-content-toc-level-3"><a href="#group-group-by-field">group — Group by Field</a></li><li class="wf-content-toc-level-3"><a href="#flatten-flatten-nested-lists">flatten — Flatten Nested Lists</a></li><li class="wf-content-toc-level-3"><a href="#unique-deduplicate-by-field">unique — Deduplicate by Field</a></li><li class="wf-content-toc-level-3"><a href="#map-extract-fields">map — Extract Fields</a></li><li class="wf-content-toc-level-3"><a href="#count-return-length">count — Return Length</a></li><li class="wf-content-toc-level-2"><a href="#sort-keys">Sort Keys</a></li><li class="wf-content-toc-level-3"><a href="#data-field-keys">Data Field Keys</a></li><li class="wf-content-toc-level-3"><a href="#file-metadata-keys">File Metadata Keys</a></li><li class="wf-content-toc-level-3"><a href="#git-sort-keys">Git Sort Keys</a></li><li class="wf-content-toc-level-3"><a href="#descending-order">Descending Order</a></li><li class="wf-content-toc-level-3"><a href="#multi-key-sort">Multi-Key Sort</a></li><li class="wf-content-toc-level-2"><a href="#filter-syntax">Filter Syntax</a></li><li class="wf-content-toc-level-3"><a href="#equality">Equality</a></li><li class="wf-content-toc-level-3"><a href="#inequality">Inequality</a></li><li class="wf-content-toc-level-3"><a href="#existence-key-present">Existence (Key Present)</a></li><li class="wf-content-toc-level-3"><a href="#non-existence-key-absent">Non-Existence (Key Absent)</a></li><li class="wf-content-toc-level-3"><a href="#multiple-conditions-and">Multiple Conditions (AND)</a></li><li class="wf-content-toc-level-3"><a href="#nested-field-access">Nested Field Access</a></li><li class="wf-content-toc-level-2"><a href="#custom-resolvers">Custom Resolvers</a></li><li class="wf-content-toc-level-3"><a href="#resolver-function-signature">Resolver Function Signature</a></li><li class="wf-content-toc-level-2"><a href="#implementation-notes">Implementation Notes</a></li><li class="wf-content-toc-level-3"><a href="#resolution-order">Resolution Order</a></li><li class="wf-content-toc-level-3"><a href="#circular-reference-detection">Circular Reference Detection</a></li><li class="wf-content-toc-level-3"><a href="#error-messages">Error Messages</a></li><li class="wf-content-toc-level-3"><a href="#escaping">Escaping</a></li></ol></nav><h1 id="resolver-system">Resolver System</h1>
+<p>The resolver system provides OmegaConf-style <code>${...}</code> value interpolation with
+pipe-based chaining. It is the primary mechanism for loading external data,
+referencing values, and transforming collections.</p>
+<hr/>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#syntax">Syntax</a></li>
+<li><a href="#resolution-modes">Resolution Modes</a></li>
+<li><a href="#pipe-chaining">Pipe Chaining</a></li>
+<li><a href="#built-in-source-resolvers">Built-in Source Resolvers</a></li>
+<li><a href="#built-in-transform-resolvers">Built-in Transform Resolvers</a></li>
+<li><a href="#sort-keys">Sort Keys</a></li>
+<li><a href="#filter-syntax">Filter Syntax</a></li>
+<li><a href="#custom-resolvers">Custom Resolvers</a></li>
+<li><a href="#implementation-notes">Implementation Notes</a></li>
+</ul>
+<hr/>
+<h2 id="syntax">Syntax</h2>
+<div class="codehilite"><pre><span></span><code><span class="cp">${</span><span class="n">resolver</span><span class="p">:</span><span class="n">argument</span><span class="cp">}</span>
+<span class="cp">${</span><span class="n">resolver</span><span class="p">:</span><span class="n">arg1</span><span class="p">,</span><span class="n">arg2</span><span class="cp">}</span>
+<span class="cp">${</span><span class="n">path</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">key</span><span class="cp">}</span>
+<span class="cp">${</span><span class="n">resolver</span><span class="p">:</span><span class="n">arg</span> <span class="o">|</span> <span class="n">transform</span><span class="p">:</span><span class="n">arg</span> <span class="o">|</span> <span class="n">transform</span><span class="p">:</span><span class="n">arg</span><span class="cp">}</span>
+"Text<span class="w"> </span>with<span class="w"> </span><span class="cp">${</span><span class="n">interpolation</span><span class="cp">}</span><span class="w"> </span>inside"
+</code></pre></div>
+<p>The syntax is modeled after OmegaConf custom resolvers.</p>
+<hr/>
+<h2 id="resolution-modes">Resolution Modes</h2>
+<h3 id="full-value-resolution">Full-Value Resolution</h3>
+<p>When the <strong>entire</strong> YAML value is a <code>${...}</code> expression, the result can be
+<strong>any type</strong> — string, dict, list, number, etc.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${load:config.yml}</span>
+<span class="c1"># → config becomes the dict loaded from config.yml</span>
+
+<span class="nt">items</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${glob:posts/*.yml | sort:-year}</span>
+<span class="c1"># → items becomes a sorted list of dicts</span>
+</code></pre></div>
+<h3 id="string-interpolation">String Interpolation</h3>
+<p>When <code>${...}</code> appears <strong>inside</strong> a larger string, each <code>${...}</code> is resolved
+and converted to a string via <code>str()</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">footer</span><span class="p">:</span><span class="w"> </span><span class="s">"©</span><span class="nv"> </span><span class="s">2026</span><span class="nv"> </span><span class="s">${title}"</span>
+<span class="c1"># → "© 2026 John Doe"</span>
+
+<span class="nt">meta_description</span><span class="p">:</span><span class="w"> </span><span class="s">"${title}</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">${header.description}"</span>
+<span class="c1"># → "John Doe — PhD Candidate at UofT"</span>
+</code></pre></div>
+<p>Multiple interpolations in one string are supported. The result is always a
+string.</p>
+<hr/>
+<h2 id="pipe-chaining">Pipe Chaining</h2>
+<p>Resolvers can be chained with <code>|</code>. The output of each resolver becomes the
+<code>input</code> of the next:</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">${</span><span class="n">source</span><span class="p">:</span><span class="n">arg</span> <span class="o">|</span> <span class="n">transform1</span><span class="p">:</span><span class="n">arg</span> <span class="o">|</span> <span class="n">transform2</span><span class="p">:</span><span class="n">arg</span><span class="cp">}</span>
+<span class="w">      </span>│<span class="w">              </span>│<span class="w">                </span>│
+<span class="w">      </span>▼<span class="w">              </span>▼<span class="w">                </span>▼
+<span class="w"> </span>produce<span class="w"> </span>value<span class="w"> </span>→<span class="w"> </span>transform<span class="w"> </span>it<span class="w"> </span>→<span class="w"> </span>transform<span class="w"> </span>again
+</code></pre></div>
+<p><strong>Source resolvers</strong> (first in chain): produce a value from nothing.
+<strong>Transform resolvers</strong> (subsequent): receive the previous output and transform it.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Load all .yml files, exclude drafts, sort by git commit date, take 10</span>
+<span class="nt">items</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${glob:posts/**/*.yml | filter:draft!=true | sort:-git | limit:10}</span>
+</code></pre></div>
+<p>Pipes are parsed by splitting on <code>|</code> (space-pipe-space) to avoid conflicts
+with YAML values containing <code>|</code>.</p>
+<hr/>
+<h2 id="built-in-source-resolvers">Built-in Source Resolvers</h2>
+<h3 id="load-load-a-file"><code>load</code> — Load a File</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${load:config.yml}</span>
+<span class="nt">bio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${load:sections/bio.md}</span>
+</code></pre></div>
+<p>Loads a file relative to the current YAML file's directory.</p>
+<ul>
+<li><code>.yml</code> / <code>.yaml</code> → parsed as YAML dict/list, recursively resolved</li>
+<li><code>.md</code>, <code>.html</code>, <code>.txt</code>, other → loaded as string content</li>
+</ul>
+<p>If no resolver name is given and the argument contains a <code>.</code> with a file
+extension or <code>/</code>, <code>load</code> is assumed:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># These are equivalent:</span>
+<span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${load:config.yml}</span>
+<span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${config.yml}</span><span class="w">              </span><span class="c1"># shorthand — no resolver name, looks like a path</span>
+</code></pre></div>
+<h3 id="glob-load-multiple-files"><code>glob</code> — Load Multiple Files</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">items</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${glob:publications/*.yml}</span>
+<span class="nt">items</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${glob:posts/**/*.yml}</span><span class="w">      </span><span class="c1"># recursive glob</span>
+</code></pre></div>
+<p>Loads all files matching a glob pattern. Returns a list.</p>
+<ul>
+<li>Each YAML file is loaded as a dict.</li>
+<li>Each non-YAML file is loaded as a string.</li>
+<li>Each loaded dict gets a <code>_source</code> source-data key with the file path (stripped
+  before rendering).</li>
+<li>Results are sorted by filename by default.</li>
+</ul>
+<p>Supports <code>**</code> for recursive matching.</p>
+<h3 id="env-environment-variable"><code>env</code> — Environment Variable</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">analytics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env:GOOGLE_ANALYTICS_ID}</span>
+<span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env:PORT,8080}</span><span class="w">             </span><span class="c1"># with default value</span>
+<span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${env:DEBUG,false}</span>
+</code></pre></div>
+<p>Returns the value of an environment variable. An optional second argument
+(after comma) provides a default if the variable is unset.</p>
+<p>Raises an error if the variable is unset and no default is provided.</p>
+<h3 id="ref-explicit-cross-reference"><code>ref</code> — Explicit Cross-Reference</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">header</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">John Doe</span>
+
+<span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">brand</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${ref:header.title}</span><span class="w">      </span><span class="c1"># → "John Doe"</span>
+</code></pre></div>
+<p>Explicit cross-reference by dotted path. Equivalent to bare path syntax
+(<code>${header.title}</code>) but unambiguous when the path could be confused with
+a filename.</p>
+<h3 id="bare-path-cross-reference-default">Bare Path — Cross-Reference (Default)</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">header</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">John Doe</span>
+
+<span class="nt">footer</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">"©</span><span class="nv"> </span><span class="s">2026</span><span class="nv"> </span><span class="s">${header.title}"</span>
+</code></pre></div>
+<p>When <code>${...}</code> contains a dotted path with no resolver prefix and it doesn't
+look like a file path, it's treated as a cross-reference into the root document.</p>
+<p><strong>Disambiguation rule:</strong>
+- Contains <code>/</code> or ends with a file extension (<code>.yml</code>, <code>.md</code>, etc.) → <code>load</code>
+- Otherwise → cross-reference</p>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${header.title}</span><span class="w">          </span><span class="c1"># cross-reference (no slash, no file extension)</span>
+<span class="l l-Scalar l-Scalar-Plain">${config.yml}</span><span class="w">            </span><span class="c1"># load (has .yml extension)</span>
+<span class="l l-Scalar l-Scalar-Plain">${data/items.yml}</span><span class="w">        </span><span class="c1"># load (has slash)</span>
+<span class="l l-Scalar l-Scalar-Plain">${ref:config.yml}</span><span class="w">        </span><span class="c1"># explicit ref (forces cross-reference even with extension)</span>
+<span class="l l-Scalar l-Scalar-Plain">${load:header.title}</span><span class="w">     </span><span class="c1"># explicit load (forces file load even without extension)</span>
+</code></pre></div>
+<h3 id="now-current-date-time"><code>now</code> — Current Date/Time</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">footer</span><span class="p">:</span><span class="w"> </span><span class="s">"Built</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">${now:%B</span><span class="nv"> </span><span class="s">%d,</span><span class="nv"> </span><span class="s">%Y}"</span><span class="w">   </span><span class="c1"># → "Built on March 11, 2026"</span>
+<span class="nt">year</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${now:%Y}</span><span class="w">                        </span><span class="c1"># → "2026"</span>
+</code></pre></div>
+<p>Format string follows Python's <code>strftime</code> syntax.</p>
+<h3 id="baseurl-prepend-base-url"><code>baseurl</code> — Prepend Base URL</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">logo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${baseurl:assets/images/logo.png}</span>
+<span class="c1"># → "/my-site/assets/images/logo.png" (if base_url is "/my-site")</span>
+</code></pre></div>
+<h3 id="asset-copy-and-resolve-asset"><code>asset</code> — Copy and Resolve Asset</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">photo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${asset:images/profile.jpg}</span>
+</code></pre></div>
+<p>Copies the file to the output assets directory and returns the resolved URL
+(with base URL prepended). Combines file copying with URL generation.</p>
+<h3 id="md-inline-markdown"><code>md</code> — Inline Markdown</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">bio_html</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${md:This is **bold** and _italic_}</span>
+</code></pre></div>
+<p>Renders a short markdown string to HTML inline. Useful when a renderer expects
+HTML but the source data is markdown.</p>
+<hr/>
+<h2 id="built-in-transform-resolvers">Built-in Transform Resolvers</h2>
+<p>Transform resolvers receive the output of the previous resolver in the pipe
+chain and return a transformed value.</p>
+<h3 id="sort-sort-a-list"><code>sort</code> — Sort a List</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:year}</span><span class="w">          </span><span class="c1"># ascending by field</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:-year}</span><span class="w">         </span><span class="c1"># descending (prefix with -)</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:-year,title}</span><span class="w">   </span><span class="c1"># multi-key: year desc, then title asc</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:-git}</span><span class="w">          </span><span class="c1"># by last git commit date, newest first</span>
+</code></pre></div>
+<p>See <a href="#sort-keys">Sort Keys</a> for all available sort keys.</p>
+<h3 id="reverse-reverse-a-list"><code>reverse</code> — Reverse a List</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:year | reverse}</span>
+</code></pre></div>
+<h3 id="limit-take-first-n-items"><code>limit</code> — Take First N Items</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:-year | limit:5}</span>
+</code></pre></div>
+<h3 id="offset-skip-first-n-items"><code>offset</code> — Skip First N Items</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:-year | offset:10 | limit:10}</span><span class="w">   </span><span class="c1"># "page 2"</span>
+</code></pre></div>
+<h3 id="filter-keep-matching-items"><code>filter</code> — Keep Matching Items</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | filter:status=published}</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | filter:lang=en,status=published}</span><span class="w">      </span><span class="c1"># AND conditions</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | filter:image}</span><span class="w">                          </span><span class="c1"># key exists</span>
+</code></pre></div>
+<p>See <a href="#filter-syntax">Filter Syntax</a> for details.</p>
+<h3 id="exclude-remove-matching-items"><code>exclude</code> — Remove Matching Items</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | exclude:draft=true}</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | exclude:draft}</span><span class="w">                         </span><span class="c1"># key exists → remove</span>
+</code></pre></div>
+<p>Inverse of <code>filter</code>.</p>
+<h3 id="group-group-by-field"><code>group</code> — Group by Field</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | group:year}</span>
+<span class="l l-Scalar l-Scalar-Plain"># → {"2024"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span><span class="err">,</span><span class="w"> </span><span class="s">"2025"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span><span class="err">,</span><span class="w"> </span><span class="s">"2026"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span><span class="err">}</span>
+</code></pre></div>
+<p>Returns a dict of lists, keyed by the field value. Useful with custom
+renderers that display grouped content.</p>
+<h3 id="flatten-flatten-nested-lists"><code>flatten</code> — Flatten Nested Lists</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:**/*.yml | flatten}</span>
+</code></pre></div>
+<h3 id="unique-deduplicate-by-field"><code>unique</code> — Deduplicate by Field</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | unique:title}</span>
+</code></pre></div>
+<p>Keeps the first occurrence of each unique field value.</p>
+<h3 id="map-extract-fields"><code>map</code> — Extract Fields</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | map:title}</span>
+<span class="l l-Scalar l-Scalar-Plain"># → ["Title 1", "Title 2", ...]</span>
+
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | map:title,src}</span>
+<span class="l l-Scalar l-Scalar-Plain"># → [{"title"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"T1"</span><span class="err">,</span><span class="w"> </span><span class="s">"src"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">"..."</span><span class="err">},</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...]</span>
+</code></pre></div>
+<p>Single field: returns a list of values.
+Multiple fields: returns a list of dicts with only those fields.</p>
+<h3 id="count-return-length"><code>count</code> — Return Length</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">total</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${glob:posts/*.yml | count}</span>
+<span class="c1"># → 42</span>
+</code></pre></div>
+<hr/>
+<h2 id="sort-keys">Sort Keys</h2>
+<p>The <code>sort</code> transform supports these sort keys:</p>
+<h3 id="data-field-keys">Data Field Keys</h3>
+<p>Any key name refers to a field in the loaded data:</p>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:year}</span><span class="w">          </span><span class="c1"># sort by the "year" field</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:title}</span><span class="w">         </span><span class="c1"># sort by the "title" field</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:meta.order}</span><span class="w">    </span><span class="c1"># sort by nested field (dotted path)</span>
+</code></pre></div>
+<h3 id="file-metadata-keys">File Metadata Keys</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Source filename (alphabetical)</td>
+</tr>
+<tr>
+<td><code>modified</code></td>
+<td>File modification time (OS stat)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="git-sort-keys">Git Sort Keys</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git</code></td>
+<td>Last git commit date (committer date) — default</td>
+</tr>
+<tr>
+<td><code>git:committed</code></td>
+<td>Last git committer date (same as <code>git</code>)</td>
+</tr>
+<tr>
+<td><code>git:authored</code></td>
+<td>Last git author date</td>
+</tr>
+<tr>
+<td><code>git:created</code></td>
+<td>First git commit date (file creation in git history)</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Blog posts sorted by last update</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:posts/*.yml | sort:-git}</span>
+
+<span class="l l-Scalar l-Scalar-Plain"># Projects sorted by when they were first added</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:projects/*.yml | sort:-git:created}</span>
+
+<span class="l l-Scalar l-Scalar-Plain"># Posts sorted by author date (ignores rebases)</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:posts/*.yml | sort:-git:authored}</span>
+</code></pre></div>
+<h3 id="descending-order">Descending Order</h3>
+<p>Prefix any key with <code>-</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:-year}</span><span class="w">         </span><span class="c1"># newest first</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:-git}</span><span class="w">          </span><span class="c1"># most recently committed first</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:-name}</span><span class="w">         </span><span class="c1"># reverse alphabetical</span>
+</code></pre></div>
+<h3 id="multi-key-sort">Multi-Key Sort</h3>
+<p>Comma-separated keys for tie-breaking:</p>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:-year,title}</span><span class="w">   </span><span class="c1"># year desc, then title asc</span>
+<span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | sort:category,-date}</span><span class="w">  </span><span class="c1"># category asc, then date desc</span>
+</code></pre></div>
+<hr/>
+<h2 id="filter-syntax">Filter Syntax</h2>
+<h3 id="equality">Equality</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | filter:status=published}</span>
+</code></pre></div>
+<h3 id="inequality">Inequality</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | filter:status!=draft}</span>
+</code></pre></div>
+<h3 id="existence-key-present">Existence (Key Present)</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | filter:image}</span><span class="w">       </span><span class="c1"># keep items that have an "image" key</span>
+</code></pre></div>
+<h3 id="non-existence-key-absent">Non-Existence (Key Absent)</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | exclude:draft}</span><span class="w">      </span><span class="c1"># remove items that have a "draft" key</span>
+</code></pre></div>
+<h3 id="multiple-conditions-and">Multiple Conditions (AND)</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | filter:status=published,lang=en}</span>
+</code></pre></div>
+<p>All conditions must match (AND logic). For OR logic, use multiple pipes:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># No built-in OR — use separate globs and flatten</span>
+<span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${glob:en/*.yml}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${glob:fr/*.yml}</span>
+</code></pre></div>
+<h3 id="nested-field-access">Nested Field Access</h3>
+<div class="codehilite"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">${glob:*.yml | filter:meta.featured=true}</span>
+</code></pre></div>
+<hr/>
+<h2 id="custom-resolvers">Custom Resolvers</h2>
+<p>Users can register custom resolvers via Python:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># my_resolvers.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">webifier.core.resolvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_resolver</span>
+
+<span class="nd">@register_resolver</span><span class="p">(</span><span class="s2">"icon"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">icon_resolver</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Turn icon names into FontAwesome HTML."""</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">'&lt;i class="fas fa-</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">"&gt;&lt;/i&gt;'</span>
+
+<span class="nd">@register_resolver</span><span class="p">(</span><span class="s2">"date"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">date_resolver</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Format a date string."""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">arg</span> <span class="ow">or</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nd">@register_resolver</span><span class="p">(</span><span class="s2">"shuffle"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">shuffle_resolver</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Randomly shuffle a list — useful for testimonials."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">items</span>
+</code></pre></div>
+<p>Expose the resolver from an extension:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">webifier</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">extensions</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">helpers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my.helpers</span>
+</code></pre></div>
+<p>Then use in YAML:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">footer</span><span class="p">:</span><span class="w"> </span><span class="s">"Last</span><span class="nv"> </span><span class="s">updated</span><span class="nv"> </span><span class="s">${date:%B</span><span class="nv"> </span><span class="s">%Y}"</span>
+<span class="nt">cta_icon</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${icon:rocket}</span>
+<span class="nt">testimonials</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${glob:testimonials/*.yml | shuffle | limit:3}</span>
+</code></pre></div>
+<h3 id="resolver-function-signature">Resolver Function Signature</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">my_resolver</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">ResolveContext</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arg : str</span>
+<span class="sd">        The argument string after the colon (e.g., "*.yml" in "glob:*.yml").</span>
+<span class="sd">    ctx : ResolveContext</span>
+<span class="sd">        Context object with:</span>
+<span class="sd">        - ctx.base_dir: directory of the current YAML file</span>
+<span class="sd">        - ctx.root: the root document dict (for cross-references)</span>
+<span class="sd">        - ctx.builder: the Builder instance (for asset resolution, etc.)</span>
+<span class="sd">    input : Any</span>
+<span class="sd">        Output from the previous resolver in a pipe chain.</span>
+<span class="sd">        None for source resolvers (first in chain).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Any</span>
+<span class="sd">        The resolved value. Can be any type for full-value resolution.</span>
+<span class="sd">        Will be converted to str for string interpolation.</span>
+<span class="sd">    """</span>
+</code></pre></div>
+<hr/>
+<h2 id="implementation-notes">Implementation Notes</h2>
+<h3 id="resolution-order">Resolution Order</h3>
+<p><code>${}</code> is resolved <strong>after</strong> <code>patch</code> and <code>defaults</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">Parse</span><span class="w"> </span><span class="n">YAML</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">Resolve</span><span class="w"> </span><span class="n">patch</span><span class="w"> </span><span class="p">(</span><span class="nb">load</span><span class="w"> </span><span class="n">files</span><span class="p">,</span><span class="w"> </span><span class="n">merge</span><span class="p">)</span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">Apply</span><span class="w"> </span><span class="n">defaults</span><span class="w"> </span><span class="p">(</span><span class="n">spread</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">siblings</span><span class="p">)</span>
+<span class="mf">4.</span><span class="w"> </span><span class="n">Resolve</span><span class="w"> </span><span class="o">$</span><span class="p">{}</span><span class="w"> </span><span class="p">(</span><span class="n">interpolation</span><span class="p">,</span><span class="w"> </span><span class="n">references</span><span class="p">,</span><span class="w"> </span><span class="n">transforms</span><span class="p">)</span>
+<span class="mf">5.</span><span class="w"> </span><span class="n">Dispatch</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">renderers</span>
+</code></pre></div>
+<p>This means <code>${}</code> can reference values that were brought in via <code>patch</code>.</p>
+<h3 id="circular-reference-detection">Circular Reference Detection</h3>
+<p>The resolver detects circular <code>${ref:...}</code> references and raises a clear error:</p>
+<div class="codehilite"><pre><span></span><code>ResolverError: Circular reference detected: header.title → nav.brand.text → header.title
+</code></pre></div>
+<h3 id="error-messages">Error Messages</h3>
+<p>All resolver errors include the source file, key path, and resolver expression:</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">ResolverError</span><span class="o">:</span> <span class="s s-Atom">in</span> <span class="s s-Atom">index</span><span class="p">.</span><span class="s s-Atom">yml</span> <span class="s s-Atom">at</span> <span class="s2">"publications.items"</span><span class="o">:</span>
+  <span class="err">$</span><span class="p">{</span><span class="s s-Atom">glob</span><span class="p">:</span><span class="s s-Atom">publications</span><span class="cm">/*.yml | sort:-year}</span>
+<span class="cm">  Unknown sort key: "year" — no "year" field found in any loaded item.</span>
+<span class="cm">  Available fields: title, authors, tags, date</span>
+</code></pre></div>
+<h3 id="escaping">Escaping</h3>
+<p>To use a literal <code>${</code> in a value, escape with <code>\</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">code_example</span><span class="p">:</span><span class="w"> </span><span class="s">"Use</span><span class="nv"> </span><span class="err">\</span><span class="s">${variable}</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">interpolation"</span>
+<span class="c1"># → "Use ${variable} for interpolation" (literal, not resolved)</span>
+</code></pre></div>
+            </div>
+            
+        </div>
+    </div>
+    
+
+<nav class="wf-page-navigation container-fluid bg-body shadow p-3 mt-2" aria-label="Page navigation">
+    <div class="wf-page-navigation-inner">
+        <div class="wf-page-navigation-slot wf-page-navigation-previous">
+            
+            <a class="btn btn-link p-0 wf-page-navigation-back-icon" href="/pages/user-guide/reference/01-yaml-syntax.html" aria-label="Back to YAML Syntax Specification" title="Back to YAML Syntax Specification">
+                <span aria-hidden="true">&lsaquo;</span>
+                <span>YAML Syntax Specification</span>
+            </a>
+            
+        </div>
+        <div class="wf-page-navigation-home text-center">
+            
+            <a class="btn btn-link p-0" href="/pages/user-guide/">User Guide</a>
+            
+        </div>
+        <div class="wf-page-navigation-slot wf-page-navigation-next">
+            
+            <a class="btn btn-link p-0" href="/pages/user-guide/reference/03-renderers.html">
+                <span>Renderer / Kind System</span>
+                <span aria-hidden="true">&rsaquo;</span>
+            </a>
+            
+        </div>
+    </div>
+</nav>
+
+
+    
+
+
+
+
+
+<footer class="container-fluid wf-page-chrome shadow text-center align-items-center p-0 hidden-print"
+        
+        style="min-height: 2vh;"
+        
+>
+    <div
+            
+            class="wf-page-chrome-panel p-3 m-auto text-center"
+            
+    >
+        
+        © Powered by <a class="link-primary" href="https://webifier.github.io/">Webifier</a>
+    </div>
+</footer>
+
+</div>
+</body>
+</html>
