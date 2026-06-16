@@ -74,6 +74,41 @@ frontmatter:
     - `nav`: override or disable the inherited navigation.
     - `footer`: override or disable the inherited footer.
     - `comments`: page-level comments configuration when `webifier.comments` is enabled.
+    - `toc`: enable or disable the generated table of contents for this page.
+    - `content_pages`: page-level content-page controls such as `toc` and `cleanup`.
+
+toc_controls:
+  label: Table of Contents
+  content: |
+    Markdown content pages get a generated collapsible table of contents by
+    default when they have enough headings. The TOC is built from `h1` through
+    `h4` headings after Markdown is rendered.
+
+    Disable it for one Markdown page:
+
+    ```text
+    ---
+    title: Short Note
+    toc: false
+    ---
+
+    # Short Note
+    ```
+
+    Or use the more explicit content-page block when you want to group related
+    controls:
+
+    ```text
+    ---
+    title: Course Notes
+    content_pages:
+      toc: true
+      cleanup: true
+    ---
+    ```
+
+    Site-wide defaults live under `content_pages` in the normal Webifier config.
+    Page front matter wins over the site default.
 
 linking:
   label: Typed Links

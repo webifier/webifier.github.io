@@ -70,6 +70,8 @@ yaml_preface:
     - `nav`: override or disable inherited navigation.
     - `footer`: override or disable inherited footer.
     - `comments`: page-level comments settings when comments are enabled.
+    - `toc`: enable or disable the generated table of contents for this notebook page.
+    - `colab`: enable or disable the Colab badge for this notebook page.
 
 linking:
   label: Link a Notebook
@@ -96,9 +98,27 @@ colab:
     If Webifier is run with a repository name, notebook pages can include a
     Google Colab URL pointing to the source notebook in the repository. The
     standard bundled assets include a small Colab badge image for this workflow.
+    Colab links are enabled by default for notebooks when `--repo-full-name` is
+    available.
 
     ```bash
     webify --repo-full-name owner/repo --baseurl /repo
+    ```
+
+    Disable the badge for one notebook in the first Markdown cell:
+
+    ```markdown
+    ---
+    title: Local-only Notebook
+    colab: false
+    ---
+    ```
+
+    Or set the site-wide notebook default:
+
+    ```yaml
+    notebook:
+      colab: false
     ```
 
 assets_and_outputs:
@@ -119,9 +139,30 @@ toc_and_polish:
   label: Table of Contents and Page Polish
   content: |
     The standard content page can build a collapsible table of contents from
-    headings in notebook Markdown cells. That works best when notebooks use
+    headings in notebook Markdown cells. Notebook content pages get this TOC by
+    default when they have enough headings. That works best when notebooks use
     normal heading levels and do not also contain a hand-written table of
     contents cell.
+
+    Disable it for one notebook in the first Markdown cell:
+
+    ```markdown
+    ---
+    title: Tiny Notebook
+    toc: false
+    ---
+    ```
+
+    Or use explicit content-page controls:
+
+    ```markdown
+    ---
+    title: Tiny Notebook
+    content_pages:
+      toc: true
+      cleanup: true
+    ---
+    ```
 
     Recommended notebook cleanup before publishing:
 
